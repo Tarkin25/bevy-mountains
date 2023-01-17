@@ -1,6 +1,9 @@
 use std::ops::{Index, IndexMut};
 
-use bevy::{prelude::*, render::{render_resource::PrimitiveTopology, mesh::Indices}};
+use bevy::{
+    prelude::*,
+    render::{mesh::Indices, render_resource::PrimitiveTopology},
+};
 
 #[derive(Debug)]
 pub struct Heightmap {
@@ -36,7 +39,9 @@ impl Heightmap {
         let x_index = self.get_index(x)?;
         let z_index = self.get_index(z)?;
 
-        self.heights.get_mut(x_index).and_then(|z| z.get_mut(z_index))
+        self.heights
+            .get_mut(x_index)
+            .and_then(|z| z.get_mut(z_index))
     }
 
     fn get_index(&self, n: f32) -> Option<usize> {
@@ -85,26 +90,33 @@ impl IndexMut<[f32; 2]> for Heightmap {
     }
 }
 
+// Mesh generation
 impl Heightmap {
     pub fn compute_mesh(&self) -> Mesh {
         let vertices = self.vertices();
-        let normals: Vec<[f32; 3]> = vertices.iter().map(|_| [0.0, 1.0, 0.0]).collect();
         let indices = self.indices();
-        
+
         let mut mesh = Mesh::new(PrimitiveTopology::TriangleList);
         mesh.insert_attribute(Mesh::ATTRIBUTE_POSITION, vertices);
-        mesh.insert_attribute(Mesh::ATTRIBUTE_NORMAL, normals);
         mesh.set_indices(Some(Indices::U32(indices)));
+        mesh.duplicate_vertices();
+        mesh.set_indices(None);
+        mesh.compute_flat_normals();
 
         mesh
     }
 
     fn vertices(&self) -> Vec<[f32; 3]> {
-        let mut vertices = Vec::with_capacity((self.squares_per_side() + 1) * (self.squares_per_side() + 1));
+        let mut vertices =
+            Vec::with_capacity((self.squares_per_side() + 1) * (self.squares_per_side() + 1));
 
         for x in 0..=self.squares_per_side() {
             for z in 0..=self.squares_per_side() {
-                vertices.push([x as f32 * self.square_size(), self.heights[x][z], z as f32 * self.square_size()]);
+                vertices.push([
+                    x as f32 * self.square_size(),
+                    self.heights[x][z],
+                    z as f32 * self.square_size(),
+                ]);
             }
         }
 
@@ -118,17 +130,30 @@ impl Heightmap {
         for x in 0..squares_per_side {
             for z in 0..squares_per_side {
                 indices.extend([
-                    x * (squares_per_side+1) + z,
-                    x * (squares_per_side+1) + z + 1,
-                    (x+1) * (squares_per_side+1) + z + 1,
-                    (x+1) * (squares_per_side+1) + z + 1,
-                    (x+1) * (squares_per_side+1) + z,
-                    x * (squares_per_side+1) + z,
+                    x * (squares_per_side + 1) + z,
+                    x * (squares_per_side + 1) + z + 1,
+                    (x + 1) * (squares_per_side + 1) + z + 1,
+                    (x + 1) * (squares_per_side + 1) + z + 1,
+                    (x + 1) * (squares_per_side + 1) + z,
+                    x * (squares_per_side + 1) + z,
                 ]);
             }
         }
 
         indices
+    }
+}
+
+// Height computation
+impl Heightmap {
+    pub fn compute_heights(&mut self, mut f: impl FnMut(f32, f32) -> f32) {
+        for x_index in 0..=self.squares_per_side() {
+            for z_index in 0..=self.squares_per_side() {
+                let x = x_index as f32 * self.square_size();
+                let z = z_index as f32 * self.square_size();
+                self.heights[x_index][z_index] = f(x, z);
+            }
+        }
     }
 }
 
@@ -153,27 +178,12 @@ mod tests {
     #[test]
     fn indices_works() {
         let map = Heightmap::new(1.0, 1.0);
-        assert_eq!(
-            map.indices(),
-            vec![
-                0, 1, 3,
-                3, 2, 0,
-            ]
-        );
+        assert_eq!(map.indices(), vec![0, 1, 3, 3, 2, 0,]);
 
         let map = Heightmap::new(2.0, 1.0);
         assert_eq!(
             map.indices(),
-            vec![
-                0, 1, 4,
-                4, 3, 0,
-                1, 2, 5,
-                5, 4, 1,
-                3, 4, 7,
-                7, 6, 3,
-                4, 5, 8,
-                8, 7, 4,
-            ]
+            vec![0, 1, 4, 4, 3, 0, 1, 2, 5, 5, 4, 1, 3, 4, 7, 7, 6, 3, 4, 5, 8, 8, 7, 4,]
         );
     }
 }

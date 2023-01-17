@@ -2,11 +2,13 @@ use bevy::{prelude::*, window::{close_on_esc, CursorGrabMode}, diagnostic::Frame
 use camera_controller::CameraControllerPlugin;
 use light::LightPlugin;
 use mountain::MountainPlugin;
+use wireframe_controller::WireframeControllerPlugin;
 
 pub mod camera_controller;
 pub mod light;
 pub mod mountain;
 pub mod heightmap;
+pub mod wireframe_controller;
 
 fn main() {
     App::new()
@@ -24,6 +26,7 @@ fn main() {
         .add_plugin(LightPlugin)
         .add_plugin(CameraControllerPlugin { transform: Transform::from_xyz(0.0, 10.0, -10.0).looking_at(Vec3::ZERO, Vec3::Y) })
         .add_plugin(MountainPlugin)
+        .add_plugin(WireframeControllerPlugin)
         .add_startup_system(insert_cube)
         .add_system(close_on_esc)
         .run();
