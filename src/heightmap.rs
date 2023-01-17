@@ -5,7 +5,7 @@ use bevy::{
     render::{mesh::Indices, render_resource::PrimitiveTopology},
 };
 
-#[derive(Debug)]
+#[derive(Debug, Component)]
 pub struct Heightmap {
     size: f32,
     square_size: f32,

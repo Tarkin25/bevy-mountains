@@ -1,5 +1,7 @@
 use bevy::{input::mouse::MouseMotion, prelude::*};
 
+use crate::pause::GameState;
+
 #[derive(Clone, Resource)]
 pub struct CameraControllerPlugin {
     pub transform: Transform,
@@ -9,7 +11,7 @@ impl Plugin for CameraControllerPlugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(self.clone())
             .add_startup_system(setup_camera)
-            .add_system(camera_controller);
+            .add_system_set(SystemSet::on_update(GameState::Running).with_system(camera_controller));
     }
 }
 
@@ -73,7 +75,7 @@ pub fn camera_controller(
     key_input: Res<Input<KeyCode>>,
     mut query: Query<(&mut Transform, &mut CameraController), With<Camera>>,
 ) {
-    let dt = time.delta_seconds();
+        let dt = time.delta_seconds();
 
     if let Ok((mut transform, mut options)) = query.get_single_mut() {
         if !options.initialized {

@@ -13,4 +13,5 @@ opt-level = 3
 
 [dependencies]
 bevy = "0.9.1"
+bevy-inspector-egui = "0.17.0"
 noise = "0.8.2"
