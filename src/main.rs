@@ -1,9 +1,12 @@
-use bevy::{prelude::*, window::{close_on_esc, CursorGrabMode}};
+use bevy::{prelude::*, window::{close_on_esc, CursorGrabMode}, diagnostic::FrameTimeDiagnosticsPlugin};
 use camera_controller::CameraControllerPlugin;
 use light::LightPlugin;
+use mountain::MountainPlugin;
 
 pub mod camera_controller;
 pub mod light;
+pub mod mountain;
+pub mod heightmap;
 
 fn main() {
     App::new()
@@ -17,8 +20,10 @@ fn main() {
             },
             ..Default::default()
         }))
+        .add_plugin(FrameTimeDiagnosticsPlugin)
         .add_plugin(LightPlugin)
-        .add_plugin(CameraControllerPlugin { transform: Transform::from_xyz(10.0, 10.0, 0.0).looking_at(Vec3::ZERO, Vec3::Y) })
+        .add_plugin(CameraControllerPlugin { transform: Transform::from_xyz(0.0, 10.0, -10.0).looking_at(Vec3::ZERO, Vec3::Y) })
+        .add_plugin(MountainPlugin)
         .add_startup_system(insert_cube)
         .add_system(close_on_esc)
         .run();
