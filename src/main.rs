@@ -8,7 +8,6 @@ use wireframe_controller::WireframeControllerPlugin;
 pub mod camera_controller;
 pub mod light;
 pub mod mountain;
-pub mod heightmap;
 pub mod wireframe_controller;
 pub mod pause;
 
