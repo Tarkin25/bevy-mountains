@@ -3,17 +3,25 @@ use std::{ops::{Deref, Add}, sync::Arc};
 use bevy::prelude::*;
 use dashmap::DashMap;
 
+pub struct ChunkGridPlugin;
+
+impl Plugin for ChunkGridPlugin {
+    fn build(&self, app: &mut App) {
+        app.init_resource::<ChunkGrid>();
+    }
+}
+
 #[derive(Resource, Default)]
-pub struct ChunkManager {
+pub struct ChunkGrid {
     chunks: Arc<DashMap<GridCoordinates, ChunkState>>,
 }
 
 pub enum ChunkState {
-    Creating,
+    ComputingMesh,
     Loaded,
 }
 
-impl Deref for ChunkManager {
+impl Deref for ChunkGrid {
     type Target = Arc<DashMap<GridCoordinates, ChunkState>>;
 
     fn deref(&self) -> &Self::Target {

@@ -10,25 +10,25 @@ use futures_lite::future;
 
 use crate::{camera_controller::CameraController, pause::GameState};
 
-use self::manager::{ChunkManager, ChunkState, GridCoordinates};
+use self::grid::{ChunkGrid, ChunkState, GridCoordinates, ChunkGridPlugin};
 
 use super::{
     mesh::create_mesh,
     terrain_noise::{GeneralNoiseConfig, TerrainGenerator},
 };
 
-mod manager;
+mod grid;
 
 pub struct ChunkPlugin;
 
 impl Plugin for ChunkPlugin {
     fn build(&self, app: &mut App) {
-        app.add_event::<CreateChunk>()
-            .init_resource::<ChunkManager>()
+        app
             .init_resource::<ChunksConfig>()
             .register_type::<ChunksConfig>()
             .add_plugin(ResourceInspectorPlugin::<ChunksConfig>::default())
             .add_plugin(WorldInspectorPlugin)
+            .add_plugin(ChunkGridPlugin)
             .add_system_set(
                 SystemSet::on_update(GameState::Running)
                     .with_system(trigger_chunk_creation)
@@ -36,15 +36,19 @@ impl Plugin for ChunkPlugin {
                     .with_system(insert_mesh)
                     .with_system(unload_chunks)
                     .with_system(despawn_chunks),
+            )
+            .add_system_set(
+                SystemSet::on_enter(GameState::Running)
+                .with_system(reload_chunks)
             );
     }
 }
 
 fn trigger_chunk_creation(
     query: Query<&Transform, With<CameraController>>,
-    mut events: EventWriter<CreateChunk>,
-    chunk_manager: Res<ChunkManager>,
+    chunk_grid: Res<ChunkGrid>,
     config: Res<ChunksConfig>,
+    mut commands: Commands,
 ) {
     let render_distance = config.render_distance as i32;
     let chunk_size = config.size as i32;
@@ -56,32 +60,29 @@ fn trigger_chunk_creation(
             let chunk_grid_coordinates =
                 player_grid_coordinates + IVec2::new(x * chunk_size, z * chunk_size);
 
-            if !chunk_manager.contains_key(&chunk_grid_coordinates) {
-                events.send(CreateChunk {
-                    size: config.size,
-                    cell_size: config.cell_size,
-                    grid_coordinates: chunk_grid_coordinates,
-                });
+            if !chunk_grid.contains_key(&chunk_grid_coordinates) {
+                chunk_grid.insert(chunk_grid_coordinates, ChunkState::ComputingMesh);
+                commands.spawn((
+                    chunk_grid_coordinates,
+                    Chunk { size: config.size, cell_size: config.cell_size },
+                    LoadChunk,
+                ));
             }
         }
     }
 }
 
 fn spawn_compute_mesh_tasks(
-    mut events: EventReader<CreateChunk>,
     terrain_generator: Res<TerrainGenerator>,
     mut commands: Commands,
     noise_config: Res<GeneralNoiseConfig>,
-    chunk_manager: Res<ChunkManager>,
+    query: Query<(Entity, &GridCoordinates, &Chunk), With<LoadChunk>>,
 ) {
     let pool = AsyncComputeTaskPool::get();
 
-    for event in events.iter().take(20) {
-        let CreateChunk {
-            size,
-            cell_size,
-            grid_coordinates,
-        } = *event;
+    for (entity, grid_coordinates, chunk) in query.iter().take(1) {
+        let grid_coordinates = *grid_coordinates;
+        let Chunk { size, cell_size } = *chunk;
         let terrain_generator = terrain_generator.clone();
         let translation = grid_coordinates.into();
         let amplitude = noise_config.amplitude;
@@ -91,12 +92,10 @@ fn spawn_compute_mesh_tasks(
                 terrain_generator.compute_height(amplitude, scale, [x, z])
             })
         });
-        commands
-            .spawn(Transform::from_translation(translation))
-            .insert(ComputeMesh(task))
-            .insert(Chunk { size, cell_size })
-            .insert(grid_coordinates);
-        chunk_manager.insert(grid_coordinates, ChunkState::Creating);
+        let mut entity = commands.entity(entity);
+        entity
+            .insert(Transform::from_translation(translation))
+            .insert(ComputeMesh(task));
     }
 }
 
@@ -105,27 +104,36 @@ fn insert_mesh(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
-    chunk_manager: Res<ChunkManager>,
+    chunk_grid: Res<ChunkGrid>,
 ) {
-    query.for_each_mut(|(entity, mut task, grid_coordinates)| {
+    for (entity, mut task, grid_coordinates) in query.iter_mut().take(1) {
         if let Some(mesh) = future::block_on(future::poll_once(&mut task.0)) {
             let mut entity = commands.entity(entity);
             entity.remove::<ComputeMesh>();
+            entity.remove::<LoadChunk>();
             entity.insert(MaterialMeshBundle {
                 mesh: meshes.add(mesh),
                 material: materials.add(Color::PURPLE.into()),
                 ..Default::default()
             });
-            chunk_manager.insert(*grid_coordinates, ChunkState::Loaded);
+            chunk_grid.insert(*grid_coordinates, ChunkState::Loaded);
         }
-    });
+    };
+}
+
+fn reload_chunks(mut query: Query<(Entity, &mut Chunk), Without<LoadChunk>>, mut commands: Commands, config: Res<ChunksConfig>) {
+    query.for_each_mut(|(entity, mut chunk)| {
+        chunk.cell_size = config.cell_size;
+        chunk.size = config.size;
+        commands.entity(entity).insert(LoadChunk);
+    })
 }
 
 fn unload_chunks(
     mut commands: Commands,
     chunks: Query<(Entity, &GridCoordinates)>,
     camera: Query<&Transform, With<CameraController>>,
-    chunk_manager: Res<ChunkManager>,
+    chunk_grid: Res<ChunkGrid>,
     chunks_config: Res<ChunksConfig>,
 ) {
     let camera_grid_coordinates = GridCoordinates::from_translation(camera.single().translation, chunks_config.size as i32);
@@ -139,8 +147,7 @@ fn unload_chunks(
         
         let is_outside_render_distance = is_outside_pos_x || is_outside_neg_x || is_outside_pos_z || is_outside_neg_z;
 
-        if is_outside_render_distance && chunk_manager.contains_key(coordinates) {
-            chunk_manager.remove(coordinates);
+        if is_outside_render_distance && chunk_grid.contains_key(coordinates) {
             commands.entity(entity).insert(DespawnChunk);
         }
     });
@@ -148,10 +155,12 @@ fn unload_chunks(
 
 fn despawn_chunks(
     mut commands: Commands,
-    chunks: Query<Entity, (With<DespawnChunk>, Without<ComputeMesh>)>
+    chunks: Query<(Entity, &GridCoordinates), (With<DespawnChunk>, Without<ComputeMesh>)>,
+    chunk_grid: Res<ChunkGrid>,
 ) {
-    chunks.iter().take(20).for_each(|entity| {
+    chunks.iter().take(20).for_each(|(entity, coordinates)| {
         commands.entity(entity).despawn();
+        chunk_grid.remove(coordinates);
     });
 }
 
@@ -179,12 +188,8 @@ impl Default for ChunksConfig {
     }
 }
 
-#[derive(Debug)]
-struct CreateChunk {
-    size: f32,
-    cell_size: f32,
-    grid_coordinates: GridCoordinates,
-}
+#[derive(Debug, Component)]
+struct LoadChunk;
 
 #[derive(Component)]
 struct ComputeMesh(Task<Mesh>);
