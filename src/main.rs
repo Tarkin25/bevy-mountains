@@ -29,19 +29,6 @@ fn main() {
         .add_plugin(MountainPlugin)
         .add_plugin(WireframeControllerPlugin)
         .add_plugin(PausePlugin)
-        .add_startup_system(insert_cube)
         .add_system(close_on_esc)
         .run();
-}
-
-fn insert_cube(
-    mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<StandardMaterial>>,
-) {
-    commands.spawn(PbrBundle {
-        mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
-        material: materials.add(Color::PURPLE.into()),
-        ..Default::default()
-    });
 }

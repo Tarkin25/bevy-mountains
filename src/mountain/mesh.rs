@@ -23,9 +23,9 @@ fn vertices(cell_size: f32, cells_per_side: usize, position: Vec3, mut compute_h
 
     for x_index in -cells_per_direction..=cells_per_direction {
         for z_index in -cells_per_direction..=cells_per_direction {
-            let x = x_index as f32 * cell_size + position.x;
-            let z = z_index as f32 * cell_size + position.z;
-            let y = compute_height(x, z) + position.y;
+            let x = x_index as f32 * cell_size;
+            let z = z_index as f32 * cell_size;
+            let y = compute_height(x + position.x, z + position.z);
 
             vertices.push([x, y, z]);
         }

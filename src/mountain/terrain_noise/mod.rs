@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use bevy::prelude::*;
 use bevy_inspector_egui::{InspectorOptions, prelude::*, quick::ResourceInspectorPlugin};
-use noise::{NoiseFn, Cylinders};
+use noise::{NoiseFn, Cylinders, Billow, Perlin};
 
 pub struct NoisePlugin;
 
@@ -42,7 +42,7 @@ impl TerrainGenerator {
 }
 
 fn insert_terrain_generator(mut commands: Commands) {
-    let noise = Cylinders::default();
+    let noise = Perlin::default();
     
     commands.insert_resource(TerrainGenerator(Arc::new(noise)));
 }
