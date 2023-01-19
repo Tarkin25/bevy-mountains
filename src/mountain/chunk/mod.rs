@@ -139,19 +139,20 @@ fn insert_mesh(
         if let Some(mesh) = future::block_on(future::poll_once(&mut task.0)) {
             let mut entity = commands.entity(entity);
             entity.remove::<ComputeMesh>();
+            entity.remove::<Handle<Mesh>>();
             entity.insert(meshes.add(mesh));
         }
     }
 }
 
 fn update_level_of_detail(
-    mut chunks: Query<(Entity, &mut Chunk, &GridCoordinates), Without<LoadChunk>>,
+    mut chunks: Query<(Entity, &mut Chunk, &GridCoordinates)>,
     mut commands: Commands,
     camera: Query<&GridCoordinates, With<CameraController>>,
     config: Res<ChunksConfig>,
 ) {
     if let Ok(camera_coordinates) = camera.get_single() {
-        for (entity, mut chunk, coordinates) in chunks.iter_mut().take(config.updates_per_frame) {
+        for (entity, mut chunk, coordinates) in chunks.iter_mut()/* .take(config.updates_per_frame) */ {
             let new_cell_size = config.get_cell_size(*coordinates, *camera_coordinates);
     
             if chunk.cell_size != new_cell_size {
