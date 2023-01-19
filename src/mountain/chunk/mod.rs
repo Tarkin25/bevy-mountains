@@ -36,7 +36,7 @@ impl Plugin for ChunkPlugin {
                     .with_system(spawn_compute_mesh_tasks.before(insert_mesh))
                     .with_system(insert_mesh.before(unload_chunks))
                     .with_system(unload_chunks)
-                    .with_system(add_center_point_to_chunks)
+                    //.with_system(add_center_point_to_chunks)
             )
             .add_system_set(SystemSet::on_enter(GameState::Running).with_system(reload_chunks));
     }
@@ -62,13 +62,13 @@ fn trigger_chunk_creation(
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
     if config.load_chunks {
-        let render_distance = config.render_distance as i32;
+        let render_distance = config.render_distance;
 
         if let Ok(camera_coordinates) = query.get_single() {
             let mut load_chunk = move |x, z| {
-                let chunk_coordinates = *camera_coordinates + IVec2::new(x, z);
+                let chunk_coordinates = *camera_coordinates + GridCoordinates::new(x, z);
     
-                if !chunk_grid.contains(&chunk_coordinates) {
+                if chunk_coordinates.distance_squared(*camera_coordinates) <= render_distance.pow(2) && !chunk_grid.contains(&chunk_coordinates) {
                     chunk_grid.insert(chunk_coordinates);
                     commands.spawn((
                         chunk_coordinates,
@@ -87,8 +87,8 @@ fn trigger_chunk_creation(
                 }
             };
     
-            for x in (0..=render_distance).rev() {
-                for z in (0..=render_distance).rev() {
+            for x in (0..=render_distance as i32).rev() {
+                for z in (0..=render_distance as i32).rev() {
                     load_chunk(x, z);
                     load_chunk(-x, z);
                     load_chunk(x, -z);
@@ -171,31 +171,21 @@ fn reload_chunks(mut query: Query<Entity, (Without<LoadChunk>, With<Chunk>)>, mu
 fn unload_chunks(
     mut commands: Commands,
     chunks: Query<(Entity, &GridCoordinates), (With<Chunk>, Without<LoadChunk>, Without<ComputeMesh>)>,
-    camera: Query<&Transform, With<CameraController>>,
+    camera: Query<&GridCoordinates, With<CameraController>>,
     chunks_config: Res<ChunksConfig>,
     chunk_grid: Res<ChunkGrid>,
 ) {
     if chunks_config.load_chunks {
-        let camera_grid_coordinates = GridCoordinates::from_translation(
-            camera.single().translation,
-            chunks_config.size as i32,
-        );
-        let bounds_distance = (chunks_config.size as u32 * chunks_config.render_distance) as i32;
+        if let Ok(camera) = camera.get_single() {
+            chunks.for_each(|(entity, coordinates)| {
+                let is_outside_render_distance = camera.distance_squared(*coordinates) > chunks_config.render_distance.pow(2);
 
-        chunks.for_each(|(entity, coordinates)| {
-            let is_outside_pos_x = camera_grid_coordinates.x + bounds_distance < coordinates.x;
-            let is_outside_neg_x = camera_grid_coordinates.x - bounds_distance > coordinates.x;
-            let is_outside_pos_z = camera_grid_coordinates.y + bounds_distance < coordinates.y;
-            let is_outside_neg_z = camera_grid_coordinates.y - bounds_distance > coordinates.y;
-
-            let is_outside_render_distance =
-                is_outside_pos_x || is_outside_neg_x || is_outside_pos_z || is_outside_neg_z;
-
-            if is_outside_render_distance {
-                commands.entity(entity).despawn_recursive();
-                chunk_grid.remove(coordinates);
-            }
-        });
+                if is_outside_render_distance {
+                    commands.entity(entity).despawn_recursive();
+                    chunk_grid.remove(coordinates);
+                }
+            });
+        }
     }
 }
 
@@ -217,14 +207,12 @@ pub struct ChunksConfig {
 
 impl ChunksConfig {
     pub fn get_cell_size(&self, chunk: GridCoordinates, camera: GridCoordinates) -> f32 {
-        let dx = chunk.0.x.abs_diff(camera.0.x);
-        let dz = chunk.0.y.abs_diff(camera.0.y);
-        let d_max = dx.max(dz);
+        let distance = chunk.distance(camera).round() as u32;
 
         let breakpoint = self
             .lod_breakpoints
             .keys()
-            .filter(|k| **k <= d_max)
+            .filter(|k| **k <= distance)
             .max()
             .unwrap_or_else(|| self.lod_breakpoints.keys().max().unwrap());
 
