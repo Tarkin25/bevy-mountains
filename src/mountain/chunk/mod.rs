@@ -118,8 +118,7 @@ fn spawn_compute_mesh_tasks(
         let scale = noise_config.scale;
         let task = pool.spawn(async move {
             create_mesh(size, cell_size, translation, |x, z| {
-                //terrain_generator.compute_height(amplitude, scale, [x, z])
-                0.0
+                terrain_generator.compute_height(amplitude, scale, [x, z])
             })
         });
         let mut entity = commands.entity(entity);
@@ -226,9 +225,9 @@ impl Default for ChunksConfig {
         Self {
             size: 64.0,
             cell_size: 0.5,
-            render_distance: 0,
+            render_distance: 20,
             updates_per_frame: 1,
-            lod_breakpoints: [(0, 0.5), (1, 1.0), (2, 2.0), (3, 4.0)]
+            lod_breakpoints: [(0, 0.5), (4, 1.0), (8, 2.0), (16, 4.0)]
                 .into_iter()
                 .collect(),
             load_chunks: true,
