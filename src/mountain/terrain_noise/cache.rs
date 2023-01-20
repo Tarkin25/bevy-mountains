@@ -10,7 +10,7 @@ pub struct SyncCache<Source> {
 }
 
 impl<Source> SyncCache<Source> {
-    pub fn new(source: Source) -> Self {
+    pub fn _new(source: Source) -> Self {
         Self {
             source,
             value: Mutex::new(None),

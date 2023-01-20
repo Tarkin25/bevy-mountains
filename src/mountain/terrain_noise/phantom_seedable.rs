@@ -13,7 +13,7 @@ impl<Source> Seedable for PhantomSeedable<Source> {
         0
     }
 
-    fn set_seed(self, seed: u32) -> Self {
+    fn set_seed(self, _seed: u32) -> Self {
         self
     }
 }

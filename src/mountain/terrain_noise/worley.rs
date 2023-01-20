@@ -14,7 +14,7 @@ pub struct SyncWorley {
 pub type DistanceFunction = dyn Fn(&[f64], &[f64]) -> f64 + Send + Sync;
 
 impl SyncWorley {
-    pub const DEFAULT_SEED: u32 = 0;
+    pub const _DEFAULT_SEED: u32 = 0;
     pub const DEFAULT_FREQUENCY: f64 = 1.0;
 
     pub fn new(seed: u32) -> Self {
@@ -28,7 +28,7 @@ impl SyncWorley {
     }
 
     /// Sets the distance function used by the Worley cells.
-    pub fn set_distance_function<F>(self, function: F) -> Self
+    pub fn _set_distance_function<F>(self, function: F) -> Self
     where
         F: Fn(&[f64], &[f64]) -> f64 + Send + Sync + 'static,
     {
@@ -40,7 +40,7 @@ impl SyncWorley {
 
     /// Enables or disables applying the distance from the nearest seed point
     /// to the output value.
-    pub fn set_return_type(self, return_type: ReturnType) -> Self {
+    pub fn _set_return_type(self, return_type: ReturnType) -> Self {
         Self {
             return_type,
             ..self
@@ -48,7 +48,7 @@ impl SyncWorley {
     }
 
     /// Sets the frequency of the seed points.
-    pub fn set_frequency(self, frequency: f64) -> Self {
+    pub fn _set_frequency(self, frequency: f64) -> Self {
         Self { frequency, ..self }
     }
 }
