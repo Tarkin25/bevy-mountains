@@ -1,9 +1,11 @@
-use std::{collections::HashMap, fmt::Debug, sync::Arc};
+use std::{collections::HashMap, fmt::Debug, sync::Arc, io::{BufReader, BufWriter}, fs::OpenOptions};
 
+use anyhow::Context;
 use bevy::prelude::*;
-use bevy_egui::{egui::{self, TextStyle}, EguiContext};
+use bevy_egui::{egui, EguiContext};
 use egui_node_graph::{NodeId, UserResponseTrait, NodeDataTrait, Graph, GraphEditorState, NodeResponse, OutputId};
 use noise::{NoiseFn, Checkerboard};
+use serde::{Serialize, Deserialize};
 
 use crate::pause::GameState;
 
@@ -18,9 +20,12 @@ pub struct NoiseGraphPlugin;
 
 impl Plugin for NoiseGraphPlugin {
     fn build(&self, app: &mut App) {
+        let graph = NoiseGraph::load().unwrap_or_default();
+        
         app
-        .init_resource::<NoiseGraph>()
-        .add_system_set(SystemSet::on_update(GameState::Paused).with_system(draw_graph));
+        .insert_resource(graph)
+        .add_system_set(SystemSet::on_update(GameState::Paused).with_system(draw_graph))
+        .add_system_set(SystemSet::on_exit(GameState::Paused).with_system(save_graph));
     }
 }
 
@@ -28,12 +33,18 @@ fn draw_graph(mut context: ResMut<EguiContext>, mut graph: ResMut<NoiseGraph>) {
     graph.draw(context.ctx_mut());
 }
 
+fn save_graph(graph: Res<NoiseGraph>) {
+    if let Err(e) = graph.save() {
+        error!("Error while saving noise graph: {}", e);
+    }
+}
+
 // ========= First, define your user data types =============
 
 /// The NodeData holds a custom data struct inside each node. It's useful to
 /// store additional information that doesn't live in parameters. For this
 /// example, the node data stores the template (i.e. the "type") of the node.
-#[derive(Default)]
+#[derive(Default, Serialize, Deserialize)]
 pub struct NodeData {
     template: NodeTemplate,
 }
@@ -51,9 +62,10 @@ pub enum MyResponse {
 /// The graph 'global' state. This state struct is passed around to the node and
 /// parameter drawing callbacks. The contents of this struct are entirely up to
 /// the user. For this example, we use it to keep track of the 'active' node.
-#[derive(Default)]
+#[derive(Default, Serialize, Deserialize)]
 pub struct NoiseGraphState {
     active_node: Option<NodeId>,
+    #[serde(skip)]
     current_noise: Option<DynNoiseFn>,
 }
 
@@ -117,7 +129,7 @@ type MyGraph = Graph<NodeData, ConnectionType, NodeValue>;
 type MyEditorState =
     GraphEditorState<NodeData, ConnectionType, NodeValue, NodeTemplate, NoiseGraphState>;
 
-#[derive(Default, Resource)]
+#[derive(Default, Resource, Serialize, Deserialize)]
 pub struct NoiseGraph {
     // The `GraphEditorState` is the top-level object. You "register" all your
     // custom types by specifying it as its generic parameters.
@@ -127,6 +139,18 @@ pub struct NoiseGraph {
 }
 
 impl NoiseGraph {
+    const FILE_PATH: &'static str = "assets/noise_graph.json";
+    
+    fn load() -> anyhow::Result<Self> {
+        let mut graph: Self = serde_json::from_reader(BufReader::new(OpenOptions::new().read(true).open(Self::FILE_PATH).context("Unable to open file")?)).context("Unable to parse json")?;
+        graph.update_current_noise();
+        Ok(graph)
+    }
+
+    fn save(&self) -> anyhow::Result<()> {
+        serde_json::to_writer_pretty(BufWriter::new(OpenOptions::new().write(true).create(true).open(Self::FILE_PATH).context("Unable to open file")?), &self).context("Unable to save to json")
+    }
+    
     pub fn get_noise_fn(&self) -> DynNoiseFn {
         self.user_state.current_noise.as_ref().map(|noise| noise.clone()).unwrap_or_else(|| DynNoiseFn::new(Checkerboard::default()))
     }
@@ -150,23 +174,18 @@ impl NoiseGraph {
             }
         }
 
+        self.update_current_noise();
+    }
+
+    fn update_current_noise(&mut self) {
         if let Some(node) = self.user_state.active_node {
             if self.state.graph.nodes.contains_key(node) {
-                let text = match evaluate_node(&self.state.graph, node, &mut HashMap::new()) {
+                match evaluate_node(&self.state.graph, node, &mut HashMap::new()) {
                     Ok(value) => {
-                        let text = format!("The result is: {:?}", &value);
                         self.user_state.current_noise = value.try_to_noise_function().ok();
-                        text
-                    },
-                    Err(err) => format!("Execution error: {}", err),
+                    }
+                    Err(err) => error!("NoiseGraph evaluation failed: {}", err),
                 };
-                ctx.debug_painter().text(
-                    egui::pos2(10.0, 35.0),
-                    egui::Align2::LEFT_TOP,
-                    text,
-                    TextStyle::Button.resolve(&ctx.style()),
-                    egui::Color32::WHITE,
-                );
             } else {
                 self.user_state.active_node = None;
             }

@@ -2,6 +2,7 @@ use std::borrow::Cow;
 
 use egui_node_graph::{NodeTemplateTrait, Graph, NodeId, InputParamKind};
 use noise::{RidgedMulti, Perlin};
+use serde::{Serialize, Deserialize};
 use strum::IntoEnumIterator;
 
 use super::{NodeData, connection_type::ConnectionType, NoiseGraphState, node_value::{NodeValue, NoiseType, Operator}};
@@ -9,7 +10,7 @@ use super::{NodeData, connection_type::ConnectionType, NoiseGraphState, node_val
 /// NodeTemplate is a mechanism to define node templates. It's what the graph
 /// will display in the "new node" popup. The user code needs to tell the
 /// library how to convert a NodeTemplate into a Node.
-#[derive(Clone, Copy, Debug, strum::EnumIter, strum::Display)]
+#[derive(Clone, Copy, Debug, strum::EnumIter, strum::Display, Serialize, Deserialize)]
 pub enum NodeTemplate {
     Perlin,
     ScaleBias,

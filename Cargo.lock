@@ -50,6 +50,7 @@ dependencies = [
  "cfg-if",
  "getrandom 0.2.8",
  "once_cell",
+ "serde",
  "version_check",
 ]
 
@@ -304,6 +305,8 @@ dependencies = [
  "egui_node_graph",
  "futures-lite",
  "noise",
+ "serde",
+ "serde_json",
  "strum",
 ]
 
@@ -1456,6 +1459,8 @@ dependencies = [
  "ahash 0.8.2",
  "epaint 0.19.0",
  "nohash-hasher",
+ "ron",
+ "serde",
 ]
 
 [[package]]
@@ -1476,6 +1481,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d0759e8cf3b27a5787137636e26d8b59c4ec9842e13ff15616c5b776c2559a71"
 dependencies = [
  "egui 0.19.0",
+ "serde",
  "slotmap",
  "smallvec",
  "thiserror",
@@ -1488,6 +1494,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9542a40106fdba943a055f418d1746a050e1a903a049b030c2b097d4686a33cf"
 dependencies = [
  "bytemuck",
+ "serde",
 ]
 
 [[package]]
@@ -1554,6 +1561,7 @@ dependencies = [
  "emath 0.19.0",
  "nohash-hasher",
  "parking_lot",
+ "serde",
 ]
 
 [[package]]
@@ -3168,6 +3176,7 @@ version = "1.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e1e08e261d0e8f5c43123b7adf3e4ca1690d655377ac93a03b2c9d3e98de1342"
 dependencies = [
+ "serde",
  "version_check",
 ]
 

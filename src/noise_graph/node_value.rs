@@ -1,6 +1,7 @@
 use std::fmt::Debug;
 use bevy_egui::egui::{self, DragValue, ComboBox};
 use egui_node_graph::{WidgetValueTrait, NodeId};
+use serde::{Serialize, Deserialize};
 use strum::IntoEnumIterator;
 
 use super::{DynNoiseFn, NoiseGraphState, NodeData, MyResponse};
@@ -13,25 +14,26 @@ use super::{DynNoiseFn, NoiseGraphState, NodeData, MyResponse};
 /// up to the user code in this example to make sure no parameter is created
 /// with a DataType of Scalar and a ValueType of Vec2.
 //#[derive(custom_debug::Debug)]
-#[derive(Clone)]
+#[derive(Clone, Serialize, Deserialize)]
 pub enum NodeValue {
     F64(f64),
     Usize(usize),
     Perlin,
     ScaleBias,
+    #[serde(skip)]
     NoiseFunction(DynNoiseFn),
     NoInput,
     NoiseType(NoiseType),
     Operator(Operator),
 }
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug, strum::Display, strum::EnumIter)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug, strum::Display, strum::EnumIter, Serialize, Deserialize)]
 pub enum NoiseType {
     Perlin,
     Simplex,
 }
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug, strum::Display, strum::EnumIter)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug, strum::Display, strum::EnumIter, Serialize, Deserialize)]
 pub enum Operator {
     Add,
     Subtract,

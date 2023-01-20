@@ -2,13 +2,14 @@ use std::borrow::Cow;
 
 use bevy_egui::egui::Color32;
 use egui_node_graph::DataTypeTrait;
+use serde::{Serialize, Deserialize};
 
 use super::NoiseGraphState;
 
 /// `DataType`s are what defines the possible range of connections when
 /// attaching two ports together. The graph UI will make sure to not allow
 /// attaching incompatible datatypes.
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Serialize, Deserialize)]
 pub enum ConnectionType {
     Noise,
     NoiseType,
