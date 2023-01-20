@@ -1,14 +1,9 @@
-use std::{
-    ops::Deref,
-    sync::{Arc, Mutex, RwLock},
-};
+use std::sync::Arc;
 
 use bevy::prelude::*;
 use noise::{MultiFractal, *};
 
-use crate::mountain::terrain_noise::{
-    cache::SyncCache, phantom_seedable::PhantomSeedable, worley::SyncWorley,
-};
+use crate::mountain::terrain_noise::cache::SyncCache;
 
 mod cache;
 mod phantom_seedable;
@@ -24,12 +19,6 @@ impl Plugin for NoisePlugin {
 
 #[derive(Clone, Resource)]
 pub struct TerrainGenerator(Arc<dyn NoiseFn<f64, 2> + Send + Sync>);
-
-impl TerrainGenerator {
-    pub fn compute_height(&self, [x, z]: [f32; 2]) -> f32 {
-        self.0.get([x as f64, z as f64]) as f32
-    }
-}
 
 fn insert_terrain_generator(mut commands: Commands) {
     //let noise = create_noise();
@@ -54,6 +43,7 @@ fn insert_terrain_generator(mut commands: Commands) {
     commands.insert_resource(TerrainGenerator(Arc::new(noise)));
 }
 
+#[allow(unused)]
 fn create_noise() -> impl NoiseFn<f64, 2> {
     /// Planet seed. Change this to generate a different planet.
     const CURRENT_SEED: u32 = 0;
@@ -409,7 +399,7 @@ impl Seedable for Custom {
         0
     }
 
-    fn set_seed(self, seed: u32) -> Self {
+    fn set_seed(self, _seed: u32) -> Self {
         self
     }
 }

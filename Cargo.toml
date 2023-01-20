@@ -20,3 +20,4 @@ noise = "0.8.2"
 bevy_egui = "0.17"
 anyhow = "1.0.68"
 egui_node_graph = "0.4.0"
+strum = { version = "0.24.1", features = ["derive"] }
