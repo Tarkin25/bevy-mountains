@@ -15,7 +15,7 @@ use self::grid::{ChunkGrid, ChunkGridPlugin, GridCoordinates};
 
 use super::{
     mesh::create_mesh,
-    terrain_noise::{GeneralNoiseConfig, TerrainGenerator},
+    terrain_noise::TerrainGenerator,
 };
 
 mod grid;
@@ -26,8 +26,6 @@ impl Plugin for ChunkPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<ChunksConfig>()
             .register_type::<ChunksConfig>()
-            .add_plugin(ResourceInspectorPlugin::<ChunksConfig>::default())
-            .add_plugin(WorldInspectorPlugin)
             .add_plugin(ChunkGridPlugin)
             .add_system_set(
                 SystemSet::on_update(GameState::Running)
@@ -82,7 +80,12 @@ fn trigger_chunk_creation(
                             visibility: Visibility::VISIBLE,
                             computed: ComputedVisibility::default(),
                         },
-                        materials.add(Color::PURPLE.into()),
+                        materials.add(StandardMaterial {
+                            base_color: Color::PURPLE.into(),
+                            metallic: 0.0,
+                            reflectance: 0.0,
+                            ..Default::default()
+                        }),
                     ));
                 }
             };
@@ -102,7 +105,6 @@ fn trigger_chunk_creation(
 fn spawn_compute_mesh_tasks(
     terrain_generator: Res<TerrainGenerator>,
     mut commands: Commands,
-    noise_config: Res<GeneralNoiseConfig>,
     query: Query<(Entity, &GridCoordinates, &Chunk), With<LoadChunk>>,
     chunks_config: Res<ChunksConfig>,
 ) {
@@ -114,11 +116,9 @@ fn spawn_compute_mesh_tasks(
         let terrain_generator = terrain_generator.clone();
         let translation = grid_coordinates.to_translation(chunks_config.size as i32);
         let size = chunks_config.size;
-        let amplitude = noise_config.amplitude;
-        let scale = noise_config.scale;
         let task = pool.spawn(async move {
             create_mesh(size, cell_size, translation, |x, z| {
-                terrain_generator.compute_height(amplitude, scale, [x, z])
+                terrain_generator.compute_height([x, z])
             })
         });
         let mut entity = commands.entity(entity);

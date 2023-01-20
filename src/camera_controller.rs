@@ -1,4 +1,4 @@
-use bevy::{input::mouse::MouseMotion, prelude::*};
+use bevy::{input::mouse::{MouseMotion, MouseWheel}, prelude::*};
 
 use crate::pause::GameState;
 
@@ -35,10 +35,9 @@ pub struct CameraController {
     pub key_right: KeyCode,
     pub key_up: KeyCode,
     pub key_down: KeyCode,
-    pub key_run: KeyCode,
     pub key_reset: KeyCode,
-    pub walk_speed: f32,
-    pub run_speed: f32,
+    pub speed: f32,
+    pub speed_gain: f32,
     pub friction: f32,
     pub pitch: f32,
     pub yaw: f32,
@@ -57,10 +56,9 @@ impl Default for CameraController {
             key_right: KeyCode::L,
             key_up: KeyCode::Space,
             key_down: KeyCode::N,
-            key_run: KeyCode::RShift,
             key_reset: KeyCode::R,
-            walk_speed: 20.0,
-            run_speed: 40.0,
+            speed: 20.0,
+            speed_gain: 5.0,
             friction: 0.5,
             pitch: 0.0,
             yaw: 0.0,
@@ -72,12 +70,13 @@ impl Default for CameraController {
 pub fn camera_controller(
     time: Res<Time>,
     mut mouse_events: EventReader<MouseMotion>,
+    mut scroll_events: EventReader<MouseWheel>,
     key_input: Res<Input<KeyCode>>,
     mut query: Query<(&mut Transform, &mut CameraController), With<Camera>>,
 ) {
         let dt = time.delta_seconds();
 
-    if let Ok((mut transform, mut options)) = query.get_single_mut() {
+    if let Ok((mut transform, mut options)) = query.get_single_mut() {        
         if !options.initialized {
             let (yaw, pitch, _roll) = transform.rotation.to_euler(EulerRot::YXZ);
             options.yaw = yaw;
@@ -109,14 +108,14 @@ pub fn camera_controller(
             axis_input.y -= 1.0;
         }
 
+        // handle mouse scroll
+        for scroll in scroll_events.iter() {
+            options.speed += scroll.y * options.speed_gain;
+        }
+
         // Apply movement update
         if axis_input != Vec3::ZERO {
-            let max_speed = if key_input.pressed(options.key_run) {
-                options.run_speed
-            } else {
-                options.walk_speed
-            };
-            options.velocity = axis_input.normalize() * max_speed;
+            options.velocity = axis_input.normalize() * options.speed;
         } else {
             let friction = options.friction.clamp(0.0, 1.0);
             options.velocity *= 1.0 - friction;
