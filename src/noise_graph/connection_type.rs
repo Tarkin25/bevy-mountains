@@ -11,6 +11,7 @@ use super::NoiseGraphState;
 /// attaching incompatible datatypes.
 #[derive(PartialEq, Eq, Serialize, Deserialize, strum::Display)]
 pub enum ConnectionType {
+    NoConnection,
     Noise,
     NoiseType,
     F64,
@@ -21,6 +22,7 @@ pub enum ConnectionType {
 impl DataTypeTrait<NoiseGraphState> for ConnectionType {
     fn data_type_color(&self, _user_state: &mut NoiseGraphState) -> Color32 {
         match self {
+            ConnectionType::NoConnection => Color32::BLACK,
             ConnectionType::Noise => Color32::BLUE,
             ConnectionType::F64 => Color32::YELLOW,
             ConnectionType::NoiseType => Color32::LIGHT_RED,

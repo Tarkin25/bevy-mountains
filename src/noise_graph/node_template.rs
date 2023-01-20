@@ -5,7 +5,7 @@ use noise::{RidgedMulti, Perlin, Fbm};
 use serde::{Serialize, Deserialize};
 use strum::IntoEnumIterator;
 
-use super::{NodeData, connection_type::ConnectionType, NoiseGraphState, node_value::{NodeValue, NoiseType, Operator}};
+use super::{NodeData, connection_type::ConnectionType, NoiseGraphState, node_attribute::{NodeAttribute, NoiseType, Operator}};
 
 /// NodeTemplate is a mechanism to define node templates. It's what the graph
 /// will display in the "new node" popup. The user code needs to tell the
@@ -43,7 +43,7 @@ impl Default for NodeTemplate {
 impl NodeTemplateTrait for NodeTemplate {
     type NodeData = NodeData;
     type DataType = ConnectionType;
-    type ValueType = NodeValue;
+    type ValueType = NodeAttribute;
     type UserState = NoiseGraphState;
 
     fn node_finder_label(&self, _user_state: &mut NoiseGraphState) -> Cow<str> {
@@ -70,6 +70,9 @@ impl NodeTemplateTrait for NodeTemplate {
         // care of creating the desired inputs and outputs based on the template
         
         let mut builder = NodeBuilder::new(graph, node_id);
+
+        // Add a "name" attribute to all nodes
+        builder.input_name();
 
         match self {
             NodeTemplate::Arithmetic => {
@@ -128,13 +131,25 @@ impl NodeTemplateTrait for NodeTemplate {
 }
 
 struct NodeBuilder<'a> {
-    graph: &'a mut Graph<NodeData, ConnectionType, NodeValue>,
+    graph: &'a mut Graph<NodeData, ConnectionType, NodeAttribute>,
     node_id: NodeId,
 }
 
 impl<'a> NodeBuilder<'a> {
-    fn new(graph: &'a mut Graph<NodeData, ConnectionType, NodeValue>, node_id: NodeId) -> Self {
+    fn new(graph: &'a mut Graph<NodeData, ConnectionType, NodeAttribute>, node_id: NodeId) -> Self {
         Self { graph, node_id }
+    }
+
+    fn input_name(&mut self) -> &mut Self {
+        self.graph.add_input_param(
+            self.node_id,
+            "New Node".into(),
+            ConnectionType::NoConnection,
+            NodeAttribute::Name("New Node".into()),
+            InputParamKind::ConstantOnly,
+            true,
+        );
+        self
     }
 
     fn input_f64(&mut self, name: &str, initial: f64) -> &mut Self {
@@ -142,7 +157,7 @@ impl<'a> NodeBuilder<'a> {
             self.node_id,
             name.into(),
             ConnectionType::F64,
-            NodeValue::F64(initial),
+            NodeAttribute::F64(initial),
             InputParamKind::ConnectionOrConstant,
             true,
         );
@@ -154,7 +169,7 @@ impl<'a> NodeBuilder<'a> {
             self.node_id,
             name.into(),
             ConnectionType::Usize,
-            NodeValue::Usize(initial),
+            NodeAttribute::Usize(initial),
             InputParamKind::ConnectionOrConstant,
             true,
         );
@@ -166,7 +181,7 @@ impl<'a> NodeBuilder<'a> {
             self.node_id,
             name.into(),
             ConnectionType::Noise,
-            NodeValue::NoInput,
+            NodeAttribute::NoInput,
             InputParamKind::ConnectionOnly,
             true
         );
@@ -178,7 +193,7 @@ impl<'a> NodeBuilder<'a> {
             self.node_id,
             "noise type".into(),
             ConnectionType::NoiseType,
-            NodeValue::NoiseType(initial),
+            NodeAttribute::NoiseType(initial),
             InputParamKind::ConstantOnly,
             true,
         );
@@ -190,7 +205,7 @@ impl<'a> NodeBuilder<'a> {
             self.node_id,
             name.into(),
             ConnectionType::F64,
-            NodeValue::Operator(initial),
+            NodeAttribute::Operator(initial),
             InputParamKind::ConstantOnly,
             true,
         );

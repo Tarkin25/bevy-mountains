@@ -9,11 +9,11 @@ use serde::{Serialize, Deserialize};
 
 use crate::pause::GameState;
 
-use self::{connection_type::ConnectionType, node_template::{NodeTemplate, AllNodeTemplates}, node_value::NodeValue, evaluate::evaluate_node};
+use self::{connection_type::ConnectionType, node_template::{NodeTemplate, AllNodeTemplates}, node_attribute::NodeAttribute, evaluate::evaluate_node};
 
 mod connection_type;
 mod node_template;
-mod node_value;
+mod node_attribute;
 mod evaluate;
 
 pub struct NoiseGraphPlugin;
@@ -79,7 +79,7 @@ impl NodeDataTrait for NodeData {
     type Response = MyResponse;
     type UserState = NoiseGraphState;
     type DataType = ConnectionType;
-    type ValueType = NodeValue;
+    type ValueType = NodeAttribute;
 
     // This method will be called when drawing each node. This allows adding
     // extra ui elements inside the nodes. In this case, we create an "active"
@@ -90,7 +90,7 @@ impl NodeDataTrait for NodeData {
         &self,
         ui: &mut egui::Ui,
         node_id: NodeId,
-        _graph: &Graph<NodeData, ConnectionType, NodeValue>,
+        _graph: &Graph<NodeData, ConnectionType, NodeAttribute>,
         user_state: &mut Self::UserState,
     ) -> Vec<NodeResponse<MyResponse, NodeData>>
     where
@@ -128,9 +128,9 @@ impl NodeDataTrait for NodeData {
     }
 }
 
-type MyGraph = Graph<NodeData, ConnectionType, NodeValue>;
+type MyGraph = Graph<NodeData, ConnectionType, NodeAttribute>;
 type MyEditorState =
-    GraphEditorState<NodeData, ConnectionType, NodeValue, NodeTemplate, NoiseGraphState>;
+    GraphEditorState<NodeData, ConnectionType, NodeAttribute, NodeTemplate, NoiseGraphState>;
 
 #[derive(Default, Resource, Serialize, Deserialize)]
 pub struct NoiseGraph {
@@ -198,7 +198,7 @@ impl NoiseGraph {
     }
 }
 
-type OutputsCache = HashMap<OutputId, NodeValue>;
+type OutputsCache = HashMap<OutputId, NodeAttribute>;
 
 #[derive(Clone)]
 pub struct DynNoiseFn(Arc<dyn NoiseFn<f64, 2> + Send + Sync>);

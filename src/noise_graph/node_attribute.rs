@@ -1,5 +1,5 @@
 use std::fmt::Debug;
-use bevy_egui::egui::{self, DragValue, ComboBox};
+use bevy_egui::egui::{self, DragValue, ComboBox, TextEdit, Color32};
 use egui_node_graph::{WidgetValueTrait, NodeId};
 use serde::{Serialize, Deserialize};
 use strum::IntoEnumIterator;
@@ -15,7 +15,7 @@ use super::{DynNoiseFn, NoiseGraphState, NodeData, MyResponse};
 /// with a DataType of Scalar and a ValueType of Vec2.
 //#[derive(custom_debug::Debug)]
 #[derive(Clone, Serialize, Deserialize, strum::Display)]
-pub enum NodeValue {
+pub enum NodeAttribute {
     F64(f64),
     Usize(usize),
     Perlin,
@@ -25,6 +25,7 @@ pub enum NodeValue {
     NoInput,
     NoiseType(NoiseType),
     Operator(Operator),
+    Name(String),
 }
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, strum::Display, strum::EnumIter, Serialize, Deserialize)]
@@ -54,7 +55,7 @@ impl Operator {
     }
 }
 
-impl WidgetValueTrait for NodeValue {
+impl WidgetValueTrait for NodeAttribute {
     type UserState = NoiseGraphState;
     type NodeData = NodeData;
     type Response = MyResponse;
@@ -69,19 +70,19 @@ impl WidgetValueTrait for NodeValue {
         // This trait is used to tell the library which UI to display for the
         // inline parameter widgets.
         match self {
-            NodeValue::F64(value) => {
+            NodeAttribute::F64(value) => {
                 ui.horizontal(|ui| {
                     ui.label(param_name);
                     ui.add(DragValue::new(value).max_decimals(5));
                 });
             }
-            NodeValue::Usize(value) => {
+            NodeAttribute::Usize(value) => {
                 ui.horizontal(|ui| {
                     ui.label(param_name);
                     ui.add(DragValue::new(value));
                 });
             },
-            NodeValue::NoiseType(noise_type) => {
+            NodeAttribute::NoiseType(noise_type) => {
                 ui.horizontal(|ui| {
                     ui.label(param_name);
                     ComboBox::from_id_source(param_name).selected_text(noise_type.to_string()).show_ui(ui, |ui| {
@@ -91,7 +92,7 @@ impl WidgetValueTrait for NodeValue {
                     });
                 });
             },
-            NodeValue::Operator(operator) => {
+            NodeAttribute::Operator(operator) => {
                 ui.horizontal(|ui| {
                     ui.label(param_name);
                     ComboBox::from_id_source(param_name).selected_text(operator.to_string()).show_ui(ui, |ui| {
@@ -100,6 +101,9 @@ impl WidgetValueTrait for NodeValue {
                         }
                     });
                 });
+            },
+            NodeAttribute::Name(name) => {
+                ui.add(TextEdit::singleline(name).text_color(Color32::LIGHT_GREEN));
             },
             _ => {
                 ui.label(param_name);
@@ -110,7 +114,7 @@ impl WidgetValueTrait for NodeValue {
     }
 }
 
-impl Default for NodeValue {
+impl Default for NodeAttribute {
     fn default() -> Self {
         // NOTE: This is just a dummy `Default` implementation. The library
         // requires it to circumvent some internal borrow checker issues.
@@ -118,9 +122,9 @@ impl Default for NodeValue {
     }
 }
 
-impl NodeValue {
+impl NodeAttribute {
     pub fn try_to_f64(self) -> anyhow::Result<f64> {
-        if let NodeValue::F64(value) = self {
+        if let NodeAttribute::F64(value) = self {
             Ok(value)
         } else {
             self.invalid_cast("F64")
@@ -128,7 +132,7 @@ impl NodeValue {
     }
 
     pub fn try_to_usize(self) -> anyhow::Result<usize> {
-        if let NodeValue::Usize(value) = self {
+        if let NodeAttribute::Usize(value) = self {
             Ok(value)
         } else {
             self.invalid_cast("Usize")
@@ -136,7 +140,7 @@ impl NodeValue {
     }
 
     pub fn try_to_noise_function(self) -> anyhow::Result<DynNoiseFn> {
-        if let NodeValue::NoiseFunction(noise_function) = self {
+        if let NodeAttribute::NoiseFunction(noise_function) = self {
             Ok(noise_function)
         } else {
             self.invalid_cast("NoiseFunction")
@@ -144,7 +148,7 @@ impl NodeValue {
     }
 
     pub fn try_to_noise_type(self) -> anyhow::Result<NoiseType> {
-        if let NodeValue::NoiseType(ty) = self {
+        if let NodeAttribute::NoiseType(ty) = self {
             Ok(ty)
         } else {
             self.invalid_cast("NoiseType")
@@ -152,7 +156,7 @@ impl NodeValue {
     }
 
     pub fn try_to_operator(self) -> anyhow::Result<Operator> {
-        if let NodeValue::Operator(operator) = self {
+        if let NodeAttribute::Operator(operator) = self {
             Ok(operator)
         } else {
             self.invalid_cast("Operator")

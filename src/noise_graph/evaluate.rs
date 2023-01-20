@@ -4,7 +4,7 @@ use noise::{MultiFractal, NoiseFn, Perlin, RidgedMulti, ScaleBias, Simplex, Scal
 use crate::noise_graph::{node_template::NodeTemplate, DynNoiseFn};
 
 use super::{
-    node_value::{NodeValue, NoiseType, Operator},
+    node_attribute::{NodeAttribute, NoiseType, Operator},
     MyGraph, OutputsCache,
 };
 
@@ -13,7 +13,7 @@ pub fn evaluate_node(
     graph: &MyGraph,
     node_id: NodeId,
     outputs_cache: &mut OutputsCache,
-) -> anyhow::Result<NodeValue> {
+) -> anyhow::Result<NodeAttribute> {
     let node = &graph[node_id];
     let mut evaluator = Evaluator::new(graph, outputs_cache, node_id);
     match node.user_data.template {
@@ -115,8 +115,8 @@ fn populate_output(
     outputs_cache: &mut OutputsCache,
     node_id: NodeId,
     param_name: &str,
-    value: NodeValue,
-) -> anyhow::Result<NodeValue> {
+    value: NodeAttribute,
+) -> anyhow::Result<NodeAttribute> {
     let output_id = graph[node_id].get_output(param_name)?;
     outputs_cache.insert(output_id, value.clone());
     Ok(value)
@@ -128,7 +128,7 @@ fn evaluate_input(
     node_id: NodeId,
     param_name: &str,
     outputs_cache: &mut OutputsCache,
-) -> anyhow::Result<NodeValue> {
+) -> anyhow::Result<NodeAttribute> {
     let input_id = graph[node_id].get_input(param_name)?;
 
     // The output of another node is connected.
@@ -175,12 +175,12 @@ impl<'a> Evaluator<'a> {
             node_id,
         }
     }
-    fn evaluate_input(&mut self, name: &str) -> anyhow::Result<NodeValue> {
+    fn evaluate_input(&mut self, name: &str) -> anyhow::Result<NodeAttribute> {
         // Calling `evaluate_input` recursively evaluates other nodes in the
         // graph until the input value for a paramater has been computed.
         evaluate_input(self.graph, self.node_id, name, self.outputs_cache)
     }
-    fn populate_output(&mut self, name: &str, value: NodeValue) -> anyhow::Result<NodeValue> {
+    fn populate_output(&mut self, name: &str, value: NodeAttribute) -> anyhow::Result<NodeAttribute> {
         // After computing an output, we don't just return it, but we also
         // populate the outputs cache with it. This ensures the evaluation
         // only ever computes an output once.
@@ -214,13 +214,13 @@ impl<'a> Evaluator<'a> {
     fn output_noise(
         &mut self,
         noise: impl NoiseFn<f64, 2> + Send + Sync + 'static,
-    ) -> anyhow::Result<NodeValue> {
-        self.populate_output("out", NodeValue::NoiseFunction(DynNoiseFn::new(noise)))
+    ) -> anyhow::Result<NodeAttribute> {
+        self.populate_output("out", NodeAttribute::NoiseFunction(DynNoiseFn::new(noise)))
     }
     fn output_number(
         &mut self,
         value: f64,
-    ) -> anyhow::Result<NodeValue> {
-        self.populate_output("out", NodeValue::F64(value))
+    ) -> anyhow::Result<NodeAttribute> {
+        self.populate_output("out", NodeAttribute::F64(value))
     }
 }
