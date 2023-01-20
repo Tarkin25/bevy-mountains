@@ -1,7 +1,7 @@
 use std::borrow::Cow;
 
 use egui_node_graph::{NodeTemplateTrait, Graph, NodeId, InputParamKind};
-use noise::{RidgedMulti, Perlin};
+use noise::{RidgedMulti, Perlin, Fbm};
 use serde::{Serialize, Deserialize};
 use strum::IntoEnumIterator;
 
@@ -12,12 +12,14 @@ use super::{NodeData, connection_type::ConnectionType, NoiseGraphState, node_val
 /// library how to convert a NodeTemplate into a Node.
 #[derive(Clone, Copy, Debug, strum::EnumIter, strum::Display, Serialize, Deserialize)]
 pub enum NodeTemplate {
-    Perlin,
-    ScaleBias,
-    RidgedMulti,
-    ScalePoint,
-    Number,
     Arithmetic,
+    Number,
+    Perlin,
+    Fbm,
+    RidgedMulti,
+    ScaleBias,
+    ScalePoint,
+    Blend,
 }
 
 pub struct AllNodeTemplates;
@@ -84,10 +86,12 @@ impl NodeTemplateTrait for NodeTemplate {
             NodeTemplate::Perlin => {
                 builder.output_noise();
             },
-            NodeTemplate::ScaleBias => {
-                builder.input_noise("source")
-                .input_f64("scale", 1.0)
-                .input_f64("bias", 0.0)
+            NodeTemplate::Fbm => {
+                builder.input_noise_type(NoiseType::Perlin)
+                .input_usize("octaves", Fbm::<Perlin>::DEFAULT_OCTAVE_COUNT)
+                .input_f64("frequency", Fbm::<Perlin>::DEFAULT_FREQUENCY)
+                .input_f64("lacunarity", Fbm::<Perlin>::DEFAULT_LACUNARITY)
+                .input_f64("persistence", Fbm::<Perlin>::DEFAULT_PERSISTENCE)
                 .output_noise();
             },
             NodeTemplate::RidgedMulti => {
@@ -99,12 +103,24 @@ impl NodeTemplateTrait for NodeTemplate {
                 .input_f64("attenuation", RidgedMulti::<Perlin>::DEFAULT_ATTENUATION)
                 .output_noise();
             },
+            NodeTemplate::ScaleBias => {
+                builder.input_noise("source")
+                .input_f64("scale", 1.0)
+                .input_f64("bias", 0.0)
+                .output_noise();
+            },
             NodeTemplate::ScalePoint => {
                 builder.input_noise("source")
                 .input_f64("x", 1.0)
                 .input_f64("y", 1.0)
                 .input_f64("z", 1.0)
                 .input_f64("u", 1.0)
+                .output_noise();
+            },
+            NodeTemplate::Blend => {
+                builder.input_noise("source 1")
+                .input_noise("source 2")
+                .input_noise("control")
                 .output_noise();
             }
         }
@@ -125,7 +141,7 @@ impl<'a> NodeBuilder<'a> {
         self.graph.add_input_param(
             self.node_id,
             name.into(),
-            ConnectionType::Number,
+            ConnectionType::F64,
             NodeValue::F64(initial),
             InputParamKind::ConnectionOrConstant,
             true,
@@ -137,7 +153,7 @@ impl<'a> NodeBuilder<'a> {
         self.graph.add_input_param(
             self.node_id,
             name.into(),
-            ConnectionType::Number,
+            ConnectionType::Usize,
             NodeValue::Usize(initial),
             InputParamKind::ConnectionOrConstant,
             true,
@@ -173,7 +189,7 @@ impl<'a> NodeBuilder<'a> {
         self.graph.add_input_param(
             self.node_id,
             name.into(),
-            ConnectionType::Number,
+            ConnectionType::F64,
             NodeValue::Operator(initial),
             InputParamKind::ConstantOnly,
             true,
@@ -194,7 +210,7 @@ impl<'a> NodeBuilder<'a> {
         self.graph.add_output_param(
             self.node_id,
             "out".into(),
-            ConnectionType::Number,
+            ConnectionType::F64,
         );
         self
     }

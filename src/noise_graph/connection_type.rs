@@ -9,11 +9,12 @@ use super::NoiseGraphState;
 /// `DataType`s are what defines the possible range of connections when
 /// attaching two ports together. The graph UI will make sure to not allow
 /// attaching incompatible datatypes.
-#[derive(PartialEq, Eq, Serialize, Deserialize)]
+#[derive(PartialEq, Eq, Serialize, Deserialize, strum::Display)]
 pub enum ConnectionType {
     Noise,
     NoiseType,
-    Number,
+    F64,
+    Usize,
 }
 
 // A trait for the data types, to tell the library how to display them
@@ -21,16 +22,13 @@ impl DataTypeTrait<NoiseGraphState> for ConnectionType {
     fn data_type_color(&self, _user_state: &mut NoiseGraphState) -> Color32 {
         match self {
             ConnectionType::Noise => Color32::BLUE,
-            ConnectionType::Number => Color32::LIGHT_YELLOW,
+            ConnectionType::F64 => Color32::YELLOW,
             ConnectionType::NoiseType => Color32::LIGHT_RED,
+            ConnectionType::Usize => Color32::BROWN,
         }
     }
 
     fn name(&self) -> Cow<'_, str> {
-        match self {
-            ConnectionType::Noise => Cow::Borrowed("noise"),
-            ConnectionType::Number => Cow::Borrowed("number"),
-            ConnectionType::NoiseType => Cow::Borrowed("noise type"),
-        }
+        Cow::Owned(self.to_string())
     }
 }

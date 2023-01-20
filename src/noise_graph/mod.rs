@@ -1,4 +1,4 @@
-use std::{collections::HashMap, fmt::Debug, sync::Arc, io::{BufReader, BufWriter}, fs::OpenOptions};
+use std::{collections::HashMap, fmt::Debug, sync::Arc, io::{BufReader, BufWriter, Write}, fs::OpenOptions};
 
 use anyhow::Context;
 use bevy::prelude::*;
@@ -20,7 +20,10 @@ pub struct NoiseGraphPlugin;
 
 impl Plugin for NoiseGraphPlugin {
     fn build(&self, app: &mut App) {
-        let graph = NoiseGraph::load().unwrap_or_default();
+        let graph = NoiseGraph::load().unwrap_or_else(|e| {
+            error!("{}", e);
+            Default::default()
+        });
         
         app
         .insert_resource(graph)
@@ -148,7 +151,9 @@ impl NoiseGraph {
     }
 
     fn save(&self) -> anyhow::Result<()> {
-        serde_json::to_writer_pretty(BufWriter::new(OpenOptions::new().write(true).create(true).open(Self::FILE_PATH).context("Unable to open file")?), &self).context("Unable to save to json")
+        let mut writer = BufWriter::new(OpenOptions::new().write(true).create(true).open(Self::FILE_PATH).context("Unable to open file")?);
+        serde_json::to_writer_pretty(&mut writer, &self).context("Unable to save to json")?;
+        writer.flush().context("Unable to save file")
     }
     
     pub fn get_noise_fn(&self) -> DynNoiseFn {

@@ -1,5 +1,5 @@
 use egui_node_graph::NodeId;
-use noise::{MultiFractal, NoiseFn, Perlin, RidgedMulti, ScaleBias, Simplex, ScalePoint};
+use noise::{MultiFractal, NoiseFn, Perlin, RidgedMulti, ScaleBias, Simplex, ScalePoint, Fbm, Blend};
 
 use crate::noise_graph::{node_template::NodeTemplate, DynNoiseFn};
 
@@ -74,6 +74,38 @@ pub fn evaluate_node(
                     evaluator.output_noise(noise)
                 }
             }
+        },
+        NodeTemplate::Fbm => {
+            let octaves = evaluator.get_usize("octaves")?;
+            let frequency = evaluator.get_f64("frequency")?;
+            let lacunarity = evaluator.get_f64("lacunarity")?;
+            let persistence = evaluator.get_f64("persistence")?;
+
+            match evaluator.get_noise_type()? {
+                NoiseType::Perlin => {
+                    let noise = Fbm::<Perlin>::default()
+                        .set_octaves(octaves)
+                        .set_frequency(frequency)
+                        .set_lacunarity(lacunarity)
+                        .set_persistence(persistence);
+                    evaluator.output_noise(noise)
+                },
+                NoiseType::Simplex => {
+                    let noise = Fbm::<Simplex>::default()
+                        .set_octaves(octaves)
+                        .set_frequency(frequency)
+                        .set_lacunarity(lacunarity)
+                        .set_persistence(persistence);
+                    evaluator.output_noise(noise)
+                }
+            }
+        },
+        NodeTemplate::Blend => {
+            let source_1 = evaluator.get_noise_function("source 1")?;
+            let source_2 = evaluator.get_noise_function("source 2")?;
+            let control = evaluator.get_noise_function("control")?;
+            let noise = Blend::new(source_1, source_2, control);
+            evaluator.output_noise(noise)
         }
     }
 }

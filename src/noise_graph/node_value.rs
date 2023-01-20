@@ -14,7 +14,7 @@ use super::{DynNoiseFn, NoiseGraphState, NodeData, MyResponse};
 /// up to the user code in this example to make sure no parameter is created
 /// with a DataType of Scalar and a ValueType of Vec2.
 //#[derive(custom_debug::Debug)]
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize, strum::Display)]
 pub enum NodeValue {
     F64(f64),
     Usize(usize),
@@ -81,17 +81,10 @@ impl WidgetValueTrait for NodeValue {
                     ui.add(DragValue::new(value));
                 });
             },
-            NodeValue::Perlin => {
-                ui.label(param_name);
-            },
-            NodeValue::ScaleBias => {
-                ui.label(param_name);
-            },
-            NodeValue::NoiseFunction(_) => {},
-            NodeValue::NoInput => {},
             NodeValue::NoiseType(noise_type) => {
                 ui.horizontal(|ui| {
-                    ComboBox::from_label(param_name).selected_text(noise_type.to_string()).show_ui(ui, |ui| {
+                    ui.label(param_name);
+                    ComboBox::from_id_source(param_name).selected_text(noise_type.to_string()).show_ui(ui, |ui| {
                         for available in NoiseType::iter() {
                             ui.selectable_value(noise_type, available, available.to_string());
                         }
@@ -99,31 +92,21 @@ impl WidgetValueTrait for NodeValue {
                 });
             },
             NodeValue::Operator(operator) => {
-                ComboBox::from_label(param_name).selected_text(operator.to_string()).show_ui(ui, |ui| {
-                    for available in Operator::iter() {
-                        ui.selectable_value(operator, available, available.to_string());
-                    }
+                ui.horizontal(|ui| {
+                    ui.label(param_name);
+                    ComboBox::from_id_source(param_name).selected_text(operator.to_string()).show_ui(ui, |ui| {
+                        for available in Operator::iter() {
+                            ui.selectable_value(operator, available, available.to_string());
+                        }
+                    });
                 });
+            },
+            _ => {
+                ui.label(param_name);
             }
         }
         // This allows you to return your responses from the inline widgets.
         Vec::new()
-    }
-}
-
-impl Debug for NodeValue {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-
-        match self {
-            NodeValue::F64(value) => f.debug_tuple("F64").field(value).finish(),
-            NodeValue::Perlin => f.write_str("Perlin"),
-            NodeValue::ScaleBias => f.write_str("ScaleBias"),
-            NodeValue::NoiseFunction(_) => f.write_str("NoiseFunction"),
-            NodeValue::NoInput => f.write_str("NoInput"),
-            NodeValue::NoiseType(noise_type) => f.debug_tuple("NoiseType").field(noise_type).finish(),
-            NodeValue::Usize(value) => f.debug_tuple("Usize").field(value).finish(),
-            NodeValue::Operator(operator) => f.debug_tuple("Operator").field(operator).finish()
-        }
     }
 }
 
@@ -177,6 +160,6 @@ impl NodeValue {
     }
 
     fn invalid_cast<T>(self, ty: &str) -> anyhow::Result<T> {
-        anyhow::bail!("Invalid cast from {:?} to {}", self, ty)
+        anyhow::bail!("Invalid cast from {} to {}", self, ty)
     }
 }
