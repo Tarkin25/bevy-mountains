@@ -3,20 +3,15 @@ use bevy::{
     tasks::{AsyncComputeTaskPool, Task},
     utils::HashMap,
 };
-use bevy_inspector_egui::{
-    prelude::*,
-    quick::{ResourceInspectorPlugin, WorldInspectorPlugin},
-};
+use bevy_inspector_egui::prelude::*;
 use futures_lite::future;
+use noise::NoiseFn;
 
-use crate::{camera_controller::CameraController, pause::GameState};
+use crate::{camera_controller::CameraController, pause::GameState, noise_graph::NoiseGraph};
 
 use self::grid::{ChunkGrid, ChunkGridPlugin, GridCoordinates};
 
-use super::{
-    mesh::create_mesh,
-    terrain_noise::TerrainGenerator,
-};
+use super::mesh::create_mesh;
 
 mod grid;
 
@@ -38,18 +33,6 @@ impl Plugin for ChunkPlugin {
             )
             .add_system_set(SystemSet::on_enter(GameState::Running).with_system(reload_chunks));
     }
-}
-
-fn add_center_point_to_chunks(query: Query<Entity, Added<Chunk>>, mut meshes: ResMut<Assets<Mesh>>, mut materials: ResMut<Assets<StandardMaterial>>, mut commands: Commands) {
-    query.for_each(|entity| {
-        let child = commands.spawn(PbrBundle {
-            material: materials.add(Color::LIME_GREEN.into()),
-            mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
-            ..Default::default()
-        }).id();
-        
-        commands.entity(entity).add_child(child);
-    })
 }
 
 fn trigger_chunk_creation(
@@ -103,7 +86,7 @@ fn trigger_chunk_creation(
 }
 
 fn spawn_compute_mesh_tasks(
-    terrain_generator: Res<TerrainGenerator>,
+    noise_graph: Res<NoiseGraph>,
     mut commands: Commands,
     query: Query<(Entity, &GridCoordinates, &Chunk), With<LoadChunk>>,
     chunks_config: Res<ChunksConfig>,
@@ -113,12 +96,12 @@ fn spawn_compute_mesh_tasks(
     for (entity, grid_coordinates, chunk) in query.iter().take(chunks_config.updates_per_frame) {
         let grid_coordinates = *grid_coordinates;
         let Chunk { cell_size } = *chunk;
-        let terrain_generator = terrain_generator.clone();
+        let noise = noise_graph.get_noise_fn().clone();
         let translation = grid_coordinates.to_translation(chunks_config.size as i32);
         let size = chunks_config.size;
         let task = pool.spawn(async move {
             create_mesh(size, cell_size, translation, |x, z| {
-                terrain_generator.compute_height([x, z])
+                noise.get([x as f64, z as f64]) as f32
             })
         });
         let mut entity = commands.entity(entity);
