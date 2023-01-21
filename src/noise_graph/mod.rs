@@ -151,7 +151,7 @@ impl NoiseGraph {
     }
 
     fn save(&self) -> anyhow::Result<()> {
-        let mut writer = BufWriter::new(OpenOptions::new().write(true).create(true).open(Self::FILE_PATH).context("Unable to open file")?);
+        let mut writer = BufWriter::new(OpenOptions::new().write(true).create(true).truncate(true).open(Self::FILE_PATH).context("Unable to open file")?);
         serde_json::to_writer_pretty(&mut writer, &self).context("Unable to save to json")?;
         writer.flush().context("Unable to save file")
     }

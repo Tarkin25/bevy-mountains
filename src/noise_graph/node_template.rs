@@ -1,7 +1,7 @@
 use std::borrow::Cow;
 
 use egui_node_graph::{NodeTemplateTrait, Graph, NodeId, InputParamKind};
-use noise::{RidgedMulti, Perlin, Fbm};
+use noise::{RidgedMulti, Perlin, Fbm, Turbulence};
 use serde::{Serialize, Deserialize};
 use strum::IntoEnumIterator;
 
@@ -19,6 +19,7 @@ pub enum NodeTemplate {
     RidgedMulti,
     ScaleBias,
     ScalePoint,
+    Turbulence,
     Blend,
 }
 
@@ -118,6 +119,14 @@ impl NodeTemplateTrait for NodeTemplate {
                 .input_f64("y", 1.0)
                 .input_f64("z", 1.0)
                 .input_f64("u", 1.0)
+                .output_noise();
+            },
+            NodeTemplate::Turbulence => {
+                builder.input_noise("source")
+                .input_noise_type(NoiseType::Perlin)
+                .input_f64("frequency", Turbulence::<Perlin, Perlin>::DEFAULT_FREQUENCY)
+                .input_f64("power", Turbulence::<Perlin, Perlin>::DEFAULT_POWER)
+                .input_usize("roughness", Turbulence::<Perlin, Perlin>::DEFAULT_ROUGHNESS)
                 .output_noise();
             },
             NodeTemplate::Blend => {

@@ -1,5 +1,5 @@
 use egui_node_graph::NodeId;
-use noise::{MultiFractal, NoiseFn, Perlin, RidgedMulti, ScaleBias, Simplex, ScalePoint, Fbm, Blend};
+use noise::{MultiFractal, NoiseFn, Perlin, RidgedMulti, ScaleBias, Simplex, ScalePoint, Fbm, Blend, Turbulence};
 
 use crate::noise_graph::{node_template::NodeTemplate, DynNoiseFn};
 
@@ -96,6 +96,29 @@ pub fn evaluate_node(
                         .set_frequency(frequency)
                         .set_lacunarity(lacunarity)
                         .set_persistence(persistence);
+                    evaluator.output_noise(noise)
+                }
+            }
+        },
+        NodeTemplate::Turbulence => {
+            let source = evaluator.get_noise_function("source")?;
+            let frequency = evaluator.get_f64("frequency")?;
+            let power = evaluator.get_f64("power")?;
+            let roughness = evaluator.get_usize("roughness")?;
+            
+            match evaluator.get_noise_type()? {
+                NoiseType::Perlin => {
+                    let noise = Turbulence::<_, Perlin>::new(source)
+                    .set_frequency(frequency)
+                    .set_power(power)
+                    .set_roughness(roughness);
+                    evaluator.output_noise(noise)
+                },
+                NoiseType::Simplex => {
+                    let noise = Turbulence::<_, Simplex>::new(source)
+                    .set_frequency(frequency)
+                    .set_power(power)
+                    .set_roughness(roughness);
                     evaluator.output_noise(noise)
                 }
             }

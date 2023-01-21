@@ -518,7 +518,7 @@
         },
         {
           "value": null,
-          "version": 2
+          "version": 4
         },
         {
           "value": {
@@ -654,6 +654,76 @@
             }
           },
           "version": 7
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 15,
+              "version": 1
+            },
+            "label": "Turbulence",
+            "inputs": [
+              [
+                "New Node",
+                {
+                  "idx": 64,
+                  "version": 1
+                }
+              ],
+              [
+                "source",
+                {
+                  "idx": 65,
+                  "version": 1
+                }
+              ],
+              [
+                "noise type",
+                {
+                  "idx": 66,
+                  "version": 1
+                }
+              ],
+              [
+                "frequency",
+                {
+                  "idx": 67,
+                  "version": 1
+                }
+              ],
+              [
+                "power",
+                {
+                  "idx": 68,
+                  "version": 1
+                }
+              ],
+              [
+                "roughness",
+                {
+                  "idx": 69,
+                  "version": 1
+                }
+              ]
+            ],
+            "outputs": [
+              [
+                "out",
+                {
+                  "idx": 15,
+                  "version": 1
+                }
+              ]
+            ],
+            "user_data": {
+              "template": "Turbulence"
+            }
+          },
+          "version": 1
         }
       ],
       "inputs": [
@@ -1157,7 +1227,7 @@
             },
             "typ": "F64",
             "value": {
-              "F64": 0.5
+              "F64": 0.4
             },
             "kind": "ConnectionOrConstant",
             "node": {
@@ -1282,23 +1352,23 @@
         },
         {
           "value": null,
-          "version": 2
+          "version": 4
         },
         {
           "value": null,
-          "version": 2
+          "version": 4
         },
         {
           "value": null,
-          "version": 2
+          "version": 4
         },
         {
           "value": null,
-          "version": 2
+          "version": 4
         },
         {
           "value": null,
-          "version": 2
+          "version": 4
         },
         {
           "value": {
@@ -1325,7 +1395,7 @@
             },
             "typ": "F64",
             "value": {
-              "F64": 0.25
+              "F64": 0.3
             },
             "kind": "ConnectionOrConstant",
             "node": {
@@ -1633,6 +1703,146 @@
             "shown_inline": true
           },
           "version": 1
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 64,
+              "version": 1
+            },
+            "typ": "NoConnection",
+            "value": {
+              "Name": "Mountains, Hills & Valleys"
+            },
+            "kind": "ConstantOnly",
+            "node": {
+              "idx": 15,
+              "version": 1
+            },
+            "shown_inline": true
+          },
+          "version": 1
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 65,
+              "version": 1
+            },
+            "typ": "Noise",
+            "value": "NoInput",
+            "kind": "ConnectionOnly",
+            "node": {
+              "idx": 15,
+              "version": 1
+            },
+            "shown_inline": true
+          },
+          "version": 1
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 66,
+              "version": 1
+            },
+            "typ": "NoiseType",
+            "value": {
+              "NoiseType": "Perlin"
+            },
+            "kind": "ConstantOnly",
+            "node": {
+              "idx": 15,
+              "version": 1
+            },
+            "shown_inline": true
+          },
+          "version": 1
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 67,
+              "version": 1
+            },
+            "typ": "F64",
+            "value": {
+              "F64": 0.2
+            },
+            "kind": "ConnectionOrConstant",
+            "node": {
+              "idx": 15,
+              "version": 1
+            },
+            "shown_inline": true
+          },
+          "version": 1
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 68,
+              "version": 1
+            },
+            "typ": "F64",
+            "value": {
+              "F64": 0.5
+            },
+            "kind": "ConnectionOrConstant",
+            "node": {
+              "idx": 15,
+              "version": 1
+            },
+            "shown_inline": true
+          },
+          "version": 1
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 69,
+              "version": 1
+            },
+            "typ": "Usize",
+            "value": {
+              "Usize": 1
+            },
+            "kind": "ConnectionOrConstant",
+            "node": {
+              "idx": 15,
+              "version": 1
+            },
+            "shown_inline": true
+          },
+          "version": 1
         }
       ],
       "outputs": [
@@ -1768,7 +1978,7 @@
         },
         {
           "value": null,
-          "version": 2
+          "version": 4
         },
         {
           "value": {
@@ -1811,6 +2021,24 @@
             "typ": "F64"
           },
           "version": 7
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 15,
+              "version": 1
+            },
+            "node": {
+              "idx": 15,
+              "version": 1
+            },
+            "typ": "Noise"
+          },
+          "version": 1
         }
       ],
       "connections": [
@@ -1866,8 +2094,8 @@
         },
         {
           "value": {
-            "idx": 12,
-            "version": 3
+            "idx": 15,
+            "version": 1
           },
           "version": 3
         },
@@ -2054,6 +2282,77 @@
             "version": 1
           },
           "version": 7
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": {
+            "idx": 12,
+            "version": 3
+          },
+          "version": 1
         }
       ]
     },
@@ -2063,31 +2362,11 @@
         "version": 1
       },
       {
-        "idx": 2,
-        "version": 1
-      },
-      {
-        "idx": 11,
-        "version": 1
-      },
-      {
-        "idx": 7,
-        "version": 1
-      },
-      {
-        "idx": 13,
-        "version": 7
-      },
-      {
         "idx": 3,
         "version": 3
       },
       {
         "idx": 6,
-        "version": 3
-      },
-      {
-        "idx": 12,
         "version": 3
       },
       {
@@ -2099,11 +2378,35 @@
         "version": 3
       },
       {
+        "idx": 11,
+        "version": 1
+      },
+      {
         "idx": 1,
         "version": 3
       },
       {
+        "idx": 2,
+        "version": 1
+      },
+      {
         "idx": 9,
+        "version": 1
+      },
+      {
+        "idx": 13,
+        "version": 7
+      },
+      {
+        "idx": 7,
+        "version": 1
+      },
+      {
+        "idx": 12,
+        "version": 3
+      },
+      {
+        "idx": 15,
         "version": 1
       }
     ],
@@ -2117,15 +2420,15 @@
       },
       {
         "value": {
-          "x": -376.0,
-          "y": 617.0
+          "x": -553.0,
+          "y": 602.0
         },
         "version": 3
       },
       {
         "value": {
-          "x": -87.0,
-          "y": 169.0
+          "x": -226.0,
+          "y": 142.0
         },
         "version": 1
       },
@@ -2145,8 +2448,8 @@
       },
       {
         "value": {
-          "x": -375.0,
-          "y": 109.0
+          "x": -541.0,
+          "y": 70.0
         },
         "version": 3
       },
@@ -2159,22 +2462,22 @@
       },
       {
         "value": {
-          "x": 1012.0,
-          "y": 50.0
+          "x": 883.0,
+          "y": 38.0
         },
         "version": 1
       },
       {
         "value": {
-          "x": -373.0,
-          "y": 378.0
+          "x": -550.0,
+          "y": 349.0
         },
         "version": 3
       },
       {
         "value": {
-          "x": -82.0,
-          "y": 613.0
+          "x": -230.0,
+          "y": 598.0
         },
         "version": 1
       },
@@ -2184,40 +2487,48 @@
       },
       {
         "value": {
-          "x": -81.0,
-          "y": 381.0
+          "x": -230.0,
+          "y": 363.0
         },
         "version": 1
       },
       {
         "value": {
-          "x": 188.0,
-          "y": 381.0
+          "x": -24.0,
+          "y": 384.0
         },
         "version": 3
       },
       {
         "value": {
-          "x": 645.0,
-          "y": 10.0
+          "x": 571.0,
+          "y": 38.0
         },
         "version": 7
+      },
+      {
+        "value": null,
+        "version": 0
+      },
+      {
+        "value": {
+          "x": 224.0,
+          "y": 387.0
+        },
+        "version": 1
       }
     ],
     "node_finder": null,
     "pan_zoom": {
       "pan": {
-        "x": 852.0,
-        "y": 178.0
+        "x": 753.0,
+        "y": 286.0
       },
       "zoom": 0.0
     },
     "_user_state": null
   },
   "user_state": {
-    "active_node": {
-      "idx": 6,
-      "version": 3
-    }
+    "active_node": null
   }
 }
