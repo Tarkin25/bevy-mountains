@@ -1,7 +1,7 @@
 use egui_node_graph::NodeId;
 use noise::NoiseFn;
 
-use crate::noise_graph::{MyGraph, OutputsCache, node_attribute::{NodeAttribute, NoiseType, Operator}, DynNoiseFn, node_template::{NodeTemplate, NodeImpl, float::Float, arithmetic::Arithmetic, perlin::Perlin, scale_bias::ScaleBias, scale_point::ScalePoint, ridged_multi::RidgedMulti, fbm::Fbm, turbulence::Turbulence, blend::Blend, displace::Displace}};
+use crate::noise_graph::{MyGraph, OutputsCache, node_attribute::{NodeAttribute, NoiseType, Operator}, DynNoiseFn, node_template::{NodeTemplate, NodeImpl, float::Float, arithmetic::Arithmetic, perlin::Perlin, scale_bias::ScaleBias, scale_point::ScalePoint, ridged_multi::RidgedMulti, fbm::Fbm, turbulence::Turbulence, blend::Blend, displace::Displace, add::Add}};
 
 /// Recursively evaluates all dependencies of this node, then evaluates the node itself.
 pub fn evaluate_node(
@@ -12,16 +12,17 @@ pub fn evaluate_node(
     let node = &graph[node_id];
     let evaluator = &mut NodeEvaluator::new(graph, outputs_cache, node_id);
     match node.user_data.template {
-        NodeTemplate::Float => Float::evaluate(evaluator),
+        NodeTemplate::Add => Add::evaluate(evaluator),
         NodeTemplate::Arithmetic => Arithmetic::evaluate(evaluator),
+        NodeTemplate::Blend => Blend::evaluate(evaluator),
+        NodeTemplate::Displace => Displace::evaluate(evaluator),
+        NodeTemplate::Fbm => Fbm::evaluate(evaluator),
+        NodeTemplate::Float => Float::evaluate(evaluator),
         NodeTemplate::Perlin => Perlin::evaluate(evaluator),
         NodeTemplate::ScaleBias => ScaleBias::evaluate(evaluator),
         NodeTemplate::ScalePoint => ScalePoint::evaluate(evaluator),
         NodeTemplate::RidgedMulti => RidgedMulti::evaluate(evaluator),
-        NodeTemplate::Fbm => Fbm::evaluate(evaluator),
         NodeTemplate::Turbulence => Turbulence::evaluate(evaluator),
-        NodeTemplate::Blend => Blend::evaluate(evaluator),
-        NodeTemplate::Displace => Displace::evaluate(evaluator)
     }
 }
 

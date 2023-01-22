@@ -5,6 +5,7 @@ use serde::{Serialize, Deserialize};
 use strum::IntoEnumIterator;
 
 mod core;
+mod add;
 mod arithmetic;
 mod displace;
 mod float;
@@ -16,7 +17,7 @@ mod scale_point;
 mod turbulence;
 mod blend;
 
-use self::{arithmetic::Arithmetic, float::Float, perlin::Perlin, fbm::Fbm, ridged_multi::RidgedMulti, scale_bias::ScaleBias, scale_point::ScalePoint, turbulence::Turbulence, blend::Blend, displace::Displace};
+use self::{arithmetic::Arithmetic, float::Float, perlin::Perlin, fbm::Fbm, ridged_multi::RidgedMulti, scale_bias::ScaleBias, scale_point::ScalePoint, turbulence::Turbulence, blend::Blend, displace::Displace, add::Add};
 pub use self::core::{NodeBuilder, NodeEvaluator, evaluate_node};
 
 use super::{NodeData, connection_type::ConnectionType, NoiseGraphState, node_attribute::NodeAttribute, MyGraph, OutputsCache};
@@ -32,16 +33,17 @@ pub trait NodeImpl {
 /// library how to convert a NodeTemplate into a Node.
 #[derive(Clone, Copy, Debug, strum::EnumIter, strum::Display, Serialize, Deserialize)]
 pub enum NodeTemplate {
+    Add,
     Arithmetic,
+    Blend,
+    Displace,
+    Fbm,
     Float,
     Perlin,
-    Fbm,
     RidgedMulti,
     ScaleBias,
     ScalePoint,
-    Displace,
     Turbulence,
-    Blend,
 }
 
 impl NodeTemplate {
@@ -103,16 +105,17 @@ impl NodeTemplateTrait for NodeTemplate {
         let builder = &mut builder;
 
         match self {
+            NodeTemplate::Add => Add::build(builder),
             NodeTemplate::Arithmetic => Arithmetic::build(builder),
+            NodeTemplate::Blend => Blend::build(builder),
+            NodeTemplate::Displace => Displace::build(builder),
+            NodeTemplate::Fbm => Fbm::build(builder),
             NodeTemplate::Float => Float::build(builder),
             NodeTemplate::Perlin => Perlin::build(builder),
-            NodeTemplate::Fbm => Fbm::build(builder),
             NodeTemplate::RidgedMulti => RidgedMulti::build(builder),
             NodeTemplate::ScaleBias => ScaleBias::build(builder),
             NodeTemplate::ScalePoint => ScalePoint::build(builder),
-            NodeTemplate::Displace => Displace::build(builder),
             NodeTemplate::Turbulence => Turbulence::build(builder),
-            NodeTemplate::Blend => Blend::build(builder),
         }
     }
 }
