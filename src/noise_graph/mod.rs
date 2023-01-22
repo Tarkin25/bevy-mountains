@@ -9,12 +9,11 @@ use serde::{Serialize, Deserialize};
 
 use crate::pause::GameState;
 
-use self::{connection_type::ConnectionType, node_template::{NodeTemplate, AllNodeTemplates}, node_attribute::NodeAttribute, evaluate::evaluate_node};
+use self::{connection_type::ConnectionType, node_template::{NodeTemplate, AllNodeTemplates}, node_attribute::NodeAttribute};
 
 mod connection_type;
 mod node_template;
 mod node_attribute;
-mod evaluate;
 
 pub struct NoiseGraphPlugin;
 
@@ -47,7 +46,7 @@ fn save_graph(graph: Res<NoiseGraph>) {
 /// The NodeData holds a custom data struct inside each node. It's useful to
 /// store additional information that doesn't live in parameters. For this
 /// example, the node data stores the template (i.e. the "type") of the node.
-#[derive(Default, Serialize, Deserialize)]
+#[derive(Serialize, Deserialize)]
 pub struct NodeData {
     template: NodeTemplate,
 }
@@ -185,7 +184,7 @@ impl NoiseGraph {
     fn update_current_noise(&mut self) {
         if let Some(node) = self.user_state.active_node {
             if self.state.graph.nodes.contains_key(node) {
-                match evaluate_node(&self.state.graph, node, &mut HashMap::new()) {
+                match NodeTemplate::evaluate(&self.state.graph, node, &mut HashMap::new()) {
                     Ok(value) => {
                         self.user_state.current_noise = value.try_to_noise_function().ok();
                     }
