@@ -6,6 +6,7 @@ use strum::IntoEnumIterator;
 
 mod core;
 mod arithmetic;
+mod displace;
 mod float;
 mod perlin;
 mod fbm;
@@ -15,7 +16,7 @@ mod scale_point;
 mod turbulence;
 mod blend;
 
-use self::{arithmetic::Arithmetic, float::Float, perlin::Perlin, fbm::Fbm, ridged_multi::RidgedMulti, scale_bias::ScaleBias, scale_point::ScalePoint, turbulence::Turbulence, blend::Blend};
+use self::{arithmetic::Arithmetic, float::Float, perlin::Perlin, fbm::Fbm, ridged_multi::RidgedMulti, scale_bias::ScaleBias, scale_point::ScalePoint, turbulence::Turbulence, blend::Blend, displace::Displace};
 pub use self::core::{NodeBuilder, NodeEvaluator, evaluate_node};
 
 use super::{NodeData, connection_type::ConnectionType, NoiseGraphState, node_attribute::NodeAttribute, MyGraph, OutputsCache};
@@ -38,6 +39,7 @@ pub enum NodeTemplate {
     RidgedMulti,
     ScaleBias,
     ScalePoint,
+    Displace,
     Turbulence,
     Blend,
 }
@@ -108,6 +110,7 @@ impl NodeTemplateTrait for NodeTemplate {
             NodeTemplate::RidgedMulti => RidgedMulti::build(builder),
             NodeTemplate::ScaleBias => ScaleBias::build(builder),
             NodeTemplate::ScalePoint => ScalePoint::build(builder),
+            NodeTemplate::Displace => Displace::build(builder),
             NodeTemplate::Turbulence => Turbulence::build(builder),
             NodeTemplate::Blend => Blend::build(builder),
         }

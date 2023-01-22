@@ -184,12 +184,9 @@ impl NoiseGraph {
     fn update_current_noise(&mut self) {
         if let Some(node) = self.user_state.active_node {
             if self.state.graph.nodes.contains_key(node) {
-                match NodeTemplate::evaluate(&self.state.graph, node, &mut HashMap::new()) {
-                    Ok(value) => {
-                        self.user_state.current_noise = value.try_to_noise_function().ok();
-                    }
-                    Err(err) => error!("NoiseGraph evaluation failed: {}", err),
-                };
+                if let Ok(value) = NodeTemplate::evaluate(&self.state.graph, node, &mut HashMap::new()) {
+                    self.user_state.current_noise = value.try_to_noise_function().ok();
+                }
             } else {
                 self.user_state.active_node = None;
             }

@@ -1,7 +1,7 @@
 use egui_node_graph::NodeId;
 use noise::NoiseFn;
 
-use crate::noise_graph::{MyGraph, OutputsCache, node_attribute::{NodeAttribute, NoiseType, Operator}, DynNoiseFn, node_template::{NodeTemplate, NodeImpl, float::Float, arithmetic::Arithmetic, perlin::Perlin, scale_bias::ScaleBias, scale_point::ScalePoint, ridged_multi::RidgedMulti, fbm::Fbm, turbulence::Turbulence, blend::Blend}};
+use crate::noise_graph::{MyGraph, OutputsCache, node_attribute::{NodeAttribute, NoiseType, Operator}, DynNoiseFn, node_template::{NodeTemplate, NodeImpl, float::Float, arithmetic::Arithmetic, perlin::Perlin, scale_bias::ScaleBias, scale_point::ScalePoint, ridged_multi::RidgedMulti, fbm::Fbm, turbulence::Turbulence, blend::Blend, displace::Displace}};
 
 /// Recursively evaluates all dependencies of this node, then evaluates the node itself.
 pub fn evaluate_node(
@@ -20,7 +20,8 @@ pub fn evaluate_node(
         NodeTemplate::RidgedMulti => RidgedMulti::evaluate(evaluator),
         NodeTemplate::Fbm => Fbm::evaluate(evaluator),
         NodeTemplate::Turbulence => Turbulence::evaluate(evaluator),
-        NodeTemplate::Blend => Blend::evaluate(evaluator)
+        NodeTemplate::Blend => Blend::evaluate(evaluator),
+        NodeTemplate::Displace => Displace::evaluate(evaluator)
     }
 }
 
