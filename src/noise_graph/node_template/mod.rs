@@ -4,20 +4,21 @@ use egui_node_graph::{NodeTemplateTrait, Graph, NodeId};
 use serde::{Serialize, Deserialize};
 use strum::IntoEnumIterator;
 
-mod core;
 mod add;
 mod arithmetic;
+mod blend;
+mod core;
 mod displace;
+mod fbm;
 mod float;
 mod perlin;
-mod fbm;
 mod ridged_multi;
 mod scale_bias;
 mod scale_point;
+mod select;
 mod turbulence;
-mod blend;
 
-use self::{arithmetic::Arithmetic, float::Float, perlin::Perlin, fbm::Fbm, ridged_multi::RidgedMulti, scale_bias::ScaleBias, scale_point::ScalePoint, turbulence::Turbulence, blend::Blend, displace::Displace, add::Add};
+use self::{arithmetic::Arithmetic, float::Float, perlin::Perlin, fbm::Fbm, ridged_multi::RidgedMulti, scale_bias::ScaleBias, scale_point::ScalePoint, turbulence::Turbulence, blend::Blend, displace::Displace, add::Add, select::Select};
 pub use self::core::{NodeBuilder, NodeEvaluator, evaluate_node};
 
 use super::{NodeData, connection_type::ConnectionType, NoiseGraphState, node_attribute::NodeAttribute, MyGraph, OutputsCache};
@@ -43,6 +44,7 @@ pub enum NodeTemplate {
     RidgedMulti,
     ScaleBias,
     ScalePoint,
+    Select,
     Turbulence,
 }
 
@@ -115,6 +117,7 @@ impl NodeTemplateTrait for NodeTemplate {
             NodeTemplate::RidgedMulti => RidgedMulti::build(builder),
             NodeTemplate::ScaleBias => ScaleBias::build(builder),
             NodeTemplate::ScalePoint => ScalePoint::build(builder),
+            NodeTemplate::Select => Select::build(builder),
             NodeTemplate::Turbulence => Turbulence::build(builder),
         }
     }
