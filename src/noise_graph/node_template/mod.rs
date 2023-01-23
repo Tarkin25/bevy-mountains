@@ -16,9 +16,10 @@ mod ridged_multi;
 mod scale_bias;
 mod scale_point;
 mod select;
+mod terrace;
 mod turbulence;
 
-use self::{arithmetic::Arithmetic, float::Float, perlin::Perlin, fbm::Fbm, ridged_multi::RidgedMulti, scale_bias::ScaleBias, scale_point::ScalePoint, turbulence::Turbulence, blend::Blend, displace::Displace, add::Add, select::Select};
+use self::{arithmetic::Arithmetic, float::Float, perlin::Perlin, fbm::Fbm, ridged_multi::RidgedMulti, scale_bias::ScaleBias, scale_point::ScalePoint, turbulence::Turbulence, blend::Blend, displace::Displace, add::Add, select::Select, terrace::Terrace};
 pub use self::core::{NodeBuilder, NodeEvaluator, evaluate_node};
 
 use super::{NodeData, connection_type::ConnectionType, NoiseGraphState, node_attribute::NodeAttribute, MyGraph, OutputsCache};
@@ -45,6 +46,7 @@ pub enum NodeTemplate {
     ScaleBias,
     ScalePoint,
     Select,
+    Terrace,
     Turbulence,
 }
 
@@ -118,6 +120,7 @@ impl NodeTemplateTrait for NodeTemplate {
             NodeTemplate::ScaleBias => ScaleBias::build(builder),
             NodeTemplate::ScalePoint => ScalePoint::build(builder),
             NodeTemplate::Select => Select::build(builder),
+            NodeTemplate::Terrace => Terrace::build(builder),
             NodeTemplate::Turbulence => Turbulence::build(builder),
         }
     }

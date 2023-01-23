@@ -84,6 +84,18 @@ impl<'a> NodeBuilder<'a> {
         self
     }
 
+    pub fn input_vec(&mut self, name: &str, template: NodeAttribute) -> &mut Self {
+        self.graph.add_input_param(
+            self.node_id,
+            name.into(),
+            ConnectionType::NoConnection,
+            NodeAttribute::Vec { values: vec![], template: Box::new(template) },
+            InputParamKind::ConstantOnly,
+            true,
+        );
+        self
+    }
+
     pub fn output_noise(&mut self) -> &mut Self {
         self.graph.add_output_param(
             self.node_id,

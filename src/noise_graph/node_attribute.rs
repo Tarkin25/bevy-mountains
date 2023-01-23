@@ -26,6 +26,10 @@ pub enum NodeAttribute {
     NoiseType(NoiseType),
     Operator(Operator),
     Name(String),
+    Vec {
+        values: Vec<NodeAttribute>,
+        template: Box<NodeAttribute>,
+    },
 }
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, strum::Display, strum::EnumIter, Serialize, Deserialize)]
@@ -62,10 +66,10 @@ impl WidgetValueTrait for NodeAttribute {
     fn value_widget(
         &mut self,
         param_name: &str,
-        _node_id: NodeId,
+        node_id: NodeId,
         ui: &mut egui::Ui,
-        _user_state: &mut NoiseGraphState,
-        _node_state: &NodeData,
+        user_state: &mut NoiseGraphState,
+        node_state: &NodeData,
     ) -> Vec<MyResponse> {
         // This trait is used to tell the library which UI to display for the
         // inline parameter widgets.
@@ -104,6 +108,21 @@ impl WidgetValueTrait for NodeAttribute {
             },
             NodeAttribute::Name(name) => {
                 ui.add(TextEdit::singleline(name).text_color(Color32::LIGHT_GREEN));
+            },
+            NodeAttribute::Vec { values, template } => {
+                ui.label(param_name);
+                ui.indent("values", |ui| {
+                    ui.vertical(|ui| {
+                        for i in 0..values.len() {
+                            ui.horizontal(|ui| {
+                                values[i].value_widget(&i.to_string(), node_id, ui, user_state, node_state);
+                            });
+                        }
+                    });
+                    if ui.button("Add element").clicked() {
+                        values.push(*template.clone());
+                    }
+                });
             },
             _ => {
                 ui.label(param_name);
@@ -160,6 +179,14 @@ impl NodeAttribute {
             Ok(operator)
         } else {
             self.invalid_cast("Operator")
+        }
+    }
+
+    pub fn try_to_vec(self) -> anyhow::Result<Vec<NodeAttribute>> {
+        if let NodeAttribute::Vec { values, .. } = self {
+            Ok(values)
+        } else {
+            self.invalid_cast("Vec")
         }
     }
 
