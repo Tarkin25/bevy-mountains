@@ -1,7 +1,7 @@
 use bevy::{
     prelude::*,
     tasks::{AsyncComputeTaskPool, Task},
-    utils::HashMap,
+    utils::HashMap, render::{primitives::Aabb, render_resource::PrimitiveTopology, mesh::Indices},
 };
 use bevy_inspector_egui::prelude::*;
 use futures_lite::future;
@@ -10,8 +10,6 @@ use noise::NoiseFn;
 use crate::{camera_controller::CameraController, pause::GameState, noise_graph::NoiseGraph};
 
 use self::grid::{ChunkGrid, ChunkGridPlugin, GridCoordinates};
-
-use super::mesh::create_mesh;
 
 mod grid;
 
@@ -100,7 +98,7 @@ fn spawn_compute_mesh_tasks(
         let translation = grid_coordinates.to_translation(chunks_config.size as i32);
         let size = chunks_config.size;
         let task = pool.spawn(async move {
-            create_mesh(size, cell_size, translation, |x, z| {
+            generate_chunk_data(size, cell_size, translation, |x, z| {
                 noise.get([x as f64, z as f64]) as f32
             })
         });
@@ -118,11 +116,11 @@ fn insert_mesh(
     config: Res<ChunksConfig>,
 ) {
     for (entity, mut task) in query.iter_mut().take(config.updates_per_frame) {
-        if let Some(mesh) = future::block_on(future::poll_once(&mut task.0)) {
+        if let Some(ChunkData { mesh, aabb }) = future::block_on(future::poll_once(&mut task.0)) {
             let mut entity = commands.entity(entity);
             entity.remove::<ComputeMesh>();
             entity.remove::<Handle<Mesh>>();
-            entity.insert(meshes.add(mesh));
+            entity.insert((meshes.add(mesh), aabb));
         }
     }
 }
@@ -170,6 +168,69 @@ fn unload_chunks(
             });
         }
     }
+}
+
+fn generate_chunk_data(
+    size: f32,
+    cell_size: f32,
+    position: Vec3,
+    compute_height: impl FnMut(f32, f32) -> f32,
+) -> ChunkData {
+    assert!(size % cell_size == 0.0);
+    let cells_per_side = (size / cell_size) as usize;
+    let mut mesh = Mesh::new(PrimitiveTopology::TriangleList);
+    let (vertices, max_height) = vertices(cell_size, cells_per_side, position, compute_height);
+    mesh.insert_attribute(Mesh::ATTRIBUTE_POSITION, vertices);
+    mesh.set_indices(Some(Indices::U32(indices(cells_per_side))));
+    mesh.duplicate_vertices();
+    mesh.set_indices(None);
+    mesh.compute_flat_normals();
+
+    let aabb = Aabb { center: Vec3::new(0.0, max_height / 2.0, 0.0).into(), half_extents: Vec3::new(size / 2.0, max_height / 2.0, size / 2.0).into() };
+    
+    ChunkData { mesh, aabb }
+}
+
+fn vertices(cell_size: f32, cells_per_side: usize, position: Vec3, mut compute_height: impl FnMut(f32, f32) -> f32) -> (Vec<[f32; 3]>, f32) {
+    let mut vertices = Vec::with_capacity((cells_per_side+1) * (cells_per_side+1));
+    let cells_per_direction = cells_per_side as isize / 2;
+    let mut max_height = 0.0;
+
+    for x_index in -cells_per_direction..=cells_per_direction {
+        for z_index in -cells_per_direction..=cells_per_direction {
+            let x = x_index as f32 * cell_size;
+            let z = z_index as f32 * cell_size;
+            let y = compute_height(x + position.x, z + position.z);
+
+            vertices.push([x, y, z]);
+
+            if y > max_height {
+                max_height = y;
+            }
+        }
+    }
+
+    (vertices, max_height)
+}
+
+fn indices(cells_per_side: usize) -> Vec<u32> {
+    let mut indices = Vec::with_capacity(cells_per_side * cells_per_side * 6);
+    let cells_per_side = cells_per_side as u32;
+
+    for x in 0..cells_per_side {
+        for z in 0..cells_per_side {
+            indices.extend([
+                x * (cells_per_side+1) + z,
+                x * (cells_per_side+1) + z + 1,
+                (x+1) * (cells_per_side+1) + z + 1,
+                (x+1) * (cells_per_side+1) + z + 1,
+                (x+1) * (cells_per_side+1) + z,
+                x * (cells_per_side+1) + z,
+            ]);
+        }
+    }
+
+    indices
 }
 
 #[derive(Component)]
@@ -222,7 +283,12 @@ impl Default for ChunksConfig {
 struct LoadChunk;
 
 #[derive(Component)]
-struct ComputeMesh(Task<Mesh>);
+struct ComputeMesh(Task<ChunkData>);
+
+struct ChunkData {
+    mesh: Mesh,
+    aabb: Aabb,
+}
 
 #[derive(Component)]
 struct DespawnChunk;
