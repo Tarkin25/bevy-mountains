@@ -1,15 +1,23 @@
 use std::borrow::Cow;
 
 use egui_node_graph::{NodeTemplateTrait, Graph, NodeId};
-use noise::{Abs, Add, Blend, Displace, Fbm, Perlin, RidgedMulti, ScaleBias, ScalePoint, Select, Terrace, Turbulence};
+use noise::{Abs, Add, Blend, Displace, Fbm, Perlin, RidgedMulti, ScaleBias, ScalePoint, Select, Terrace, Turbulence, BasicMulti, Billow, Checkerboard, Clamp, Constant, Curve, Cylinders};
 use serde::{Serialize, Deserialize};
 use strum::IntoEnumIterator;
 
 mod abs;
 mod add;
 mod arithmetic;
+mod basic_multi;
+mod billow;
 mod blend;
+mod cache;
+mod checkerboard;
+mod clamp;
+mod constant;
 mod core;
+mod curve;
+mod cylinders;
 mod displace;
 mod fbm;
 mod float;
@@ -21,7 +29,7 @@ mod select;
 mod terrace;
 mod turbulence;
 
-use self::{arithmetic::Arithmetic, float::Float};
+use self::{arithmetic::Arithmetic, float::Float, cache::SyncCache};
 pub use self::core::{NodeBuilder, NodeEvaluator, evaluate_node};
 
 use super::{NodeData, connection_type::ConnectionType, NoiseGraphState, node_attribute::NodeAttribute, MyGraph, OutputsCache};
@@ -40,7 +48,15 @@ pub enum NodeTemplate {
     Abs,
     Add,
     Arithmetic,
+    BasicMulti,
+    Billow,
     Blend,
+    Cache,
+    Checkerboard,
+    Clamp,
+    Constant,
+    Curve,
+    Cylinders,
     Displace,
     Fbm,
     Float,
@@ -115,7 +131,15 @@ impl NodeTemplateTrait for NodeTemplate {
             NodeTemplate::Abs => Abs::build(builder),
             NodeTemplate::Add => Add::build(builder),
             NodeTemplate::Arithmetic => Arithmetic::build(builder),
+            NodeTemplate::BasicMulti => BasicMulti::build(builder),
+            NodeTemplate::Billow => Billow::build(builder),
             NodeTemplate::Blend => Blend::build(builder),
+            NodeTemplate::Cache => SyncCache::build(builder),
+            NodeTemplate::Checkerboard => Checkerboard::build(builder),
+            NodeTemplate::Clamp => Clamp::build(builder),
+            NodeTemplate::Constant => Constant::build(builder),
+            NodeTemplate::Curve => Curve::build(builder),
+            NodeTemplate::Cylinders => Cylinders::build(builder),
             NodeTemplate::Displace => Displace::build(builder),
             NodeTemplate::Fbm => Fbm::build(builder),
             NodeTemplate::Float => Float::build(builder),

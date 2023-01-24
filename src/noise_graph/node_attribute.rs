@@ -30,6 +30,7 @@ pub enum NodeAttribute {
         values: Vec<NodeAttribute>,
         template: Box<NodeAttribute>,
     },
+    F64Tuple(f64, f64),
 }
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, strum::Display, strum::EnumIter, Serialize, Deserialize)]
@@ -127,6 +128,13 @@ impl WidgetValueTrait for NodeAttribute {
                     }
                 });
             },
+            NodeAttribute::F64Tuple(first, second) => {
+                ui.horizontal(|ui| {
+                    ui.label(param_name);
+                    ui.add(DragValue::new(first));
+                    ui.add(DragValue::new(second));
+                });
+            }
             _ => {
                 ui.label(param_name);
             }
@@ -190,6 +198,14 @@ impl NodeAttribute {
             Ok(values)
         } else {
             self.invalid_cast("Vec")
+        }
+    }
+
+    pub fn try_to_f64_tuple(self) -> anyhow::Result<(f64, f64)> {
+        if let NodeAttribute::F64Tuple(first, second) = self {
+            Ok((first, second))
+        } else {
+            self.invalid_cast("F64Tuple")
         }
     }
 

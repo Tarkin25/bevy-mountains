@@ -1,7 +1,7 @@
 use egui_node_graph::NodeId;
-use noise::{NoiseFn, Abs, Add, Blend, Displace, Fbm, Perlin, RidgedMulti, ScaleBias, ScalePoint, Select, Terrace, Turbulence};
+use noise::{NoiseFn, Abs, Add, Blend, Displace, Fbm, Perlin, RidgedMulti, ScaleBias, ScalePoint, Select, Terrace, Turbulence, BasicMulti, Billow, Checkerboard, Clamp, Constant, Curve, Cylinders};
 
-use crate::noise_graph::{MyGraph, OutputsCache, node_attribute::{NodeAttribute, NoiseType, Operator}, DynNoiseFn, node_template::{NodeTemplate, NodeImpl, arithmetic::Arithmetic, float::Float}};
+use crate::noise_graph::{MyGraph, OutputsCache, node_attribute::{NodeAttribute, NoiseType, Operator}, DynNoiseFn, node_template::{NodeTemplate, NodeImpl, arithmetic::Arithmetic, float::Float, cache::SyncCache}};
 
 /// Recursively evaluates all dependencies of this node, then evaluates the node itself.
 pub fn evaluate_node(
@@ -15,7 +15,15 @@ pub fn evaluate_node(
         NodeTemplate::Abs => Abs::evaluate(evaluator),
         NodeTemplate::Add => Add::evaluate(evaluator),
         NodeTemplate::Arithmetic => Arithmetic::evaluate(evaluator),
+        NodeTemplate::BasicMulti => BasicMulti::evaluate(evaluator),
+        NodeTemplate::Billow => Billow::evaluate(evaluator),
         NodeTemplate::Blend => Blend::evaluate(evaluator),
+        NodeTemplate::Cache => SyncCache::evaluate(evaluator),
+        NodeTemplate::Checkerboard => Checkerboard::evaluate(evaluator),
+        NodeTemplate::Clamp => Clamp::evaluate(evaluator),
+        NodeTemplate::Constant => Constant::evaluate(evaluator),
+        NodeTemplate::Curve => Curve::evaluate(evaluator),
+        NodeTemplate::Cylinders => Cylinders::evaluate(evaluator),
         NodeTemplate::Displace => Displace::evaluate(evaluator),
         NodeTemplate::Fbm => Fbm::evaluate(evaluator),
         NodeTemplate::Float => Float::evaluate(evaluator),
@@ -80,6 +88,9 @@ impl<'a> NodeEvaluator<'a> {
     }
     pub fn get_vec(&mut self, name: &str) -> anyhow::Result<Vec<NodeAttribute>> {
         self.evaluate_input(name)?.try_to_vec()
+    }
+    pub fn get_f64_tuple(&mut self, name: &str) -> anyhow::Result<(f64, f64)> {
+        self.evaluate_input(name)?.try_to_f64_tuple()
     }
     pub fn output_noise(
         &mut self,
