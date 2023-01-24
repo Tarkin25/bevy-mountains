@@ -1,7 +1,7 @@
 use egui_node_graph::NodeId;
 use noise::NoiseFn;
 
-use crate::noise_graph::{MyGraph, OutputsCache, node_attribute::{NodeAttribute, NoiseType, Operator}, DynNoiseFn, node_template::{NodeTemplate, NodeImpl, float::Float, arithmetic::Arithmetic, perlin::Perlin, scale_bias::ScaleBias, scale_point::ScalePoint, ridged_multi::RidgedMulti, fbm::Fbm, turbulence::Turbulence, blend::Blend, displace::Displace, add::Add, select::Select, terrace::Terrace}};
+use crate::noise_graph::{MyGraph, OutputsCache, node_attribute::{NodeAttribute, NoiseType, Operator}, DynNoiseFn, node_template::{NodeTemplate, NodeImpl, float::Float, arithmetic::Arithmetic, perlin::Perlin, scale_bias::ScaleBias, scale_point::ScalePoint, ridged_multi::RidgedMulti, fbm::Fbm, turbulence::Turbulence, blend::Blend, displace::Displace, add::Add, select::Select, terrace::Terrace, abs::Abs}};
 
 /// Recursively evaluates all dependencies of this node, then evaluates the node itself.
 pub fn evaluate_node(
@@ -12,6 +12,7 @@ pub fn evaluate_node(
     let node = &graph[node_id];
     let evaluator = &mut NodeEvaluator::new(graph, outputs_cache, node_id);
     match node.user_data.template {
+        NodeTemplate::Abs => Abs::evaluate(evaluator),
         NodeTemplate::Add => Add::evaluate(evaluator),
         NodeTemplate::Arithmetic => Arithmetic::evaluate(evaluator),
         NodeTemplate::Blend => Blend::evaluate(evaluator),

@@ -4,6 +4,7 @@ use egui_node_graph::{NodeTemplateTrait, Graph, NodeId};
 use serde::{Serialize, Deserialize};
 use strum::IntoEnumIterator;
 
+mod abs;
 mod add;
 mod arithmetic;
 mod blend;
@@ -19,7 +20,7 @@ mod select;
 mod terrace;
 mod turbulence;
 
-use self::{arithmetic::Arithmetic, float::Float, perlin::Perlin, fbm::Fbm, ridged_multi::RidgedMulti, scale_bias::ScaleBias, scale_point::ScalePoint, turbulence::Turbulence, blend::Blend, displace::Displace, add::Add, select::Select, terrace::Terrace};
+use self::{arithmetic::Arithmetic, float::Float, perlin::Perlin, fbm::Fbm, ridged_multi::RidgedMulti, scale_bias::ScaleBias, scale_point::ScalePoint, turbulence::Turbulence, blend::Blend, displace::Displace, add::Add, select::Select, terrace::Terrace, abs::Abs};
 pub use self::core::{NodeBuilder, NodeEvaluator, evaluate_node};
 
 use super::{NodeData, connection_type::ConnectionType, NoiseGraphState, node_attribute::NodeAttribute, MyGraph, OutputsCache};
@@ -35,6 +36,7 @@ pub trait NodeImpl {
 /// library how to convert a NodeTemplate into a Node.
 #[derive(Clone, Copy, Debug, strum::EnumIter, strum::Display, Serialize, Deserialize)]
 pub enum NodeTemplate {
+    Abs,
     Add,
     Arithmetic,
     Blend,
@@ -109,6 +111,7 @@ impl NodeTemplateTrait for NodeTemplate {
         let builder = &mut builder;
 
         match self {
+            NodeTemplate::Abs => Abs::build(builder),
             NodeTemplate::Add => Add::build(builder),
             NodeTemplate::Arithmetic => Arithmetic::build(builder),
             NodeTemplate::Blend => Blend::build(builder),
