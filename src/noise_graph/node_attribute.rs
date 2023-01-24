@@ -116,6 +116,9 @@ impl WidgetValueTrait for NodeAttribute {
                         for i in 0..values.len() {
                             ui.horizontal(|ui| {
                                 values[i].value_widget(&i.to_string(), node_id, ui, user_state, node_state);
+                                if ui.button("Delete").clicked() {
+                                    values.remove(i);
+                                }
                             });
                         }
                     });

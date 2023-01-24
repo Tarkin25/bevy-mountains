@@ -1232,8 +1232,49 @@
           "version": 2
         },
         {
-          "value": null,
-          "version": 8
+          "value": {
+            "id": {
+              "idx": 24,
+              "version": 9
+            },
+            "label": "Terrace",
+            "inputs": [
+              [
+                "New Node",
+                {
+                  "idx": 109,
+                  "version": 9
+                }
+              ],
+              [
+                "source",
+                {
+                  "idx": 108,
+                  "version": 7
+                }
+              ],
+              [
+                "control points",
+                {
+                  "idx": 107,
+                  "version": 7
+                }
+              ]
+            ],
+            "outputs": [
+              [
+                "out",
+                {
+                  "idx": 24,
+                  "version": 9
+                }
+              ]
+            ],
+            "user_data": {
+              "template": "Terrace"
+            }
+          },
+          "version": 9
         }
       ],
       "inputs": [
@@ -3111,16 +3152,64 @@
           "version": 4
         },
         {
-          "value": null,
-          "version": 6
+          "value": {
+            "id": {
+              "idx": 107,
+              "version": 7
+            },
+            "typ": "NoConnection",
+            "value": {
+              "Vec": {
+                "values": [],
+                "template": {
+                  "F64": 0.0
+                }
+              }
+            },
+            "kind": "ConstantOnly",
+            "node": {
+              "idx": 24,
+              "version": 9
+            },
+            "shown_inline": true
+          },
+          "version": 7
         },
         {
-          "value": null,
-          "version": 6
+          "value": {
+            "id": {
+              "idx": 108,
+              "version": 7
+            },
+            "typ": "Noise",
+            "value": "NoInput",
+            "kind": "ConnectionOnly",
+            "node": {
+              "idx": 24,
+              "version": 9
+            },
+            "shown_inline": true
+          },
+          "version": 7
         },
         {
-          "value": null,
-          "version": 8
+          "value": {
+            "id": {
+              "idx": 109,
+              "version": 9
+            },
+            "typ": "NoConnection",
+            "value": {
+              "Name": "New Node"
+            },
+            "kind": "ConstantOnly",
+            "node": {
+              "idx": 24,
+              "version": 9
+            },
+            "shown_inline": true
+          },
+          "version": 9
         }
       ],
       "outputs": [
@@ -3441,8 +3530,18 @@
           "version": 2
         },
         {
-          "value": null,
-          "version": 8
+          "value": {
+            "id": {
+              "idx": 24,
+              "version": 9
+            },
+            "node": {
+              "idx": 24,
+              "version": 9
+            },
+            "typ": "Noise"
+          },
+          "version": 9
         }
       ],
       "connections": [
@@ -3883,8 +3982,8 @@
         },
         {
           "value": {
-            "idx": 21,
-            "version": 1
+            "idx": 24,
+            "version": 9
           },
           "version": 5
         },
@@ -3940,6 +4039,37 @@
         {
           "value": null,
           "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": {
+            "idx": 21,
+            "version": 1
+          },
+          "version": 7
         }
       ]
     },
@@ -4017,11 +4147,11 @@
         "version": 3
       },
       {
-        "idx": 19,
-        "version": 5
+        "idx": 20,
+        "version": 1
       },
       {
-        "idx": 20,
+        "idx": 22,
         "version": 1
       },
       {
@@ -4029,8 +4159,12 @@
         "version": 1
       },
       {
-        "idx": 22,
-        "version": 1
+        "idx": 19,
+        "version": 5
+      },
+      {
+        "idx": 24,
+        "version": 9
       }
     ],
     "connection_in_progress": null,
@@ -4169,8 +4303,8 @@
       },
       {
         "value": {
-          "x": 1213.0,
-          "y": 584.0
+          "x": 1328.0,
+          "y": 586.0
         },
         "version": 5
       },
@@ -4183,8 +4317,8 @@
       },
       {
         "value": {
-          "x": 873.0,
-          "y": 1425.0
+          "x": 832.0,
+          "y": 1377.0
         },
         "version": 1
       },
@@ -4200,15 +4334,18 @@
         "version": 0
       },
       {
-        "value": null,
-        "version": 0
+        "value": {
+          "x": 1054.0,
+          "y": 1232.0
+        },
+        "version": 9
       }
     ],
     "node_finder": null,
     "pan_zoom": {
       "pan": {
-        "x": -375.0,
-        "y": -85.0
+        "x": 168.0,
+        "y": -461.0
       },
       "zoom": 0.0
     },
