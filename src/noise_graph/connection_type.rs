@@ -2,7 +2,7 @@ use std::borrow::Cow;
 
 use bevy_egui::egui::Color32;
 use egui_node_graph::DataTypeTrait;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 use super::NoiseGraphState;
 

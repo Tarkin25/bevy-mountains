@@ -1,7 +1,16 @@
 use egui_node_graph::NodeId;
-use noise::{NoiseFn, Abs, Add, Blend, Displace, Fbm, Perlin, RidgedMulti, ScaleBias, ScalePoint, Select, Terrace, Turbulence, BasicMulti, Billow, Checkerboard, Clamp, Constant, Curve, Cylinders};
+use noise::{
+    Abs, Add, BasicMulti, Billow, Blend, Checkerboard, Clamp, Constant, Curve, Cylinders, Displace,
+    Fbm, NoiseFn, Perlin, RidgedMulti, ScaleBias, ScalePoint, Select, Terrace, Turbulence,
+};
 
-use crate::noise_graph::{MyGraph, OutputsCache, node_attribute::{NodeAttribute, NoiseType, Operator}, DynNoiseFn, node_template::{NodeTemplate, NodeImpl, arithmetic::Arithmetic, float::Float, cache::SyncCache}};
+use crate::noise_graph::{
+    node_attribute::{NodeAttribute, NoiseType, Operator},
+    node_template::{
+        arithmetic::Arithmetic, cache::SyncCache, float::Float, NodeImpl, NodeTemplate,
+    },
+    DynNoiseFn, MyGraph, OutputsCache,
+};
 
 /// Recursively evaluates all dependencies of this node, then evaluates the node itself.
 pub fn evaluate_node(
@@ -55,7 +64,11 @@ impl<'a> NodeEvaluator<'a> {
         // graph until the input value for a paramater has been computed.
         evaluate_input(self.graph, self.node_id, name, self.outputs_cache)
     }
-    fn populate_output(&mut self, name: &str, value: NodeAttribute) -> anyhow::Result<NodeAttribute> {
+    fn populate_output(
+        &mut self,
+        name: &str,
+        value: NodeAttribute,
+    ) -> anyhow::Result<NodeAttribute> {
         // After computing an output, we don't just return it, but we also
         // populate the outputs cache with it. This ensures the evaluation
         // only ever computes an output once.
@@ -98,10 +111,7 @@ impl<'a> NodeEvaluator<'a> {
     ) -> anyhow::Result<NodeAttribute> {
         self.populate_output("out", NodeAttribute::NoiseFunction(DynNoiseFn::new(noise)))
     }
-    pub fn output_number(
-        &mut self,
-        value: f64,
-    ) -> anyhow::Result<NodeAttribute> {
+    pub fn output_number(&mut self, value: f64) -> anyhow::Result<NodeAttribute> {
         self.populate_output("out", NodeAttribute::F64(value))
     }
 }

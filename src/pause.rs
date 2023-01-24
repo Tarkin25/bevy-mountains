@@ -10,11 +10,10 @@ pub struct PausePlugin;
 
 impl Plugin for PausePlugin {
     fn build(&self, app: &mut App) {
-        app
-        .add_state(GameState::Running)
-        .add_system_set(SystemSet::on_enter(GameState::Running).with_system(lock_cursor))
-        .add_system_set(SystemSet::on_enter(GameState::Paused).with_system(free_cursor))
-        .add_system(toggle_game_state);
+        app.add_state(GameState::Running)
+            .add_system_set(SystemSet::on_enter(GameState::Running).with_system(lock_cursor))
+            .add_system_set(SystemSet::on_enter(GameState::Paused).with_system(free_cursor))
+            .add_system(toggle_game_state);
     }
 }
 

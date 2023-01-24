@@ -1,6 +1,6 @@
 use noise::Perlin;
 
-use crate::noise_graph::{node_attribute::NodeAttribute};
+use crate::noise_graph::node_attribute::NodeAttribute;
 
 use super::{NodeBuilder, NodeEvaluator, NodeImpl};
 

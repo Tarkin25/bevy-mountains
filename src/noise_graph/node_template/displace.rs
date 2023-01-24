@@ -7,12 +7,12 @@ use super::{NodeBuilder, NodeEvaluator, NodeImpl};
 impl NodeImpl for Displace<DynNoiseFn, DynNoiseFn, DynNoiseFn, DynNoiseFn, DynNoiseFn> {
     fn build(builder: &mut NodeBuilder) {
         builder
-        .input_noise("source")
-        .input_noise("x")
-        .input_noise("y")
-        .input_noise("z")
-        .input_noise("u")
-        .output_noise();
+            .input_noise("source")
+            .input_noise("x")
+            .input_noise("y")
+            .input_noise("z")
+            .input_noise("u")
+            .output_noise();
     }
 
     fn evaluate(evaluator: &mut NodeEvaluator) -> anyhow::Result<NodeAttribute> {

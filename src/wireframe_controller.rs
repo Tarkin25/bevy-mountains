@@ -1,11 +1,13 @@
-use bevy::{prelude::*, pbr::wireframe::{WireframeConfig, WireframePlugin}};
+use bevy::{
+    pbr::wireframe::{WireframeConfig, WireframePlugin},
+    prelude::*,
+};
 
 pub struct WireframeControllerPlugin;
 
 impl Plugin for WireframeControllerPlugin {
     fn build(&self, app: &mut App) {
-        app.add_plugin(WireframePlugin)
-        .add_system(toggle_wireframe);
+        app.add_plugin(WireframePlugin).add_system(toggle_wireframe);
     }
 }
 

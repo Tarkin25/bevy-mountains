@@ -1,10 +1,10 @@
+use bevy_egui::egui::{self, Color32, ComboBox, DragValue, TextEdit};
+use egui_node_graph::{NodeId, WidgetValueTrait};
+use serde::{Deserialize, Serialize};
 use std::fmt::Debug;
-use bevy_egui::egui::{self, DragValue, ComboBox, TextEdit, Color32};
-use egui_node_graph::{WidgetValueTrait, NodeId};
-use serde::{Serialize, Deserialize};
 use strum::IntoEnumIterator;
 
-use super::{DynNoiseFn, NoiseGraphState, NodeData, MyResponse};
+use super::{DynNoiseFn, MyResponse, NodeData, NoiseGraphState};
 
 /// In the graph, input parameters can optionally have a constant value. This
 /// value can be directly edited in a widget inside the node itself.
@@ -33,13 +33,17 @@ pub enum NodeAttribute {
     F64Tuple(f64, f64),
 }
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug, strum::Display, strum::EnumIter, Serialize, Deserialize)]
+#[derive(
+    Clone, Copy, PartialEq, Eq, Debug, strum::Display, strum::EnumIter, Serialize, Deserialize,
+)]
 pub enum NoiseType {
     Perlin,
     Simplex,
 }
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug, strum::Display, strum::EnumIter, Serialize, Deserialize)]
+#[derive(
+    Clone, Copy, PartialEq, Eq, Debug, strum::Display, strum::EnumIter, Serialize, Deserialize,
+)]
 pub enum Operator {
     Add,
     Subtract,
@@ -50,7 +54,7 @@ pub enum Operator {
 impl Operator {
     pub fn apply(self, a: f64, b: f64) -> f64 {
         use Operator::*;
-        
+
         match self {
             Add => a + b,
             Subtract => a - b,
@@ -86,37 +90,47 @@ impl WidgetValueTrait for NodeAttribute {
                     ui.label(param_name);
                     ui.add(DragValue::new(value));
                 });
-            },
+            }
             NodeAttribute::NoiseType(noise_type) => {
                 ui.horizontal(|ui| {
                     ui.label(param_name);
-                    ComboBox::from_id_source(param_name).selected_text(noise_type.to_string()).show_ui(ui, |ui| {
-                        for available in NoiseType::iter() {
-                            ui.selectable_value(noise_type, available, available.to_string());
-                        }
-                    });
+                    ComboBox::from_id_source(param_name)
+                        .selected_text(noise_type.to_string())
+                        .show_ui(ui, |ui| {
+                            for available in NoiseType::iter() {
+                                ui.selectable_value(noise_type, available, available.to_string());
+                            }
+                        });
                 });
-            },
+            }
             NodeAttribute::Operator(operator) => {
                 ui.horizontal(|ui| {
                     ui.label(param_name);
-                    ComboBox::from_id_source(param_name).selected_text(operator.to_string()).show_ui(ui, |ui| {
-                        for available in Operator::iter() {
-                            ui.selectable_value(operator, available, available.to_string());
-                        }
-                    });
+                    ComboBox::from_id_source(param_name)
+                        .selected_text(operator.to_string())
+                        .show_ui(ui, |ui| {
+                            for available in Operator::iter() {
+                                ui.selectable_value(operator, available, available.to_string());
+                            }
+                        });
                 });
-            },
+            }
             NodeAttribute::Name(name) => {
                 ui.add(TextEdit::singleline(name).text_color(Color32::LIGHT_GREEN));
-            },
+            }
             NodeAttribute::Vec { values, template } => {
                 ui.label(param_name);
                 ui.indent("values", |ui| {
                     ui.vertical(|ui| {
                         for i in 0..values.len() {
                             ui.horizontal(|ui| {
-                                values[i].value_widget(&i.to_string(), node_id, ui, user_state, node_state);
+                                values[i].value_widget(
+                                    &i.to_string(),
+                                    node_id,
+                                    ui,
+                                    user_state,
+                                    node_state,
+                                );
                                 if ui.button("Delete").clicked() {
                                     values.remove(i);
                                 }
@@ -127,7 +141,7 @@ impl WidgetValueTrait for NodeAttribute {
                         values.push(*template.clone());
                     }
                 });
-            },
+            }
             NodeAttribute::F64Tuple(first, second) => {
                 ui.horizontal(|ui| {
                     ui.label(param_name);

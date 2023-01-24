@@ -1,13 +1,14 @@
 use bevy::{
     prelude::*,
+    render::{mesh::Indices, primitives::Aabb, render_resource::PrimitiveTopology},
     tasks::{AsyncComputeTaskPool, Task},
-    utils::HashMap, render::{primitives::Aabb, render_resource::PrimitiveTopology, mesh::Indices},
+    utils::HashMap,
 };
 use bevy_inspector_egui::prelude::*;
 use futures_lite::future;
 use noise::NoiseFn;
 
-use crate::{camera_controller::CameraController, pause::GameState, noise_graph::NoiseGraph};
+use crate::{camera_controller::CameraController, noise_graph::NoiseGraph, pause::GameState};
 
 use self::grid::{ChunkGrid, ChunkGridPlugin, GridCoordinates};
 
@@ -26,8 +27,7 @@ impl Plugin for ChunkPlugin {
                     .with_system(update_level_of_detail.before(spawn_compute_mesh_tasks))
                     .with_system(spawn_compute_mesh_tasks.before(insert_mesh))
                     .with_system(insert_mesh.before(unload_chunks))
-                    .with_system(unload_chunks)
-                    //.with_system(add_center_point_to_chunks)
+                    .with_system(unload_chunks), //.with_system(add_center_point_to_chunks)
             )
             .add_system_set(SystemSet::on_enter(GameState::Running).with_system(reload_chunks));
     }
@@ -46,8 +46,10 @@ fn trigger_chunk_creation(
         if let Ok(camera_coordinates) = query.get_single() {
             let mut load_chunk = move |x, z| {
                 let chunk_coordinates = *camera_coordinates + GridCoordinates::new(x, z);
-    
-                if chunk_coordinates.distance_squared(*camera_coordinates) <= render_distance.pow(2) && !chunk_grid.contains(&chunk_coordinates) {
+
+                if chunk_coordinates.distance_squared(*camera_coordinates) <= render_distance.pow(2)
+                    && !chunk_grid.contains(&chunk_coordinates)
+                {
                     chunk_grid.insert(chunk_coordinates);
                     commands.spawn((
                         chunk_coordinates,
@@ -55,7 +57,9 @@ fn trigger_chunk_creation(
                             cell_size: config.get_cell_size(chunk_coordinates, *camera_coordinates),
                         },
                         LoadChunk,
-                        Transform::from_translation(chunk_coordinates.to_translation(config.size as i32)),
+                        Transform::from_translation(
+                            chunk_coordinates.to_translation(config.size as i32),
+                        ),
                         GlobalTransform::default(),
                         VisibilityBundle {
                             visibility: Visibility::VISIBLE,
@@ -70,7 +74,7 @@ fn trigger_chunk_creation(
                     ));
                 }
             };
-    
+
             for x in (0..=render_distance as i32).rev() {
                 for z in (0..=render_distance as i32).rev() {
                     load_chunk(x, z);
@@ -103,9 +107,7 @@ fn spawn_compute_mesh_tasks(
             })
         });
         let mut entity = commands.entity(entity);
-        entity
-            .insert(ComputeMesh(task))
-            .remove::<LoadChunk>();
+        entity.insert(ComputeMesh(task)).remove::<LoadChunk>();
     }
 }
 
@@ -132,9 +134,11 @@ fn update_level_of_detail(
     config: Res<ChunksConfig>,
 ) {
     if let Ok(camera_coordinates) = camera.get_single() {
-        for (entity, mut chunk, coordinates) in chunks.iter_mut()/* .take(config.updates_per_frame) */ {
+        for (entity, mut chunk, coordinates) in chunks.iter_mut()
+        /* .take(config.updates_per_frame) */
+        {
             let new_cell_size = config.get_cell_size(*coordinates, *camera_coordinates);
-    
+
             if chunk.cell_size != new_cell_size {
                 chunk.cell_size = new_cell_size;
                 commands.entity(entity).insert(LoadChunk);
@@ -143,7 +147,10 @@ fn update_level_of_detail(
     }
 }
 
-fn reload_chunks(mut query: Query<Entity, (Without<LoadChunk>, With<Chunk>)>, mut commands: Commands) {
+fn reload_chunks(
+    mut query: Query<Entity, (Without<LoadChunk>, With<Chunk>)>,
+    mut commands: Commands,
+) {
     query.for_each_mut(|entity| {
         commands.entity(entity).insert(LoadChunk);
     })
@@ -151,7 +158,10 @@ fn reload_chunks(mut query: Query<Entity, (Without<LoadChunk>, With<Chunk>)>, mu
 
 fn unload_chunks(
     mut commands: Commands,
-    chunks: Query<(Entity, &GridCoordinates), (With<Chunk>, Without<LoadChunk>, Without<ComputeMesh>)>,
+    chunks: Query<
+        (Entity, &GridCoordinates),
+        (With<Chunk>, Without<LoadChunk>, Without<ComputeMesh>),
+    >,
     camera: Query<&GridCoordinates, With<CameraController>>,
     chunks_config: Res<ChunksConfig>,
     chunk_grid: Res<ChunkGrid>,
@@ -159,7 +169,8 @@ fn unload_chunks(
     if chunks_config.load_chunks {
         if let Ok(camera) = camera.get_single() {
             chunks.for_each(|(entity, coordinates)| {
-                let is_outside_render_distance = camera.distance_squared(*coordinates) > chunks_config.render_distance.pow(2);
+                let is_outside_render_distance =
+                    camera.distance_squared(*coordinates) > chunks_config.render_distance.pow(2);
 
                 if is_outside_render_distance {
                     commands.entity(entity).despawn_recursive();
@@ -186,13 +197,21 @@ fn generate_chunk_data(
     mesh.set_indices(None);
     mesh.compute_flat_normals();
 
-    let aabb = Aabb { center: Vec3::new(0.0, max_height / 2.0, 0.0).into(), half_extents: Vec3::new(size / 2.0, max_height / 2.0, size / 2.0).into() };
-    
+    let aabb = Aabb {
+        center: Vec3::new(0.0, max_height / 2.0, 0.0).into(),
+        half_extents: Vec3::new(size / 2.0, max_height / 2.0, size / 2.0).into(),
+    };
+
     ChunkData { mesh, aabb }
 }
 
-fn vertices(cell_size: f32, cells_per_side: usize, position: Vec3, mut compute_height: impl FnMut(f32, f32) -> f32) -> (Vec<[f32; 3]>, f32) {
-    let mut vertices = Vec::with_capacity((cells_per_side+1) * (cells_per_side+1));
+fn vertices(
+    cell_size: f32,
+    cells_per_side: usize,
+    position: Vec3,
+    mut compute_height: impl FnMut(f32, f32) -> f32,
+) -> (Vec<[f32; 3]>, f32) {
+    let mut vertices = Vec::with_capacity((cells_per_side + 1) * (cells_per_side + 1));
     let cells_per_direction = cells_per_side as isize / 2;
     let mut max_height = 0.0;
 
@@ -220,12 +239,12 @@ fn indices(cells_per_side: usize) -> Vec<u32> {
     for x in 0..cells_per_side {
         for z in 0..cells_per_side {
             indices.extend([
-                x * (cells_per_side+1) + z,
-                x * (cells_per_side+1) + z + 1,
-                (x+1) * (cells_per_side+1) + z + 1,
-                (x+1) * (cells_per_side+1) + z + 1,
-                (x+1) * (cells_per_side+1) + z,
-                x * (cells_per_side+1) + z,
+                x * (cells_per_side + 1) + z,
+                x * (cells_per_side + 1) + z + 1,
+                (x + 1) * (cells_per_side + 1) + z + 1,
+                (x + 1) * (cells_per_side + 1) + z + 1,
+                (x + 1) * (cells_per_side + 1) + z,
+                x * (cells_per_side + 1) + z,
             ]);
         }
     }

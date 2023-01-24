@@ -1,6 +1,10 @@
-use egui_node_graph::{Graph, NodeId, InputParamKind};
+use egui_node_graph::{Graph, InputParamKind, NodeId};
 
-use crate::noise_graph::{NodeData, connection_type::ConnectionType, node_attribute::{NodeAttribute, NoiseType, Operator}};
+use crate::noise_graph::{
+    connection_type::ConnectionType,
+    node_attribute::{NodeAttribute, NoiseType, Operator},
+    NodeData,
+};
 
 pub struct NodeBuilder<'a> {
     graph: &'a mut Graph<NodeData, ConnectionType, NodeAttribute>,
@@ -8,7 +12,10 @@ pub struct NodeBuilder<'a> {
 }
 
 impl<'a> NodeBuilder<'a> {
-    pub fn new(graph: &'a mut Graph<NodeData, ConnectionType, NodeAttribute>, node_id: NodeId) -> Self {
+    pub fn new(
+        graph: &'a mut Graph<NodeData, ConnectionType, NodeAttribute>,
+        node_id: NodeId,
+    ) -> Self {
         Self { graph, node_id }
     }
 
@@ -55,7 +62,7 @@ impl<'a> NodeBuilder<'a> {
             ConnectionType::Noise,
             NodeAttribute::NoInput,
             InputParamKind::ConnectionOnly,
-            true
+            true,
         );
         self
     }
@@ -89,7 +96,10 @@ impl<'a> NodeBuilder<'a> {
             self.node_id,
             name.into(),
             ConnectionType::NoConnection,
-            NodeAttribute::Vec { values: vec![], template: Box::new(template) },
+            NodeAttribute::Vec {
+                values: vec![],
+                template: Box::new(template),
+            },
             InputParamKind::ConstantOnly,
             true,
         );
@@ -97,20 +107,14 @@ impl<'a> NodeBuilder<'a> {
     }
 
     pub fn output_noise(&mut self) -> &mut Self {
-        self.graph.add_output_param(
-            self.node_id,
-            "out".into(),
-            ConnectionType::Noise,
-        );
+        self.graph
+            .add_output_param(self.node_id, "out".into(), ConnectionType::Noise);
         self
     }
 
     pub fn output_number(&mut self) -> &mut Self {
-        self.graph.add_output_param(
-            self.node_id,
-            "out".into(),
-            ConnectionType::F64,
-        );
+        self.graph
+            .add_output_param(self.node_id, "out".into(), ConnectionType::F64);
         self
     }
 }

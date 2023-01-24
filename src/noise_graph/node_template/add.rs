@@ -6,9 +6,10 @@ use super::{NodeBuilder, NodeEvaluator, NodeImpl};
 
 impl NodeImpl for Add<f64, DynNoiseFn, DynNoiseFn, 2> {
     fn build(builder: &mut NodeBuilder) {
-        builder.input_noise("source 1")
-        .input_noise("source 2")
-        .output_noise();
+        builder
+            .input_noise("source 1")
+            .input_noise("source 2")
+            .output_noise();
     }
 
     fn evaluate(evaluator: &mut NodeEvaluator) -> anyhow::Result<NodeAttribute> {

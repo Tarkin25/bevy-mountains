@@ -1,19 +1,31 @@
-use std::{collections::HashMap, fmt::Debug, sync::Arc, io::{BufReader, BufWriter, Write}, fs::OpenOptions};
+use std::{
+    collections::HashMap,
+    fmt::Debug,
+    fs::OpenOptions,
+    io::{BufReader, BufWriter, Write},
+    sync::Arc,
+};
 
 use anyhow::Context;
 use bevy::prelude::*;
 use bevy_egui::{egui, EguiContext};
-use egui_node_graph::{NodeId, UserResponseTrait, NodeDataTrait, Graph, GraphEditorState, NodeResponse, OutputId};
-use noise::{NoiseFn, Checkerboard};
-use serde::{Serialize, Deserialize};
+use egui_node_graph::{
+    Graph, GraphEditorState, NodeDataTrait, NodeId, NodeResponse, OutputId, UserResponseTrait,
+};
+use noise::{Checkerboard, NoiseFn};
+use serde::{Deserialize, Serialize};
 
 use crate::pause::GameState;
 
-use self::{connection_type::ConnectionType, node_template::{NodeTemplate, AllNodeTemplates}, node_attribute::NodeAttribute};
+use self::{
+    connection_type::ConnectionType,
+    node_attribute::NodeAttribute,
+    node_template::{AllNodeTemplates, NodeTemplate},
+};
 
 mod connection_type;
-mod node_template;
 mod node_attribute;
+mod node_template;
 
 pub struct NoiseGraphPlugin;
 
@@ -23,11 +35,10 @@ impl Plugin for NoiseGraphPlugin {
             error!("{}", e);
             Default::default()
         });
-        
-        app
-        .insert_resource(graph)
-        .add_system_set(SystemSet::on_update(GameState::Paused).with_system(draw_graph))
-        .add_system_set(SystemSet::on_exit(GameState::Paused).with_system(save_graph));
+
+        app.insert_resource(graph)
+            .add_system_set(SystemSet::on_update(GameState::Paused).with_system(draw_graph))
+            .add_system_set(SystemSet::on_exit(GameState::Paused).with_system(save_graph));
     }
 }
 
@@ -142,23 +153,40 @@ pub struct NoiseGraph {
 
 impl NoiseGraph {
     const FILE_PATH: &'static str = "assets/noise_graph.json";
-    
+
     fn load() -> anyhow::Result<Self> {
-        let mut graph: Self = serde_json::from_reader(BufReader::new(OpenOptions::new().read(true).open(Self::FILE_PATH).context("Unable to open file")?)).context("Unable to parse json")?;
+        let mut graph: Self = serde_json::from_reader(BufReader::new(
+            OpenOptions::new()
+                .read(true)
+                .open(Self::FILE_PATH)
+                .context("Unable to open file")?,
+        ))
+        .context("Unable to parse json")?;
         graph.update_current_noise();
         Ok(graph)
     }
 
     fn save(&self) -> anyhow::Result<()> {
-        let mut writer = BufWriter::new(OpenOptions::new().write(true).create(true).truncate(true).open(Self::FILE_PATH).context("Unable to open file")?);
+        let mut writer = BufWriter::new(
+            OpenOptions::new()
+                .write(true)
+                .create(true)
+                .truncate(true)
+                .open(Self::FILE_PATH)
+                .context("Unable to open file")?,
+        );
         serde_json::to_writer_pretty(&mut writer, &self).context("Unable to save to json")?;
         writer.flush().context("Unable to save file")
     }
-    
+
     pub fn get_noise_fn(&self) -> DynNoiseFn {
-        self.user_state.current_noise.as_ref().map(|noise| noise.clone()).unwrap_or_else(|| DynNoiseFn::new(Checkerboard::default()))
+        self.user_state
+            .current_noise
+            .as_ref()
+            .map(|noise| noise.clone())
+            .unwrap_or_else(|| DynNoiseFn::new(Checkerboard::default()))
     }
-    
+
     fn draw(&mut self, ctx: &egui::Context) {
         let graph_response = egui::CentralPanel::default()
             .show(ctx, |ui| {
@@ -184,7 +212,9 @@ impl NoiseGraph {
     fn update_current_noise(&mut self) {
         if let Some(node) = self.user_state.active_node {
             if self.state.graph.nodes.contains_key(node) {
-                if let Ok(value) = NodeTemplate::evaluate(&self.state.graph, node, &mut HashMap::new()) {
+                if let Ok(value) =
+                    NodeTemplate::evaluate(&self.state.graph, node, &mut HashMap::new())
+                {
                     self.user_state.current_noise = value.try_to_noise_function().ok();
                 }
             } else {
@@ -205,8 +235,7 @@ impl DynNoiseFn {
     }
 }
 
-impl NoiseFn<f64, 2> for DynNoiseFn
-{
+impl NoiseFn<f64, 2> for DynNoiseFn {
     fn get(&self, point: [f64; 2]) -> f64 {
         self.0.get(point)
     }

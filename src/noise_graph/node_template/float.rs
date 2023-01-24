@@ -6,8 +6,7 @@ pub struct Float;
 
 impl NodeImpl for Float {
     fn build(builder: &mut NodeBuilder) {
-        builder.input_f64("value", 1.0)
-        .output_number();
+        builder.input_f64("value", 1.0).output_number();
     }
 
     fn evaluate(evaluator: &mut NodeEvaluator) -> anyhow::Result<NodeAttribute> {

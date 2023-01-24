@@ -25,11 +25,12 @@ impl<Source> SyncCache<Source> {
 
 impl NodeImpl for SyncCache<DynNoiseFn> {
     fn build(builder: &mut super::NodeBuilder) {
-        builder.input_noise("source")
-        .output_noise();
+        builder.input_noise("source").output_noise();
     }
 
-    fn evaluate(evaluator: &mut super::NodeEvaluator) -> anyhow::Result<crate::noise_graph::node_attribute::NodeAttribute> {
+    fn evaluate(
+        evaluator: &mut super::NodeEvaluator,
+    ) -> anyhow::Result<crate::noise_graph::node_attribute::NodeAttribute> {
         let source = evaluator.get_noise_function("source")?;
         let noise = SyncCache::new(source);
         evaluator.output_noise(noise)
@@ -42,7 +43,7 @@ where
 {
     fn get(&self, point: [f64; DIM]) -> f64 {
         let mut value = self.value.lock().unwrap();
-        
+
         match *value {
             Some(value) if quick_eq(&self.point.lock().unwrap(), &point) => value,
             Some(_) | None => {

@@ -10,7 +10,10 @@ impl Plugin for LightPlugin {
 
 fn insert_light(mut commands: Commands) {
     commands.spawn(DirectionalLightBundle {
-        directional_light: DirectionalLight { shadows_enabled: true, ..Default::default() },
+        directional_light: DirectionalLight {
+            shadows_enabled: true,
+            ..Default::default()
+        },
         transform: Transform::from_xyz(50.0, 50.0, 0.0).looking_at(Vec3::ZERO, Vec3::Y),
         ..Default::default()
     });

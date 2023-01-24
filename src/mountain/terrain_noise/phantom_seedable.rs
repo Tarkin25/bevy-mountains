@@ -1,4 +1,4 @@
-use noise::{Seedable, NoiseFn};
+use noise::{NoiseFn, Seedable};
 
 pub struct PhantomSeedable<Source>(pub Source);
 
