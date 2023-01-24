@@ -1,14 +1,10 @@
-use noise::{Perlin, Simplex};
-use serde::{Deserialize, Serialize};
+use noise::{Turbulence, Perlin, Simplex};
 
-use crate::noise_graph::node_attribute::{NodeAttribute, NoiseType};
+use crate::noise_graph::{node_attribute::{NodeAttribute, NoiseType}, DynNoiseFn};
 
 use super::{NodeBuilder, NodeEvaluator, NodeImpl};
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Turbulence;
-
-impl NodeImpl for Turbulence {
+impl NodeImpl for Turbulence<DynNoiseFn, Perlin> {
     fn build(builder: &mut NodeBuilder) {
         builder.input_noise("source")
                 .input_noise_type(NoiseType::Perlin)

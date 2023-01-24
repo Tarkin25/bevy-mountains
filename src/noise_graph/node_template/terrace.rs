@@ -1,13 +1,10 @@
-use serde::{Deserialize, Serialize};
+use noise::Terrace;
 
-use crate::noise_graph::node_attribute::NodeAttribute;
+use crate::noise_graph::{node_attribute::NodeAttribute, DynNoiseFn};
 
 use super::{NodeBuilder, NodeEvaluator, NodeImpl};
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Terrace;
-
-impl NodeImpl for Terrace {
+impl NodeImpl for Terrace<f64, DynNoiseFn, 2> {
     fn build(builder: &mut NodeBuilder) {
         builder.input_noise("source")
         .input_vec("control points", NodeAttribute::F64(0.0))

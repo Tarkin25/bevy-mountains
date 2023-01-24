@@ -1,13 +1,10 @@
-use serde::{Deserialize, Serialize};
+use noise::ScalePoint;
 
-use crate::noise_graph::node_attribute::NodeAttribute;
+use crate::noise_graph::{node_attribute::NodeAttribute, DynNoiseFn};
 
 use super::{NodeBuilder, NodeEvaluator, NodeImpl};
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct ScalePoint;
-
-impl NodeImpl for ScalePoint {
+impl NodeImpl for ScalePoint<DynNoiseFn> {
     fn build(builder: &mut NodeBuilder) {
         builder
             .input_noise("source")

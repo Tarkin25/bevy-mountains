@@ -1,13 +1,10 @@
-use serde::{Deserialize, Serialize};
+use noise::Blend;
 
-use crate::noise_graph::node_attribute::NodeAttribute;
+use crate::noise_graph::{node_attribute::NodeAttribute, DynNoiseFn};
 
 use super::{NodeBuilder, NodeEvaluator, NodeImpl};
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Blend;
-
-impl NodeImpl for Blend {
+impl NodeImpl for Blend<f64, DynNoiseFn, DynNoiseFn, DynNoiseFn, 2> {
     fn build(builder: &mut NodeBuilder) {
         builder
             .input_noise("source 1")

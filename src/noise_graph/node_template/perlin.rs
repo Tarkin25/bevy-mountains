@@ -1,11 +1,8 @@
-use serde::{Deserialize, Serialize};
+use noise::Perlin;
 
-use crate::noise_graph::node_attribute::NodeAttribute;
+use crate::noise_graph::{node_attribute::NodeAttribute};
 
 use super::{NodeBuilder, NodeEvaluator, NodeImpl};
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Perlin;
 
 impl NodeImpl for Perlin {
     fn build(builder: &mut NodeBuilder) {

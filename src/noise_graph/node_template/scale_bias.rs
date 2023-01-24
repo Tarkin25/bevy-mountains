@@ -1,13 +1,10 @@
-use serde::{Deserialize, Serialize};
+use noise::ScaleBias;
 
-use crate::noise_graph::node_attribute::NodeAttribute;
+use crate::noise_graph::{node_attribute::NodeAttribute, DynNoiseFn};
 
 use super::{NodeBuilder, NodeEvaluator, NodeImpl};
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct ScaleBias;
-
-impl NodeImpl for ScaleBias {
+impl NodeImpl for ScaleBias<f64, DynNoiseFn, 2> {
     fn build(builder: &mut NodeBuilder) {
         builder
             .input_noise("source")

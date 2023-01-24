@@ -1,14 +1,10 @@
-use noise::{Perlin, MultiFractal, Simplex};
-use serde::{Deserialize, Serialize};
+use noise::{Fbm, Perlin, MultiFractal, Simplex};
 
 use crate::noise_graph::node_attribute::{NodeAttribute, NoiseType};
 
 use super::{NodeBuilder, NodeEvaluator, NodeImpl};
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Fbm;
-
-impl NodeImpl for Fbm {
+impl NodeImpl for Fbm<Perlin> {
     fn build(builder: &mut NodeBuilder) {
         builder.input_noise_type(NoiseType::Perlin)
         .input_usize("octaves", noise::Fbm::<Perlin>::DEFAULT_OCTAVE_COUNT)

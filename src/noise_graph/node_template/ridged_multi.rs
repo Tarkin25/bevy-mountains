@@ -1,14 +1,10 @@
-use noise::{Perlin, MultiFractal, Simplex};
-use serde::{Deserialize, Serialize};
+use noise::{RidgedMulti, Perlin, Simplex, MultiFractal};
 
 use crate::noise_graph::node_attribute::{NodeAttribute, NoiseType};
 
 use super::{NodeBuilder, NodeEvaluator, NodeImpl};
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct RidgedMulti;
-
-impl NodeImpl for RidgedMulti {
+impl NodeImpl for RidgedMulti<Perlin> {
     fn build(builder: &mut NodeBuilder) {
         builder.input_noise_type(NoiseType::Perlin)
                 .input_usize("octaves", noise::RidgedMulti::<Perlin>::DEFAULT_OCTAVE_COUNT)

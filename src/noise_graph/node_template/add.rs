@@ -1,13 +1,10 @@
-use serde::{Deserialize, Serialize};
+use noise::Add;
 
-use crate::noise_graph::node_attribute::NodeAttribute;
+use crate::noise_graph::{node_attribute::NodeAttribute, DynNoiseFn};
 
 use super::{NodeBuilder, NodeEvaluator, NodeImpl};
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Add;
-
-impl NodeImpl for Add {
+impl NodeImpl for Add<f64, DynNoiseFn, DynNoiseFn, 2> {
     fn build(builder: &mut NodeBuilder) {
         builder.input_noise("source 1")
         .input_noise("source 2")

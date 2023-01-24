@@ -1,10 +1,7 @@
-use serde::{Deserialize, Serialize};
-
 use crate::noise_graph::node_attribute::{NodeAttribute, Operator};
 
 use super::{NodeBuilder, NodeEvaluator, NodeImpl};
 
-#[derive(Debug, Serialize, Deserialize)]
 pub struct Arithmetic;
 
 impl NodeImpl for Arithmetic {

@@ -1,13 +1,10 @@
-use serde::{Deserialize, Serialize};
+use noise::Select;
 
-use crate::noise_graph::node_attribute::NodeAttribute;
+use crate::noise_graph::{node_attribute::NodeAttribute, DynNoiseFn};
 
 use super::{NodeBuilder, NodeEvaluator, NodeImpl};
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Select;
-
-impl NodeImpl for Select {
+impl NodeImpl for Select<f64, DynNoiseFn, DynNoiseFn, DynNoiseFn, 2> {
     fn build(builder: &mut NodeBuilder) {
         builder.input_noise("source 1")
         .input_noise("source 2")

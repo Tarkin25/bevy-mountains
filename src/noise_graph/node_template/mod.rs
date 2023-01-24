@@ -1,6 +1,7 @@
 use std::borrow::Cow;
 
 use egui_node_graph::{NodeTemplateTrait, Graph, NodeId};
+use noise::{Abs, Add, Blend, Displace, Fbm, Perlin, RidgedMulti, ScaleBias, ScalePoint, Select, Terrace, Turbulence};
 use serde::{Serialize, Deserialize};
 use strum::IntoEnumIterator;
 
@@ -20,7 +21,7 @@ mod select;
 mod terrace;
 mod turbulence;
 
-use self::{arithmetic::Arithmetic, float::Float, perlin::Perlin, fbm::Fbm, ridged_multi::RidgedMulti, scale_bias::ScaleBias, scale_point::ScalePoint, turbulence::Turbulence, blend::Blend, displace::Displace, add::Add, select::Select, terrace::Terrace, abs::Abs};
+use self::{arithmetic::Arithmetic, float::Float};
 pub use self::core::{NodeBuilder, NodeEvaluator, evaluate_node};
 
 use super::{NodeData, connection_type::ConnectionType, NoiseGraphState, node_attribute::NodeAttribute, MyGraph, OutputsCache};

@@ -1,10 +1,7 @@
-use serde::{Deserialize, Serialize};
-
 use crate::noise_graph::node_attribute::NodeAttribute;
 
 use super::{NodeBuilder, NodeEvaluator, NodeImpl};
 
-#[derive(Debug, Serialize, Deserialize)]
 pub struct Float;
 
 impl NodeImpl for Float {
