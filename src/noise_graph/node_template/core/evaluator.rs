@@ -1,7 +1,7 @@
 use egui_node_graph::NodeId;
 use noise::{
     Abs, Add, BasicMulti, Billow, Blend, Checkerboard, Clamp, Constant, Curve, Cylinders, Displace,
-    Fbm, NoiseFn, Perlin, RidgedMulti, ScaleBias, ScalePoint, Select, Terrace, Turbulence,
+    Fbm, NoiseFn, Perlin, RidgedMulti, ScaleBias, ScalePoint, Select, Terrace, Turbulence, Exponent, HybridMulti, Max, Min, Multiply, Negate, OpenSimplex,
 };
 
 use crate::noise_graph::{
@@ -34,8 +34,15 @@ pub fn evaluate_node(
         NodeTemplate::Curve => Curve::evaluate(evaluator),
         NodeTemplate::Cylinders => Cylinders::evaluate(evaluator),
         NodeTemplate::Displace => Displace::evaluate(evaluator),
+        NodeTemplate::Exponent => Exponent::evaluate(evaluator),
         NodeTemplate::Fbm => Fbm::evaluate(evaluator),
         NodeTemplate::Float => Float::evaluate(evaluator),
+        NodeTemplate::HybridMulti => HybridMulti::evaluate(evaluator),
+        NodeTemplate::Max => Max::evaluate(evaluator),
+        NodeTemplate::Min => Min::evaluate(evaluator),
+        NodeTemplate::Multiply => Multiply::evaluate(evaluator),
+        NodeTemplate::Negate => Negate::evaluate(evaluator),
+        NodeTemplate::OpenSimplex => OpenSimplex::evaluate(evaluator),
         NodeTemplate::Perlin => Perlin::evaluate(evaluator),
         NodeTemplate::RidgedMulti => RidgedMulti::evaluate(evaluator),
         NodeTemplate::ScaleBias => ScaleBias::evaluate(evaluator),

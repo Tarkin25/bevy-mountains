@@ -3,7 +3,7 @@ use std::borrow::Cow;
 use egui_node_graph::{Graph, NodeId, NodeTemplateTrait};
 use noise::{
     Abs, Add, BasicMulti, Billow, Blend, Checkerboard, Clamp, Constant, Curve, Cylinders, Displace,
-    Fbm, Perlin, RidgedMulti, ScaleBias, ScalePoint, Select, Terrace, Turbulence,
+    Fbm, Perlin, RidgedMulti, ScaleBias, ScalePoint, Select, Terrace, Turbulence, Exponent, HybridMulti, Max, Min, Multiply, Negate, OpenSimplex,
 };
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
@@ -22,8 +22,15 @@ mod core;
 mod curve;
 mod cylinders;
 mod displace;
+mod exponent;
 mod fbm;
 mod float;
+mod hybrid_multi;
+mod max;
+mod min;
+mod multiply;
+mod negate;
+mod open_simplex;
 mod perlin;
 mod ridged_multi;
 mod scale_bias;
@@ -64,8 +71,15 @@ pub enum NodeTemplate {
     Curve,
     Cylinders,
     Displace,
+    Exponent,
     Fbm,
     Float,
+    HybridMulti,
+    Max,
+    Min,
+    Multiply,
+    Negate,
+    OpenSimplex,
     Perlin,
     RidgedMulti,
     ScaleBias,
@@ -151,8 +165,15 @@ impl NodeTemplateTrait for NodeTemplate {
             NodeTemplate::Curve => Curve::build(builder),
             NodeTemplate::Cylinders => Cylinders::build(builder),
             NodeTemplate::Displace => Displace::build(builder),
+            NodeTemplate::Exponent => Exponent::build(builder),
             NodeTemplate::Fbm => Fbm::build(builder),
             NodeTemplate::Float => Float::build(builder),
+            NodeTemplate::HybridMulti => HybridMulti::build(builder),
+            NodeTemplate::Max => Max::build(builder),
+            NodeTemplate::Min => Min::build(builder),
+            NodeTemplate::Multiply => Multiply::build(builder),
+            NodeTemplate::Negate => Negate::build(builder),
+            NodeTemplate::OpenSimplex => OpenSimplex::build(builder),
             NodeTemplate::Perlin => Perlin::build(builder),
             NodeTemplate::RidgedMulti => RidgedMulti::build(builder),
             NodeTemplate::ScaleBias => ScaleBias::build(builder),
