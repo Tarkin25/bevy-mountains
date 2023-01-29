@@ -1,13 +1,13 @@
 use egui_node_graph::NodeId;
 use noise::{
     Abs, Add, BasicMulti, Billow, Blend, Checkerboard, Clamp, Constant, Curve, Cylinders, Displace,
-    Fbm, NoiseFn, Perlin, RidgedMulti, ScaleBias, ScalePoint, Select, Terrace, Turbulence, Exponent, HybridMulti, Max, Min, Multiply, Negate, OpenSimplex,
+    Fbm, NoiseFn, Perlin, RidgedMulti, ScaleBias, ScalePoint, Select, Terrace, Turbulence, Exponent, HybridMulti, Max, Min, Multiply, Negate, OpenSimplex, PerlinSurflet, Power, RotatePoint, Simplex, SuperSimplex, TranslatePoint, Value,
 };
 
 use crate::noise_graph::{
     node_attribute::{NodeAttribute, NoiseType, Operator},
     node_template::{
-        arithmetic::Arithmetic, cache::SyncCache, float::Float, NodeImpl, NodeTemplate,
+        arithmetic::Arithmetic, cache::SyncCache, float::Float, NodeImpl, NodeTemplate, worley::SyncWorley,
     },
     DynNoiseFn, MyGraph, OutputsCache,
 };
@@ -44,12 +44,20 @@ pub fn evaluate_node(
         NodeTemplate::Negate => Negate::evaluate(evaluator),
         NodeTemplate::OpenSimplex => OpenSimplex::evaluate(evaluator),
         NodeTemplate::Perlin => Perlin::evaluate(evaluator),
+        NodeTemplate::PerlinSurflet => PerlinSurflet::evaluate(evaluator),
+        NodeTemplate::Power => Power::evaluate(evaluator),
         NodeTemplate::RidgedMulti => RidgedMulti::evaluate(evaluator),
+        NodeTemplate::RotatePoint => RotatePoint::evaluate(evaluator),
         NodeTemplate::ScaleBias => ScaleBias::evaluate(evaluator),
         NodeTemplate::ScalePoint => ScalePoint::evaluate(evaluator),
         NodeTemplate::Select => Select::evaluate(evaluator),
+        NodeTemplate::Simplex => Simplex::evaluate(evaluator),
+        NodeTemplate::SuperSimplex => SuperSimplex::evaluate(evaluator),
         NodeTemplate::Terrace => Terrace::evaluate(evaluator),
+        NodeTemplate::TranslatePoint => TranslatePoint::evaluate(evaluator),
         NodeTemplate::Turbulence => Turbulence::evaluate(evaluator),
+        NodeTemplate::Value => Value::evaluate(evaluator),
+        NodeTemplate::Worley => SyncWorley::evaluate(evaluator),
     }
 }
 

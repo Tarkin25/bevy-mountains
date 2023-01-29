@@ -3,7 +3,7 @@ use std::borrow::Cow;
 use egui_node_graph::{Graph, NodeId, NodeTemplateTrait};
 use noise::{
     Abs, Add, BasicMulti, Billow, Blend, Checkerboard, Clamp, Constant, Curve, Cylinders, Displace,
-    Fbm, Perlin, RidgedMulti, ScaleBias, ScalePoint, Select, Terrace, Turbulence, Exponent, HybridMulti, Max, Min, Multiply, Negate, OpenSimplex,
+    Fbm, Perlin, RidgedMulti, ScaleBias, ScalePoint, Select, Terrace, Turbulence, Exponent, HybridMulti, Max, Min, Multiply, Negate, OpenSimplex, PerlinSurflet, Power, RotatePoint, Simplex, SuperSimplex, TranslatePoint, Value,
 };
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
@@ -32,15 +32,23 @@ mod multiply;
 mod negate;
 mod open_simplex;
 mod perlin;
+mod perlin_surflet;
+mod power;
 mod ridged_multi;
+mod rotate_point;
 mod scale_bias;
 mod scale_point;
 mod select;
+mod simplex;
+mod super_simplex;
 mod terrace;
+mod translate_point;
 mod turbulence;
+mod value;
+mod worley;
 
 pub use self::core::{evaluate_node, NodeBuilder, NodeEvaluator};
-use self::{arithmetic::Arithmetic, cache::SyncCache, float::Float};
+use self::{arithmetic::Arithmetic, cache::SyncCache, float::Float, worley::SyncWorley};
 
 use super::{
     connection_type::ConnectionType, node_attribute::NodeAttribute, MyGraph, NodeData,
@@ -81,12 +89,20 @@ pub enum NodeTemplate {
     Negate,
     OpenSimplex,
     Perlin,
+    PerlinSurflet,
+    Power,
     RidgedMulti,
+    RotatePoint,
     ScaleBias,
     ScalePoint,
     Select,
+    Simplex,
+    SuperSimplex,
     Terrace,
+    TranslatePoint,
     Turbulence,
+    Value,
+    Worley,
 }
 
 impl NodeTemplate {
@@ -175,12 +191,20 @@ impl NodeTemplateTrait for NodeTemplate {
             NodeTemplate::Negate => Negate::build(builder),
             NodeTemplate::OpenSimplex => OpenSimplex::build(builder),
             NodeTemplate::Perlin => Perlin::build(builder),
+            NodeTemplate::PerlinSurflet => PerlinSurflet::build(builder),
+            NodeTemplate::Power => Power::build(builder),
             NodeTemplate::RidgedMulti => RidgedMulti::build(builder),
+            NodeTemplate::RotatePoint => RotatePoint::build(builder),
             NodeTemplate::ScaleBias => ScaleBias::build(builder),
             NodeTemplate::ScalePoint => ScalePoint::build(builder),
             NodeTemplate::Select => Select::build(builder),
+            NodeTemplate::Simplex => Simplex::build(builder),
+            NodeTemplate::SuperSimplex => SuperSimplex::build(builder),
             NodeTemplate::Terrace => Terrace::build(builder),
+            NodeTemplate::TranslatePoint => TranslatePoint::build(builder),
             NodeTemplate::Turbulence => Turbulence::build(builder),
+            NodeTemplate::Value => Value::build(builder),
+            NodeTemplate::Worley => SyncWorley::build(builder),
         }
     }
 }

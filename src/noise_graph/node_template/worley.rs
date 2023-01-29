@@ -2,6 +2,8 @@ use std::sync::Arc;
 
 use noise::{core::worley::{ReturnType, distance_functions, worley_2d}, permutationtable::PermutationTable, NoiseFn, Seedable};
 
+use super::NodeImpl;
+
 #[derive(Clone)]
 pub struct SyncWorley {
     pub distance_function: Arc<DistanceFunction>,
@@ -12,6 +14,17 @@ pub struct SyncWorley {
 }
 
 pub type DistanceFunction = dyn Fn(&[f64], &[f64]) -> f64 + Send + Sync;
+
+impl NodeImpl for SyncWorley {
+    fn build(builder: &mut super::NodeBuilder) {
+        builder.output_noise();
+    }
+
+    fn evaluate(evaluator: &mut super::NodeEvaluator) -> anyhow::Result<crate::noise_graph::node_attribute::NodeAttribute> {
+        let noise = SyncWorley::default();
+        evaluator.output_noise(noise)
+    }
+}
 
 impl SyncWorley {
     pub const _DEFAULT_SEED: u32 = 0;
