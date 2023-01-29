@@ -1232,49 +1232,8 @@
           "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 24,
-              "version": 9
-            },
-            "label": "Terrace",
-            "inputs": [
-              [
-                "New Node",
-                {
-                  "idx": 109,
-                  "version": 9
-                }
-              ],
-              [
-                "source",
-                {
-                  "idx": 108,
-                  "version": 7
-                }
-              ],
-              [
-                "control points",
-                {
-                  "idx": 107,
-                  "version": 7
-                }
-              ]
-            ],
-            "outputs": [
-              [
-                "out",
-                {
-                  "idx": 24,
-                  "version": 9
-                }
-              ]
-            ],
-            "user_data": {
-              "template": "Terrace"
-            }
-          },
-          "version": 9
+          "value": null,
+          "version": 10
         }
       ],
       "inputs": [
@@ -3152,64 +3111,16 @@
           "version": 4
         },
         {
-          "value": {
-            "id": {
-              "idx": 107,
-              "version": 7
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Vec": {
-                "values": [],
-                "template": {
-                  "F64": 0.0
-                }
-              }
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 24,
-              "version": 9
-            },
-            "shown_inline": true
-          },
-          "version": 7
+          "value": null,
+          "version": 8
         },
         {
-          "value": {
-            "id": {
-              "idx": 108,
-              "version": 7
-            },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
-            "node": {
-              "idx": 24,
-              "version": 9
-            },
-            "shown_inline": true
-          },
-          "version": 7
+          "value": null,
+          "version": 8
         },
         {
-          "value": {
-            "id": {
-              "idx": 109,
-              "version": 9
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "New Node"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 24,
-              "version": 9
-            },
-            "shown_inline": true
-          },
-          "version": 9
+          "value": null,
+          "version": 10
         }
       ],
       "outputs": [
@@ -3530,18 +3441,8 @@
           "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 24,
-              "version": 9
-            },
-            "node": {
-              "idx": 24,
-              "version": 9
-            },
-            "typ": "Noise"
-          },
-          "version": 9
+          "value": null,
+          "version": 10
         }
       ],
       "connections": [
@@ -3765,8 +3666,11 @@
           "version": 1
         },
         {
-          "value": null,
-          "version": 0
+          "value": {
+            "idx": 11,
+            "version": 1
+          },
+          "version": 1
         },
         {
           "value": null,
@@ -3982,8 +3886,8 @@
         },
         {
           "value": {
-            "idx": 24,
-            "version": 9
+            "idx": 21,
+            "version": 1
           },
           "version": 5
         },
@@ -4065,11 +3969,8 @@
           "version": 0
         },
         {
-          "value": {
-            "idx": 21,
-            "version": 1
-          },
-          "version": 7
+          "value": null,
+          "version": 0
         }
       ]
     },
@@ -4161,10 +4062,6 @@
       {
         "idx": 19,
         "version": 5
-      },
-      {
-        "idx": 24,
-        "version": 9
       }
     ],
     "connection_in_progress": null,
@@ -4334,18 +4231,15 @@
         "version": 0
       },
       {
-        "value": {
-          "x": 1054.0,
-          "y": 1232.0
-        },
-        "version": 9
+        "value": null,
+        "version": 0
       }
     ],
     "node_finder": null,
     "pan_zoom": {
       "pan": {
-        "x": 168.0,
-        "y": -461.0
+        "x": -566.0,
+        "y": 268.0
       },
       "zoom": 0.0
     },

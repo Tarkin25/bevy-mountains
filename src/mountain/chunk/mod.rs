@@ -8,7 +8,7 @@ use bevy_inspector_egui::prelude::*;
 use futures_lite::future;
 use noise::NoiseFn;
 
-use crate::{camera_controller::CameraController, noise_graph::NoiseGraph, pause::GameState};
+use crate::{camera_controller::CameraController, noise_graph::NoiseGraph, pause::GameState, learn_shaders::LearnShadersMaterial};
 
 use self::grid::{ChunkGrid, ChunkGridPlugin, GridCoordinates};
 
@@ -38,7 +38,7 @@ fn trigger_chunk_creation(
     chunk_grid: Res<ChunkGrid>,
     config: Res<ChunksConfig>,
     mut commands: Commands,
-    mut materials: ResMut<Assets<StandardMaterial>>,
+    mut materials: ResMut<Assets<LearnShadersMaterial>>,
 ) {
     if config.load_chunks {
         let render_distance = config.render_distance;
@@ -65,11 +65,13 @@ fn trigger_chunk_creation(
                             visibility: Visibility::VISIBLE,
                             computed: ComputedVisibility::default(),
                         },
-                        materials.add(StandardMaterial {
-                            base_color: Color::PURPLE.into(),
-                            metallic: 0.0,
-                            reflectance: 0.0,
-                            ..Default::default()
+                        materials.add(LearnShadersMaterial {
+                            standard_material: StandardMaterial {
+                                base_color: Color::PURPLE.into(),
+                                metallic: 0.0,
+                                reflectance: 0.0,
+                                ..Default::default()
+                            }
                         }),
                     ));
                 }

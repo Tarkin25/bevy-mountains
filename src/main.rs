@@ -6,6 +6,7 @@ use bevy::{
 use bevy_egui::EguiPlugin;
 use bevy_inspector_egui::DefaultInspectorConfigPlugin;
 use camera_controller::CameraControllerPlugin;
+use learn_shaders::LearnShadersPlugin;
 use light::LightPlugin;
 use mountain::MountainPlugin;
 use noise_graph::NoiseGraphPlugin;
@@ -18,6 +19,7 @@ pub mod mountain;
 pub mod noise_graph;
 pub mod pause;
 pub mod wireframe_controller;
+pub mod learn_shaders;
 
 fn main() {
     App::new()
@@ -37,6 +39,7 @@ fn main() {
             transform: Transform::from_xyz(0.0, 100.0, -10.0).looking_at(Vec3::ZERO, Vec3::Y),
         })
         .add_plugin(MountainPlugin)
+        .add_plugin(LearnShadersPlugin)
         .add_plugin(WireframeControllerPlugin)
         .add_plugin(PausePlugin)
         .add_plugin(NoiseGraphPlugin)
