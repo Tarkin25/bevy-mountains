@@ -76,13 +76,15 @@ impl WidgetValueTrait for NodeAttribute {
         user_state: &mut NoiseGraphState,
         node_state: &NodeData,
     ) -> Vec<MyResponse> {
+        const MAX_DECIMALS: usize = 5;
+        
         // This trait is used to tell the library which UI to display for the
         // inline parameter widgets.
         match self {
             NodeAttribute::F64(value) => {
                 ui.horizontal(|ui| {
                     ui.label(param_name);
-                    ui.add(DragValue::new(value).max_decimals(5));
+                    ui.add(DragValue::new(value).max_decimals(MAX_DECIMALS));
                 });
             }
             NodeAttribute::Usize(value) => {
@@ -145,8 +147,8 @@ impl WidgetValueTrait for NodeAttribute {
             NodeAttribute::F64Tuple(first, second) => {
                 ui.horizontal(|ui| {
                     ui.label(param_name);
-                    ui.add(DragValue::new(first));
-                    ui.add(DragValue::new(second));
+                    ui.add(DragValue::new(first).max_decimals(MAX_DECIMALS));
+                    ui.add(DragValue::new(second).max_decimals(MAX_DECIMALS));
                 });
             }
             _ => {
