@@ -65,14 +65,7 @@ fn trigger_chunk_creation(
                             visibility: Visibility::VISIBLE,
                             computed: ComputedVisibility::default(),
                         },
-                        materials.add(LearnShadersMaterial {
-                            standard_material: StandardMaterial {
-                                base_color: Color::PURPLE.into(),
-                                metallic: 0.0,
-                                reflectance: 0.0,
-                                ..Default::default()
-                            }
-                        }),
+                        materials.add(LearnShadersMaterial::default()),
                     ));
                 }
             };

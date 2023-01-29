@@ -21,7 +21,7 @@ impl NodeImpl for SyncWorley {
     }
 
     fn evaluate(evaluator: &mut super::NodeEvaluator) -> anyhow::Result<crate::noise_graph::node_attribute::NodeAttribute> {
-        let noise = SyncWorley::default();
+        let noise = SyncWorley::default()._set_return_type(ReturnType::Distance);
         evaluator.output_noise(noise)
     }
 }

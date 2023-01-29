@@ -1,4 +1,4 @@
-use bevy::{prelude::*, reflect::TypeUuid, render::render_resource::{AsBindGroup, PreparedBindGroup}};
+use bevy::{prelude::*, reflect::TypeUuid, render::render_resource::{AsBindGroup, ShaderType}};
 
 pub struct LearnShadersPlugin;
 
@@ -17,35 +17,20 @@ fn setup(mut commands: Commands, mut materials: ResMut<Assets<LearnShadersMateri
     });
 }
 
-#[derive(TypeUuid, Debug, Clone, Default)]
+#[derive(AsBindGroup, TypeUuid, Debug, Clone, Default)]
 #[uuid = "6cf55774-e3e4-4cf8-81b3-dd3641cc90de"]
 pub struct LearnShadersMaterial {
-    pub standard_material: StandardMaterial,
-}
-
-impl AsBindGroup for LearnShadersMaterial {
-    type Data = <StandardMaterial as AsBindGroup>::Data;
-    
-    fn as_bind_group(
-            &self,
-            layout: &bevy::render::render_resource::BindGroupLayout,
-            render_device: &bevy::render::renderer::RenderDevice,
-            images: &bevy::render::render_asset::RenderAssets<Image>,
-            fallback_image: &bevy::render::texture::FallbackImage,
-        ) -> Result<bevy::render::render_resource::PreparedBindGroup<Self>, bevy::render::render_resource::AsBindGroupError> {
-        let PreparedBindGroup { bindings, bind_group, data } = self.standard_material.as_bind_group(layout, render_device, images, fallback_image)?;
-        Ok(PreparedBindGroup {
-            bindings, bind_group, data
-        })
-    }
-
-    fn bind_group_layout(render_device: &bevy::render::renderer::RenderDevice) -> bevy::render::render_resource::BindGroupLayout {
-        StandardMaterial::bind_group_layout(render_device)
-    }
+    pub gradient_points: Vec<GradientPoint>,
 }
 
 impl Material for LearnShadersMaterial {
     fn fragment_shader() -> bevy::render::render_resource::ShaderRef {
         "shaders/learn_shaders.wgsl".into()
     }
+}
+
+#[derive(Clone, Copy, Debug, Default, ShaderType)]
+pub struct GradientPoint {
+    pub height: f32,
+    pub color: Color,
 }
