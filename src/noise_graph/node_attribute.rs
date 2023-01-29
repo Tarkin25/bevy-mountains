@@ -124,6 +124,8 @@ impl WidgetValueTrait for NodeAttribute {
                 ui.label(param_name);
                 ui.indent("values", |ui| {
                     ui.vertical(|ui| {
+                        let mut indices_to_remove = Vec::with_capacity(values.len());
+                        
                         for i in 0..values.len() {
                             ui.horizontal(|ui| {
                                 values[i].value_widget(
@@ -134,9 +136,13 @@ impl WidgetValueTrait for NodeAttribute {
                                     node_state,
                                 );
                                 if ui.button("Delete").clicked() {
-                                    values.remove(i);
+                                    indices_to_remove.push(i);
                                 }
                             });
+                        }
+
+                        for index in indices_to_remove {
+                            values.remove(index);
                         }
                     });
                     if ui.button("Add element").clicked() {
