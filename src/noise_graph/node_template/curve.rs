@@ -17,6 +17,9 @@ impl NodeImpl for Curve<f64, DynNoiseFn, 2> {
     ) -> anyhow::Result<crate::noise_graph::node_attribute::NodeAttribute> {
         let source = evaluator.get_noise_function("source")?;
         let control_points = evaluator.get_vec("control points")?;
+        if control_points.len() < 4 {
+            anyhow::bail!("Curve needs at least 4 control points");
+        }
         let mut noise = Curve::new(source);
 
         for control_point in control_points {
