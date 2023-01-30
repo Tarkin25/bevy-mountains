@@ -6271,8 +6271,8 @@
         },
         {
           "value": {
-            "idx": 26,
-            "version": 1
+            "idx": 38,
+            "version": 3
           },
           "version": 1
         },
@@ -7360,10 +7360,10 @@
     "node_finder": null,
     "pan_zoom": {
       "pan": {
-        "x": -311.0,
-        "y": 226.0
+        "x": 135.0,
+        "y": 230.0
       },
-      "zoom": 0.0
+      "zoom": 11.0
     },
     "_user_state": null
   },

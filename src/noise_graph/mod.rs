@@ -104,37 +104,29 @@ impl NodeDataTrait for NodeData {
         &self,
         ui: &mut egui::Ui,
         node_id: NodeId,
-        _graph: &Graph<NodeData, ConnectionType, NodeAttribute>,
+        graph: &Graph<NodeData, ConnectionType, NodeAttribute>,
         user_state: &mut Self::UserState,
     ) -> Vec<NodeResponse<MyResponse, NodeData>>
     where
         MyResponse: UserResponseTrait,
     {
-        // This logic is entirely up to the user. In this case, we check if the
-        // current node we're drawing is the active one, by comparing against
-        // the value stored in the global user state, and draw different button
-        // UIs based on that.
-
         let mut responses = vec![];
         let is_active = user_state
             .active_node
             .map(|id| id == node_id)
             .unwrap_or(false);
-
-        // Pressing the button will emit a custom user response to either set,
-        // or clear the active node. These responses do nothing by themselves,
-        // the library only makes the responses available to you after the graph
-        // has been drawn. See below at the update method for an example.
-        if !is_active {
-            if ui.button("👁 Set active").clicked() {
-                responses.push(NodeResponse::User(MyResponse::SetActiveNode(node_id)));
-            }
-        } else {
-            let button =
-                egui::Button::new(egui::RichText::new("👁 Active").color(egui::Color32::BLACK))
-                    .fill(egui::Color32::GOLD);
-            if ui.add(button).clicked() {
-                responses.push(NodeResponse::User(MyResponse::ClearActiveNode));
+        if graph[node_id].outputs(graph).any(|output| output.typ == ConnectionType::Noise) {
+            if !is_active {
+                if ui.button("👁 Set active").clicked() {
+                    responses.push(NodeResponse::User(MyResponse::SetActiveNode(node_id)));
+                }
+            } else {
+                let button =
+                    egui::Button::new(egui::RichText::new("👁 Active").color(egui::Color32::BLACK))
+                        .fill(egui::Color32::GOLD);
+                if ui.add(button).clicked() {
+                    responses.push(NodeResponse::User(MyResponse::ClearActiveNode));
+                }
             }
         }
 
