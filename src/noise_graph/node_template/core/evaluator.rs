@@ -7,7 +7,7 @@ use noise::{
 use crate::noise_graph::{
     node_attribute::{NodeAttribute, NoiseType, Operator},
     node_template::{
-        arithmetic::Arithmetic, cache::SyncCache, float::Float, NodeImpl, NodeTemplate, worley::SyncWorley,
+        arithmetic::Arithmetic, cache::SyncCache, float::Float, NodeImpl, NodeTemplate, worley::SyncWorley, scale::Scale,
     },
     DynNoiseFn, NoiseGraph, OutputsCache,
 };
@@ -48,6 +48,7 @@ pub fn evaluate_node(
         NodeTemplate::Power => Power::evaluate(evaluator),
         NodeTemplate::RidgedMulti => RidgedMulti::evaluate(evaluator),
         NodeTemplate::RotatePoint => RotatePoint::evaluate(evaluator),
+        NodeTemplate::Scale => Scale::evaluate(evaluator),
         NodeTemplate::ScaleBias => ScaleBias::evaluate(evaluator),
         NodeTemplate::ScalePoint => ScalePoint::evaluate(evaluator),
         NodeTemplate::Select => Select::evaluate(evaluator),

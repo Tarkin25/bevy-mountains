@@ -20,9 +20,9 @@ struct GradientPoint {
 };
 
 var<private> gradient_points: array<GradientPoint, 3> = array<GradientPoint, 3>(
-    GradientPoint(vec4<f32>(0.0, 0.0, 1.0, 1.0), -100.0),
-    GradientPoint(vec4<f32>(0.0, 1.0, 0.0, 1.0), -50.0),
-    GradientPoint(vec4<f32>(0.3, 0.3, 0.3, 1.0), 100.0),
+    GradientPoint(vec4<f32>(0.0, 0.0, 0.0, 1.0), -1.0),
+    GradientPoint(vec4<f32>(0.5, 0.5, 0.5, 1.0), 0.0),
+    GradientPoint(vec4<f32>(1.0, 1.0, 1.0, 1.0), 1.0),
 );
 
 @fragment

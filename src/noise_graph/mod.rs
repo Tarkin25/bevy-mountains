@@ -12,7 +12,7 @@ use bevy_egui::{egui, EguiContext};
 use egui_node_graph::{
     Graph, GraphEditorState, NodeDataTrait, NodeId, NodeResponse, OutputId, UserResponseTrait,
 };
-use noise::{Checkerboard, NoiseFn};
+use noise::{Checkerboard, NoiseFn, utils::{PlaneMapBuilder, NoiseMapBuilder, ImageRenderer, ColorGradient}};
 use serde::{Deserialize, Serialize};
 
 use crate::pause::GameState;
@@ -74,6 +74,7 @@ pub struct NodeData {
 pub enum MyResponse {
     SetActiveNode(NodeId),
     ClearActiveNode,
+    SaveImage,
 }
 
 /// The graph 'global' state. This state struct is passed around to the node and
@@ -127,6 +128,9 @@ impl NodeDataTrait for NodeData {
                 if ui.add(button).clicked() {
                     responses.push(NodeResponse::User(MyResponse::ClearActiveNode));
                 }
+                if ui.button("Save image").clicked() {
+                    responses.push(NodeResponse::User(MyResponse::SaveImage));
+                }
             }
         }
 
@@ -173,6 +177,26 @@ impl NoiseGraphResource {
         writer.flush().context("Unable to save file")
     }
 
+    fn save_image(&self) -> anyhow::Result<()> {        
+        let node = self.user_state.active_node.map(|id| &self.state.graph[id]).ok_or(anyhow::anyhow!("No active node"))?;
+        let name = match self.state.graph.get_input(node.get_input("name")?).value() {
+            NodeAttribute::Name(name) => name,
+            _ => anyhow::bail!("Node doesn't have a name")
+        };
+
+        let half_bounds = 2048.0;
+        let size = 1024;
+        let map = PlaneMapBuilder::new(self.get_noise_fn())
+        .set_size(size, size)
+        .set_x_bounds(-half_bounds, half_bounds)
+        .set_y_bounds(-half_bounds, half_bounds)
+        .build();
+
+        ImageRenderer::new().set_gradient(ColorGradient::new().build_terrain_gradient()).render(&map).write_to_file(&format!("{name}.png"));
+        
+        Ok(())
+    }
+
     pub fn get_noise_fn(&self) -> DynNoiseFn {        
         self.user_state
             .current_noise
@@ -196,9 +220,27 @@ impl NoiseGraphResource {
                 match user_event {
                     MyResponse::SetActiveNode(node) => self.user_state.active_node = Some(node),
                     MyResponse::ClearActiveNode => self.user_state.active_node = None,
+                    MyResponse::SaveImage =>  {
+                        self.update_current_noise();
+                        
+                        if let Err(e) = self.save_image() {
+                            error!("{e}");
+                            Self::debug_text(ctx, e)
+                        }
+                    }
                 }
             }
         }
+    }
+
+    fn debug_text(ctx: &egui::Context, text: impl ToString) {
+        ctx.debug_painter().text(
+            egui::pos2(10.0, 35.0),
+            egui::Align2::LEFT_TOP,
+            text,
+            egui::TextStyle::Button.resolve(&ctx.style()),
+            egui::Color32::WHITE,
+        );
     }
 
     fn update_current_noise(&mut self) {

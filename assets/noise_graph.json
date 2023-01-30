@@ -7,202 +7,72 @@
           "version": 0
         },
         {
-          "value": {
-            "id": {
-              "idx": 1,
-              "version": 1
-            },
-            "label": "Float",
-            "inputs": [
-              [
-                "New Node",
-                {
-                  "idx": 1,
-                  "version": 1
-                }
-              ],
-              [
-                "value",
-                {
-                  "idx": 2,
-                  "version": 1
-                }
-              ]
-            ],
-            "outputs": [
-              [
-                "out",
-                {
-                  "idx": 1,
-                  "version": 1
-                }
-              ]
-            ],
-            "user_data": {
-              "template": "Float"
-            }
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 2,
-              "version": 5
-            },
-            "label": "RidgedMulti",
-            "inputs": [
-              [
-                "New Node",
-                {
-                  "idx": 4,
-                  "version": 5
-                }
-              ],
-              [
-                "noise type",
-                {
-                  "idx": 5,
-                  "version": 5
-                }
-              ],
-              [
-                "octaves",
-                {
-                  "idx": 6,
-                  "version": 5
-                }
-              ],
-              [
-                "frequency",
-                {
-                  "idx": 7,
-                  "version": 5
-                }
-              ],
-              [
-                "lacunarity",
-                {
-                  "idx": 8,
-                  "version": 5
-                }
-              ],
-              [
-                "persistence",
-                {
-                  "idx": 9,
-                  "version": 5
-                }
-              ],
-              [
-                "attenuation",
-                {
-                  "idx": 3,
-                  "version": 3
-                }
-              ]
-            ],
-            "outputs": [
-              [
-                "out",
-                {
-                  "idx": 2,
-                  "version": 5
-                }
-              ]
-            ],
-            "user_data": {
-              "template": "RidgedMulti"
-            }
-          },
-          "version": 5
+          "value": null,
+          "version": 6
         },
         {
-          "value": {
-            "id": {
-              "idx": 3,
-              "version": 5
-            },
-            "label": "ScaleBias",
-            "inputs": [
-              [
-                "New Node",
-                {
-                  "idx": 17,
-                  "version": 5
-                }
-              ],
-              [
-                "source",
-                {
-                  "idx": 18,
-                  "version": 5
-                }
-              ],
-              [
-                "scale",
-                {
-                  "idx": 19,
-                  "version": 5
-                }
-              ],
-              [
-                "bias",
-                {
-                  "idx": 20,
-                  "version": 5
-                }
-              ]
-            ],
-            "outputs": [
-              [
-                "out",
-                {
-                  "idx": 3,
-                  "version": 5
-                }
-              ]
-            ],
-            "user_data": {
-              "template": "ScaleBias"
-            }
-          },
-          "version": 5
+          "value": null,
+          "version": 8
         },
         {
           "value": {
             "id": {
               "idx": 4,
-              "version": 7
+              "version": 13
             },
-            "label": "ScaleBias",
+            "label": "Select",
             "inputs": [
               [
-                "New Node",
+                "name",
                 {
-                  "idx": 21,
-                  "version": 5
-                }
-              ],
-              [
-                "source",
-                {
-                  "idx": 22,
-                  "version": 5
-                }
-              ],
-              [
-                "scale",
-                {
-                  "idx": 24,
+                  "idx": 12,
                   "version": 7
                 }
               ],
               [
-                "bias",
+                "source 1",
                 {
                   "idx": 23,
-                  "version": 7
+                  "version": 13
+                }
+              ],
+              [
+                "source 2",
+                {
+                  "idx": 24,
+                  "version": 13
+                }
+              ],
+              [
+                "control",
+                {
+                  "idx": 22,
+                  "version": 11
+                }
+              ],
+              [
+                "bounds lower",
+                {
+                  "idx": 16,
+                  "version": 5
+                }
+              ],
+              [
+                "bounds upper",
+                {
+                  "idx": 28,
+                  "version": 11
+                }
+              ],
+              [
+                "falloff",
+                {
+                  "idx": 29,
+                  "version": 11
                 }
               ]
             ],
@@ -211,42 +81,35 @@
                 "out",
                 {
                   "idx": 4,
-                  "version": 7
+                  "version": 13
                 }
               ]
             ],
             "user_data": {
-              "template": "ScaleBias"
+              "template": "Select"
             }
           },
-          "version": 7
+          "version": 13
         },
         {
           "value": {
             "id": {
               "idx": 5,
-              "version": 11
+              "version": 15
             },
-            "label": "Curve",
+            "label": "Constant",
             "inputs": [
               [
-                "New Node",
+                "name",
                 {
-                  "idx": 27,
-                  "version": 13
+                  "idx": 31,
+                  "version": 15
                 }
               ],
               [
-                "source",
+                "value",
                 {
-                  "idx": 26,
-                  "version": 13
-                }
-              ],
-              [
-                "control points",
-                {
-                  "idx": 25,
+                  "idx": 30,
                   "version": 13
                 }
               ]
@@ -256,64 +119,43 @@
                 "out",
                 {
                   "idx": 5,
-                  "version": 11
+                  "version": 15
                 }
               ]
             ],
             "user_data": {
-              "template": "Curve"
+              "template": "Constant"
             }
           },
-          "version": 11
+          "version": 15
         },
         {
           "value": {
             "id": {
               "idx": 6,
-              "version": 11
+              "version": 13
             },
-            "label": "ScalePoint",
+            "label": "Scale",
             "inputs": [
               [
-                "New Node",
+                "name",
                 {
-                  "idx": 33,
-                  "version": 11
+                  "idx": 13,
+                  "version": 5
                 }
               ],
               [
                 "source",
                 {
-                  "idx": 32,
-                  "version": 11
+                  "idx": 14,
+                  "version": 5
                 }
               ],
               [
-                "x",
+                "scale",
                 {
-                  "idx": 31,
-                  "version": 11
-                }
-              ],
-              [
-                "y",
-                {
-                  "idx": 30,
-                  "version": 9
-                }
-              ],
-              [
-                "z",
-                {
-                  "idx": 29,
-                  "version": 9
-                }
-              ],
-              [
-                "u",
-                {
-                  "idx": 28,
-                  "version": 9
+                  "idx": 15,
+                  "version": 5
                 }
               ]
             ],
@@ -322,29 +164,43 @@
                 "out",
                 {
                   "idx": 6,
-                  "version": 11
+                  "version": 13
                 }
               ]
             ],
             "user_data": {
-              "template": "ScalePoint"
+              "template": "Scale"
             }
           },
-          "version": 11
+          "version": 13
         },
         {
           "value": {
             "id": {
               "idx": 7,
-              "version": 9
+              "version": 11
             },
-            "label": "SuperSimplex",
+            "label": "Add",
             "inputs": [
               [
-                "New Node",
+                "name",
                 {
-                  "idx": 34,
-                  "version": 9
+                  "idx": 32,
+                  "version": 13
+                }
+              ],
+              [
+                "source 1",
+                {
+                  "idx": 33,
+                  "version": 13
+                }
+              ],
+              [
+                "source 2",
+                {
+                  "idx": 25,
+                  "version": 15
                 }
               ]
             ],
@@ -353,15 +209,15 @@
                 "out",
                 {
                   "idx": 7,
-                  "version": 9
+                  "version": 11
                 }
               ]
             ],
             "user_data": {
-              "template": "SuperSimplex"
+              "template": "Add"
             }
           },
-          "version": 9
+          "version": 11
         },
         {
           "value": {
@@ -372,7 +228,7 @@
             "label": "Min",
             "inputs": [
               [
-                "New Node",
+                "name",
                 {
                   "idx": 129,
                   "version": 1
@@ -409,466 +265,67 @@
           "version": 7
         },
         {
-          "value": {
-            "id": {
-              "idx": 9,
-              "version": 7
-            },
-            "label": "ScaleBias",
-            "inputs": [
-              [
-                "New Node",
-                {
-                  "idx": 42,
-                  "version": 5
-                }
-              ],
-              [
-                "source",
-                {
-                  "idx": 41,
-                  "version": 5
-                }
-              ],
-              [
-                "scale",
-                {
-                  "idx": 40,
-                  "version": 5
-                }
-              ],
-              [
-                "bias",
-                {
-                  "idx": 39,
-                  "version": 7
-                }
-              ]
-            ],
-            "outputs": [
-              [
-                "out",
-                {
-                  "idx": 9,
-                  "version": 7
-                }
-              ]
-            ],
-            "user_data": {
-              "template": "ScaleBias"
-            }
-          },
-          "version": 7
+          "value": null,
+          "version": 8
         },
         {
-          "value": {
-            "id": {
-              "idx": 10,
-              "version": 1
-            },
-            "label": "ScaleBias",
-            "inputs": [
-              [
-                "New Node",
-                {
-                  "idx": 45,
-                  "version": 1
-                }
-              ],
-              [
-                "source",
-                {
-                  "idx": 46,
-                  "version": 1
-                }
-              ],
-              [
-                "scale",
-                {
-                  "idx": 47,
-                  "version": 1
-                }
-              ],
-              [
-                "bias",
-                {
-                  "idx": 48,
-                  "version": 1
-                }
-              ]
-            ],
-            "outputs": [
-              [
-                "out",
-                {
-                  "idx": 10,
-                  "version": 1
-                }
-              ]
-            ],
-            "user_data": {
-              "template": "ScaleBias"
-            }
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 11,
-              "version": 1
-            },
-            "label": "Arithmetic",
-            "inputs": [
-              [
-                "New Node",
-                {
-                  "idx": 49,
-                  "version": 1
-                }
-              ],
-              [
-                "operator",
-                {
-                  "idx": 50,
-                  "version": 1
-                }
-              ],
-              [
-                "a",
-                {
-                  "idx": 51,
-                  "version": 1
-                }
-              ],
-              [
-                "b",
-                {
-                  "idx": 52,
-                  "version": 1
-                }
-              ]
-            ],
-            "outputs": [
-              [
-                "out",
-                {
-                  "idx": 11,
-                  "version": 1
-                }
-              ]
-            ],
-            "user_data": {
-              "template": "Arithmetic"
-            }
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 12,
-              "version": 1
-            },
-            "label": "ScalePoint",
-            "inputs": [
-              [
-                "New Node",
-                {
-                  "idx": 53,
-                  "version": 1
-                }
-              ],
-              [
-                "source",
-                {
-                  "idx": 54,
-                  "version": 1
-                }
-              ],
-              [
-                "x",
-                {
-                  "idx": 55,
-                  "version": 1
-                }
-              ],
-              [
-                "y",
-                {
-                  "idx": 56,
-                  "version": 1
-                }
-              ],
-              [
-                "z",
-                {
-                  "idx": 57,
-                  "version": 1
-                }
-              ],
-              [
-                "u",
-                {
-                  "idx": 58,
-                  "version": 1
-                }
-              ]
-            ],
-            "outputs": [
-              [
-                "out",
-                {
-                  "idx": 12,
-                  "version": 1
-                }
-              ]
-            ],
-            "user_data": {
-              "template": "ScalePoint"
-            }
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 13,
-              "version": 1
-            },
-            "label": "Arithmetic",
-            "inputs": [
-              [
-                "New Node",
-                {
-                  "idx": 59,
-                  "version": 1
-                }
-              ],
-              [
-                "operator",
-                {
-                  "idx": 60,
-                  "version": 1
-                }
-              ],
-              [
-                "a",
-                {
-                  "idx": 61,
-                  "version": 1
-                }
-              ],
-              [
-                "b",
-                {
-                  "idx": 62,
-                  "version": 1
-                }
-              ]
-            ],
-            "outputs": [
-              [
-                "out",
-                {
-                  "idx": 13,
-                  "version": 1
-                }
-              ]
-            ],
-            "user_data": {
-              "template": "Arithmetic"
-            }
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 14,
-              "version": 3
-            },
-            "label": "Fbm",
-            "inputs": [
-              [
-                "New Node",
-                {
-                  "idx": 66,
-                  "version": 3
-                }
-              ],
-              [
-                "noise type",
-                {
-                  "idx": 65,
-                  "version": 3
-                }
-              ],
-              [
-                "octaves",
-                {
-                  "idx": 64,
-                  "version": 3
-                }
-              ],
-              [
-                "frequency",
-                {
-                  "idx": 63,
-                  "version": 3
-                }
-              ],
-              [
-                "lacunarity",
-                {
-                  "idx": 44,
-                  "version": 5
-                }
-              ],
-              [
-                "persistence",
-                {
-                  "idx": 43,
-                  "version": 5
-                }
-              ]
-            ],
-            "outputs": [
-              [
-                "out",
-                {
-                  "idx": 14,
-                  "version": 3
-                }
-              ]
-            ],
-            "user_data": {
-              "template": "Fbm"
-            }
-          },
-          "version": 3
+          "value": null,
+          "version": 4
         },
         {
-          "value": {
-            "id": {
-              "idx": 15,
-              "version": 3
-            },
-            "label": "Turbulence",
-            "inputs": [
-              [
-                "New Node",
-                {
-                  "idx": 73,
-                  "version": 3
-                }
-              ],
-              [
-                "source",
-                {
-                  "idx": 72,
-                  "version": 3
-                }
-              ],
-              [
-                "noise type",
-                {
-                  "idx": 71,
-                  "version": 3
-                }
-              ],
-              [
-                "frequency",
-                {
-                  "idx": 70,
-                  "version": 3
-                }
-              ],
-              [
-                "power",
-                {
-                  "idx": 69,
-                  "version": 3
-                }
-              ],
-              [
-                "roughness",
-                {
-                  "idx": 68,
-                  "version": 3
-                }
-              ]
-            ],
-            "outputs": [
-              [
-                "out",
-                {
-                  "idx": 15,
-                  "version": 3
-                }
-              ]
-            ],
-            "user_data": {
-              "template": "Turbulence"
-            }
-          },
-          "version": 3
+          "value": null,
+          "version": 4
         },
         {
           "value": {
             "id": {
               "idx": 16,
-              "version": 9
+              "version": 13
             },
-            "label": "Select",
+            "label": "ScaleBias",
             "inputs": [
               [
-                "New Node",
-                {
-                  "idx": 79,
-                  "version": 15
-                }
-              ],
-              [
-                "source 1",
+                "name",
                 {
                   "idx": 80,
-                  "version": 15
-                }
-              ],
-              [
-                "source 2",
-                {
-                  "idx": 82,
                   "version": 19
                 }
               ],
               [
-                "control",
+                "source",
                 {
-                  "idx": 106,
+                  "idx": 82,
+                  "version": 23
+                }
+              ],
+              [
+                "scale",
+                {
+                  "idx": 79,
                   "version": 17
                 }
               ],
               [
-                "bounds lower",
+                "bias",
                 {
-                  "idx": 78,
-                  "version": 13
-                }
-              ],
-              [
-                "bounds upper",
-                {
-                  "idx": 75,
-                  "version": 11
-                }
-              ],
-              [
-                "falloff",
-                {
-                  "idx": 74,
-                  "version": 11
+                  "idx": 68,
+                  "version": 5
                 }
               ]
             ],
@@ -877,59 +334,7 @@
                 "out",
                 {
                   "idx": 16,
-                  "version": 9
-                }
-              ]
-            ],
-            "user_data": {
-              "template": "Select"
-            }
-          },
-          "version": 9
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 17,
-              "version": 17
-            },
-            "label": "ScaleBias",
-            "inputs": [
-              [
-                "New Node",
-                {
-                  "idx": 77,
-                  "version": 15
-                }
-              ],
-              [
-                "source",
-                {
-                  "idx": 76,
-                  "version": 15
-                }
-              ],
-              [
-                "scale",
-                {
-                  "idx": 103,
-                  "version": 15
-                }
-              ],
-              [
-                "bias",
-                {
-                  "idx": 81,
-                  "version": 15
-                }
-              ]
-            ],
-            "outputs": [
-              [
-                "out",
-                {
-                  "idx": 17,
-                  "version": 17
+                  "version": 13
                 }
               ]
             ],
@@ -937,340 +342,91 @@
               "template": "ScaleBias"
             }
           },
-          "version": 17
+          "version": 13
         },
         {
-          "value": {
-            "id": {
-              "idx": 18,
-              "version": 11
-            },
-            "label": "RidgedMulti",
-            "inputs": [
-              [
-                "New Node",
-                {
-                  "idx": 90,
-                  "version": 9
-                }
-              ],
-              [
-                "noise type",
-                {
-                  "idx": 89,
-                  "version": 9
-                }
-              ],
-              [
-                "octaves",
-                {
-                  "idx": 88,
-                  "version": 9
-                }
-              ],
-              [
-                "frequency",
-                {
-                  "idx": 87,
-                  "version": 9
-                }
-              ],
-              [
-                "lacunarity",
-                {
-                  "idx": 86,
-                  "version": 9
-                }
-              ],
-              [
-                "persistence",
-                {
-                  "idx": 85,
-                  "version": 9
-                }
-              ],
-              [
-                "attenuation",
-                {
-                  "idx": 84,
-                  "version": 11
-                }
-              ]
-            ],
-            "outputs": [
-              [
-                "out",
-                {
-                  "idx": 18,
-                  "version": 11
-                }
-              ]
-            ],
-            "user_data": {
-              "template": "RidgedMulti"
-            }
-          },
-          "version": 11
+          "value": null,
+          "version": 18
         },
         {
-          "value": {
-            "id": {
-              "idx": 19,
-              "version": 17
-            },
-            "label": "Exponent",
-            "inputs": [
-              [
-                "New Node",
-                {
-                  "idx": 107,
-                  "version": 19
-                }
-              ],
-              [
-                "source",
-                {
-                  "idx": 108,
-                  "version": 19
-                }
-              ],
-              [
-                "exponent",
-                {
-                  "idx": 105,
-                  "version": 15
-                }
-              ]
-            ],
-            "outputs": [
-              [
-                "out",
-                {
-                  "idx": 20,
-                  "version": 15
-                }
-              ]
-            ],
-            "user_data": {
-              "template": "Exponent"
-            }
-          },
-          "version": 17
+          "value": null,
+          "version": 12
         },
         {
-          "value": {
-            "id": {
-              "idx": 20,
-              "version": 5
-            },
-            "label": "ScalePoint",
-            "inputs": [
-              [
-                "New Node",
-                {
-                  "idx": 96,
-                  "version": 5
-                }
-              ],
-              [
-                "source",
-                {
-                  "idx": 97,
-                  "version": 5
-                }
-              ],
-              [
-                "x",
-                {
-                  "idx": 94,
-                  "version": 5
-                }
-              ],
-              [
-                "y",
-                {
-                  "idx": 98,
-                  "version": 5
-                }
-              ],
-              [
-                "z",
-                {
-                  "idx": 99,
-                  "version": 5
-                }
-              ],
-              [
-                "u",
-                {
-                  "idx": 91,
-                  "version": 9
-                }
-              ]
-            ],
-            "outputs": [
-              [
-                "out",
-                {
-                  "idx": 19,
-                  "version": 5
-                }
-              ]
-            ],
-            "user_data": {
-              "template": "ScalePoint"
-            }
-          },
-          "version": 5
+          "value": null,
+          "version": 18
         },
         {
-          "value": {
-            "id": {
-              "idx": 21,
-              "version": 3
-            },
-            "label": "Add",
-            "inputs": [
-              [
-                "New Node",
-                {
-                  "idx": 92,
-                  "version": 9
-                }
-              ],
-              [
-                "source 1",
-                {
-                  "idx": 93,
-                  "version": 9
-                }
-              ],
-              [
-                "source 2",
-                {
-                  "idx": 67,
-                  "version": 3
-                }
-              ]
-            ],
-            "outputs": [
-              [
-                "out",
-                {
-                  "idx": 21,
-                  "version": 3
-                }
-              ]
-            ],
-            "user_data": {
-              "template": "Add"
-            }
-          },
-          "version": 3
+          "value": null,
+          "version": 6
         },
         {
-          "value": {
-            "id": {
-              "idx": 22,
-              "version": 5
-            },
-            "label": "SuperSimplex",
-            "inputs": [
-              [
-                "New Node",
-                {
-                  "idx": 95,
-                  "version": 5
-                }
-              ]
-            ],
-            "outputs": [
-              [
-                "out",
-                {
-                  "idx": 22,
-                  "version": 5
-                }
-              ]
-            ],
-            "user_data": {
-              "template": "SuperSimplex"
-            }
-          },
-          "version": 5
+          "value": null,
+          "version": 4
         },
         {
-          "value": {
-            "id": {
-              "idx": 23,
-              "version": 11
-            },
-            "label": "Exponent",
-            "inputs": [
-              [
-                "New Node",
-                {
-                  "idx": 102,
-                  "version": 11
-                }
-              ],
-              [
-                "source",
-                {
-                  "idx": 101,
-                  "version": 11
-                }
-              ],
-              [
-                "exponent",
-                {
-                  "idx": 100,
-                  "version": 11
-                }
-              ]
-            ],
-            "outputs": [
-              [
-                "out",
-                {
-                  "idx": 23,
-                  "version": 11
-                }
-              ]
-            ],
-            "user_data": {
-              "template": "Exponent"
-            }
-          },
-          "version": 11
+          "value": null,
+          "version": 6
+        },
+        {
+          "value": null,
+          "version": 12
         },
         {
           "value": {
             "id": {
               "idx": 24,
-              "version": 25
+              "version": 27
             },
-            "label": "Add",
+            "label": "RidgedMulti",
             "inputs": [
               [
-                "New Node",
-                {
-                  "idx": 104,
-                  "version": 15
-                }
-              ],
-              [
-                "source 1",
-                {
-                  "idx": 109,
-                  "version": 23
-                }
-              ],
-              [
-                "source 2",
+                "name",
                 {
                   "idx": 83,
+                  "version": 17
+                }
+              ],
+              [
+                "noise type",
+                {
+                  "idx": 109,
+                  "version": 25
+                }
+              ],
+              [
+                "octaves",
+                {
+                  "idx": 104,
+                  "version": 17
+                }
+              ],
+              [
+                "frequency",
+                {
+                  "idx": 74,
+                  "version": 13
+                }
+              ],
+              [
+                "lacunarity",
+                {
+                  "idx": 75,
+                  "version": 13
+                }
+              ],
+              [
+                "persistence",
+                {
+                  "idx": 78,
                   "version": 15
+                }
+              ],
+              [
+                "attenuation",
+                {
+                  "idx": 106,
+                  "version": 19
                 }
               ]
             ],
@@ -1279,50 +435,43 @@
                 "out",
                 {
                   "idx": 24,
-                  "version": 25
+                  "version": 27
                 }
               ]
             ],
             "user_data": {
-              "template": "Add"
+              "template": "RidgedMulti"
             }
           },
-          "version": 25
+          "version": 27
         },
         {
           "value": {
             "id": {
               "idx": 25,
-              "version": 1
+              "version": 3
             },
-            "label": "Clamp",
+            "label": "Scale",
             "inputs": [
               [
-                "New Node",
+                "name",
                 {
-                  "idx": 16,
+                  "idx": 110,
                   "version": 3
                 }
               ],
               [
                 "source",
                 {
-                  "idx": 15,
-                  "version": 3
+                  "idx": 10,
+                  "version": 5
                 }
               ],
               [
-                "bounds lower",
+                "scale",
                 {
-                  "idx": 14,
-                  "version": 3
-                }
-              ],
-              [
-                "bounds upper",
-                {
-                  "idx": 13,
-                  "version": 3
+                  "idx": 11,
+                  "version": 5
                 }
               ]
             ],
@@ -1331,88 +480,19 @@
                 "out",
                 {
                   "idx": 25,
-                  "version": 1
+                  "version": 3
                 }
               ]
             ],
             "user_data": {
-              "template": "Clamp"
+              "template": "Scale"
             }
           },
-          "version": 1
+          "version": 3
         },
         {
-          "value": {
-            "id": {
-              "idx": 26,
-              "version": 1
-            },
-            "label": "Select",
-            "inputs": [
-              [
-                "New Node",
-                {
-                  "idx": 12,
-                  "version": 3
-                }
-              ],
-              [
-                "source 1",
-                {
-                  "idx": 11,
-                  "version": 3
-                }
-              ],
-              [
-                "source 2",
-                {
-                  "idx": 10,
-                  "version": 3
-                }
-              ],
-              [
-                "control",
-                {
-                  "idx": 110,
-                  "version": 1
-                }
-              ],
-              [
-                "bounds lower",
-                {
-                  "idx": 111,
-                  "version": 1
-                }
-              ],
-              [
-                "bounds upper",
-                {
-                  "idx": 112,
-                  "version": 1
-                }
-              ],
-              [
-                "falloff",
-                {
-                  "idx": 113,
-                  "version": 1
-                }
-              ]
-            ],
-            "outputs": [
-              [
-                "out",
-                {
-                  "idx": 26,
-                  "version": 1
-                }
-              ]
-            ],
-            "user_data": {
-              "template": "Select"
-            }
-          },
-          "version": 1
+          "value": null,
+          "version": 4
         },
         {
           "value": {
@@ -1423,7 +503,7 @@
             "label": "ScaleBias",
             "inputs": [
               [
-                "New Node",
+                "name",
                 {
                   "idx": 37,
                   "version": 7
@@ -1475,7 +555,7 @@
             "label": "Fbm",
             "inputs": [
               [
-                "New Node",
+                "name",
                 {
                   "idx": 118,
                   "version": 3
@@ -1541,7 +621,7 @@
             "label": "Curve",
             "inputs": [
               [
-                "New Node",
+                "name",
                 {
                   "idx": 121,
                   "version": 3
@@ -1586,7 +666,7 @@
             "label": "Fbm",
             "inputs": [
               [
-                "New Node",
+                "name",
                 {
                   "idx": 127,
                   "version": 5
@@ -1652,7 +732,7 @@
             "label": "Float",
             "inputs": [
               [
-                "New Node",
+                "name",
                 {
                   "idx": 132,
                   "version": 1
@@ -1690,7 +770,7 @@
             "label": "Arithmetic",
             "inputs": [
               [
-                "New Node",
+                "name",
                 {
                   "idx": 134,
                   "version": 1
@@ -1742,7 +822,7 @@
             "label": "Clamp",
             "inputs": [
               [
-                "New Node",
+                "name",
                 {
                   "idx": 138,
                   "version": 1
@@ -1794,7 +874,7 @@
             "label": "Turbulence",
             "inputs": [
               [
-                "New Node",
+                "name",
                 {
                   "idx": 142,
                   "version": 1
@@ -1860,7 +940,7 @@
             "label": "Arithmetic",
             "inputs": [
               [
-                "New Node",
+                "name",
                 {
                   "idx": 148,
                   "version": 1
@@ -1912,7 +992,7 @@
             "label": "Arithmetic",
             "inputs": [
               [
-                "New Node",
+                "name",
                 {
                   "idx": 152,
                   "version": 1
@@ -1956,18 +1036,80 @@
           "version": 1
         },
         {
+          "value": null,
+          "version": 6
+        },
+        {
+          "value": null,
+          "version": 4
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
           "value": {
             "id": {
-              "idx": 37,
-              "version": 5
+              "idx": 42,
+              "version": 1
             },
-            "label": "SuperSimplex",
+            "label": "Select",
             "inputs": [
               [
-                "New Node",
+                "name",
                 {
-                  "idx": 156,
-                  "version": 5
+                  "idx": 172,
+                  "version": 1
+                }
+              ],
+              [
+                "source 1",
+                {
+                  "idx": 173,
+                  "version": 1
+                }
+              ],
+              [
+                "source 2",
+                {
+                  "idx": 174,
+                  "version": 1
+                }
+              ],
+              [
+                "control",
+                {
+                  "idx": 175,
+                  "version": 1
+                }
+              ],
+              [
+                "bounds lower",
+                {
+                  "idx": 176,
+                  "version": 1
+                }
+              ],
+              [
+                "bounds upper",
+                {
+                  "idx": 177,
+                  "version": 1
+                }
+              ],
+              [
+                "falloff",
+                {
+                  "idx": 178,
+                  "version": 1
                 }
               ]
             ],
@@ -1975,44 +1117,44 @@
               [
                 "out",
                 {
-                  "idx": 37,
-                  "version": 5
+                  "idx": 42,
+                  "version": 1
                 }
               ]
             ],
             "user_data": {
-              "template": "SuperSimplex"
+              "template": "Select"
             }
           },
-          "version": 5
+          "version": 1
         },
         {
           "value": {
             "id": {
-              "idx": 38,
+              "idx": 43,
               "version": 3
             },
             "label": "Add",
             "inputs": [
               [
-                "New Node",
+                "name",
                 {
-                  "idx": 159,
+                  "idx": 180,
                   "version": 3
                 }
               ],
               [
                 "source 1",
                 {
-                  "idx": 158,
+                  "idx": 179,
                   "version": 3
                 }
               ],
               [
                 "source 2",
                 {
-                  "idx": 157,
-                  "version": 5
+                  "idx": 171,
+                  "version": 3
                 }
               ]
             ],
@@ -2020,7 +1162,7 @@
               [
                 "out",
                 {
-                  "idx": 38,
+                  "idx": 43,
                   "version": 3
                 }
               ]
@@ -2034,103 +1176,37 @@
         {
           "value": {
             "id": {
-              "idx": 39,
-              "version": 1
-            },
-            "label": "ScalePoint",
-            "inputs": [
-              [
-                "New Node",
-                {
-                  "idx": 160,
-                  "version": 1
-                }
-              ],
-              [
-                "source",
-                {
-                  "idx": 161,
-                  "version": 1
-                }
-              ],
-              [
-                "x",
-                {
-                  "idx": 162,
-                  "version": 1
-                }
-              ],
-              [
-                "y",
-                {
-                  "idx": 163,
-                  "version": 1
-                }
-              ],
-              [
-                "z",
-                {
-                  "idx": 164,
-                  "version": 1
-                }
-              ],
-              [
-                "u",
-                {
-                  "idx": 165,
-                  "version": 1
-                }
-              ]
-            ],
-            "outputs": [
-              [
-                "out",
-                {
-                  "idx": 39,
-                  "version": 1
-                }
-              ]
-            ],
-            "user_data": {
-              "template": "ScalePoint"
-            }
-          },
-          "version": 1
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 40,
-              "version": 1
+              "idx": 44,
+              "version": 3
             },
             "label": "ScaleBias",
             "inputs": [
               [
-                "New Node",
+                "name",
                 {
-                  "idx": 166,
-                  "version": 1
+                  "idx": 184,
+                  "version": 3
                 }
               ],
               [
                 "source",
                 {
-                  "idx": 167,
-                  "version": 1
+                  "idx": 183,
+                  "version": 3
                 }
               ],
               [
                 "scale",
                 {
-                  "idx": 168,
-                  "version": 1
+                  "idx": 182,
+                  "version": 3
                 }
               ],
               [
                 "bias",
                 {
-                  "idx": 169,
-                  "version": 1
+                  "idx": 181,
+                  "version": 3
                 }
               ]
             ],
@@ -2138,8 +1214,8 @@
               [
                 "out",
                 {
-                  "idx": 40,
-                  "version": 1
+                  "idx": 44,
+                  "version": 3
                 }
               ]
             ],
@@ -2147,28 +1223,63 @@
               "template": "ScaleBias"
             }
           },
-          "version": 1
+          "version": 3
         },
         {
           "value": {
             "id": {
-              "idx": 41,
-              "version": 1
+              "idx": 45,
+              "version": 3
             },
-            "label": "Abs",
+            "label": "RidgedMulti",
             "inputs": [
               [
-                "New Node",
+                "name",
                 {
-                  "idx": 170,
-                  "version": 1
+                  "idx": 191,
+                  "version": 3
                 }
               ],
               [
-                "source",
+                "noise type",
                 {
-                  "idx": 171,
-                  "version": 1
+                  "idx": 190,
+                  "version": 3
+                }
+              ],
+              [
+                "octaves",
+                {
+                  "idx": 189,
+                  "version": 3
+                }
+              ],
+              [
+                "frequency",
+                {
+                  "idx": 188,
+                  "version": 3
+                }
+              ],
+              [
+                "lacunarity",
+                {
+                  "idx": 187,
+                  "version": 3
+                }
+              ],
+              [
+                "persistence",
+                {
+                  "idx": 186,
+                  "version": 3
+                }
+              ],
+              [
+                "attenuation",
+                {
+                  "idx": 185,
+                  "version": 3
                 }
               ]
             ],
@@ -2176,16 +1287,113 @@
               [
                 "out",
                 {
-                  "idx": 41,
-                  "version": 1
+                  "idx": 45,
+                  "version": 3
                 }
               ]
             ],
             "user_data": {
-              "template": "Abs"
+              "template": "RidgedMulti"
             }
           },
-          "version": 1
+          "version": 3
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 46,
+              "version": 3
+            },
+            "label": "ScaleBias",
+            "inputs": [
+              [
+                "name",
+                {
+                  "idx": 195,
+                  "version": 9
+                }
+              ],
+              [
+                "source",
+                {
+                  "idx": 194,
+                  "version": 5
+                }
+              ],
+              [
+                "scale",
+                {
+                  "idx": 193,
+                  "version": 5
+                }
+              ],
+              [
+                "bias",
+                {
+                  "idx": 192,
+                  "version": 3
+                }
+              ]
+            ],
+            "outputs": [
+              [
+                "out",
+                {
+                  "idx": 46,
+                  "version": 3
+                }
+              ]
+            ],
+            "user_data": {
+              "template": "ScaleBias"
+            }
+          },
+          "version": 3
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 47,
+              "version": 11
+            },
+            "label": "Exponent",
+            "inputs": [
+              [
+                "name",
+                {
+                  "idx": 198,
+                  "version": 11
+                }
+              ],
+              [
+                "source",
+                {
+                  "idx": 197,
+                  "version": 11
+                }
+              ],
+              [
+                "exponent",
+                {
+                  "idx": 196,
+                  "version": 9
+                }
+              ]
+            ],
+            "outputs": [
+              [
+                "out",
+                {
+                  "idx": 47,
+                  "version": 11
+                }
+              ]
+            ],
+            "user_data": {
+              "template": "Exponent"
+            }
+          },
+          "version": 11
         }
       ],
       "inputs": [
@@ -2194,66 +1402,100 @@
           "version": 0
         },
         {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 4
+        },
+        {
+          "value": null,
+          "version": 6
+        },
+        {
+          "value": null,
+          "version": 6
+        },
+        {
+          "value": null,
+          "version": 6
+        },
+        {
+          "value": null,
+          "version": 6
+        },
+        {
+          "value": null,
+          "version": 6
+        },
+        {
+          "value": null,
+          "version": 6
+        },
+        {
           "value": {
             "id": {
-              "idx": 1,
-              "version": 1
+              "idx": 10,
+              "version": 5
+            },
+            "typ": "Noise",
+            "value": "NoInput",
+            "kind": "ConnectionOnly",
+            "node": {
+              "idx": 25,
+              "version": 3
+            },
+            "shown_inline": true
+          },
+          "version": 5
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 11,
+              "version": 5
+            },
+            "typ": "F64",
+            "value": {
+              "F64": 600.0
+            },
+            "kind": "ConnectionOrConstant",
+            "node": {
+              "idx": 25,
+              "version": 3
+            },
+            "shown_inline": true
+          },
+          "version": 5
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 12,
+              "version": 7
             },
             "typ": "NoConnection",
             "value": {
-              "Name": "Scale"
+              "Name": "New Node"
             },
             "kind": "ConstantOnly",
             "node": {
-              "idx": 1,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 2,
-              "version": 1
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 50.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 1,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 3,
-              "version": 3
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 2.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 2,
-              "version": 5
-            },
-            "shown_inline": true
-          },
-          "version": 3
-        },
-        {
-          "value": {
-            "id": {
               "idx": 4,
+              "version": 13
+            },
+            "shown_inline": true
+          },
+          "version": 7
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 13,
               "version": 5
             },
             "typ": "NoConnection",
@@ -2262,46 +1504,44 @@
             },
             "kind": "ConstantOnly",
             "node": {
-              "idx": 2,
-              "version": 5
-            },
-            "shown_inline": true
-          },
-          "version": 5
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 5,
-              "version": 5
-            },
-            "typ": "NoiseType",
-            "value": {
-              "NoiseType": "Perlin"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 2,
-              "version": 5
-            },
-            "shown_inline": true
-          },
-          "version": 5
-        },
-        {
-          "value": {
-            "id": {
               "idx": 6,
+              "version": 13
+            },
+            "shown_inline": true
+          },
+          "version": 5
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 14,
               "version": 5
             },
-            "typ": "Usize",
+            "typ": "Noise",
+            "value": "NoInput",
+            "kind": "ConnectionOnly",
+            "node": {
+              "idx": 6,
+              "version": 13
+            },
+            "shown_inline": true
+          },
+          "version": 5
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 15,
+              "version": 5
+            },
+            "typ": "F64",
             "value": {
-              "Usize": 4
+              "F64": 10.0
             },
             "kind": "ConnectionOrConstant",
             "node": {
-              "idx": 2,
-              "version": 5
+              "idx": 6,
+              "version": 13
             },
             "shown_inline": true
           },
@@ -2310,7 +1550,7 @@
         {
           "value": {
             "id": {
-              "idx": 7,
+              "idx": 16,
               "version": 5
             },
             "typ": "F64",
@@ -2319,544 +1559,224 @@
             },
             "kind": "ConnectionOrConstant",
             "node": {
-              "idx": 2,
-              "version": 5
-            },
-            "shown_inline": true
-          },
-          "version": 5
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 8,
-              "version": 5
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 2.0943951023931953
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 2,
-              "version": 5
-            },
-            "shown_inline": true
-          },
-          "version": 5
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 9,
-              "version": 5
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 1.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 2,
-              "version": 5
-            },
-            "shown_inline": true
-          },
-          "version": 5
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 10,
-              "version": 3
-            },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
-            "node": {
-              "idx": 26,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 3
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 11,
-              "version": 3
-            },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
-            "node": {
-              "idx": 26,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 3
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 12,
-              "version": 3
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "New Node"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 26,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 3
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 13,
-              "version": 3
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 1.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 25,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 3
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 14,
-              "version": 3
-            },
-            "typ": "F64",
-            "value": {
-              "F64": -1.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 25,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 3
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 15,
-              "version": 3
-            },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
-            "node": {
-              "idx": 25,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 3
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 16,
-              "version": 3
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "New Node"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 25,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 3
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 17,
-              "version": 5
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "New Node"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 3,
-              "version": 5
-            },
-            "shown_inline": true
-          },
-          "version": 5
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 18,
-              "version": 5
-            },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
-            "node": {
-              "idx": 3,
-              "version": 5
-            },
-            "shown_inline": true
-          },
-          "version": 5
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 19,
-              "version": 5
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 0.8
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 3,
-              "version": 5
-            },
-            "shown_inline": true
-          },
-          "version": 5
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 20,
-              "version": 5
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 0.5
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 3,
-              "version": 5
-            },
-            "shown_inline": true
-          },
-          "version": 5
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 21,
-              "version": 5
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "New Node"
-            },
-            "kind": "ConstantOnly",
-            "node": {
               "idx": 4,
-              "version": 7
+              "version": 13
             },
             "shown_inline": true
           },
           "version": 5
+        },
+        {
+          "value": null,
+          "version": 6
+        },
+        {
+          "value": null,
+          "version": 8
+        },
+        {
+          "value": null,
+          "version": 8
+        },
+        {
+          "value": null,
+          "version": 8
+        },
+        {
+          "value": null,
+          "version": 8
         },
         {
           "value": {
             "id": {
               "idx": 22,
-              "version": 5
+              "version": 11
             },
             "typ": "Noise",
             "value": "NoInput",
             "kind": "ConnectionOnly",
             "node": {
               "idx": 4,
-              "version": 7
+              "version": 13
             },
             "shown_inline": true
           },
-          "version": 5
+          "version": 11
         },
         {
           "value": {
             "id": {
               "idx": 23,
-              "version": 7
+              "version": 13
             },
-            "typ": "F64",
-            "value": {
-              "F64": -2.0
-            },
-            "kind": "ConnectionOrConstant",
+            "typ": "Noise",
+            "value": "NoInput",
+            "kind": "ConnectionOnly",
             "node": {
               "idx": 4,
-              "version": 7
+              "version": 13
             },
             "shown_inline": true
           },
-          "version": 7
+          "version": 13
         },
         {
           "value": {
             "id": {
               "idx": 24,
-              "version": 7
+              "version": 13
             },
-            "typ": "F64",
-            "value": {
-              "F64": 0.5
-            },
-            "kind": "ConnectionOrConstant",
+            "typ": "Noise",
+            "value": "NoInput",
+            "kind": "ConnectionOnly",
             "node": {
               "idx": 4,
-              "version": 7
+              "version": 13
             },
             "shown_inline": true
           },
-          "version": 7
+          "version": 13
         },
         {
           "value": {
             "id": {
               "idx": 25,
-              "version": 13
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Vec": {
-                "values": [
-                  {
-                    "F64Tuple": [
-                      1.0,
-                      1.0
-                    ]
-                  },
-                  {
-                    "F64Tuple": [
-                      0.5,
-                      1.0
-                    ]
-                  },
-                  {
-                    "F64Tuple": [
-                      0.25,
-                      0.5
-                    ]
-                  },
-                  {
-                    "F64Tuple": [
-                      0.0,
-                      0.0
-                    ]
-                  }
-                ],
-                "template": {
-                  "F64Tuple": [
-                    0.0,
-                    0.0
-                  ]
-                }
-              }
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 5,
-              "version": 11
-            },
-            "shown_inline": true
-          },
-          "version": 13
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 26,
-              "version": 13
+              "version": 15
             },
             "typ": "Noise",
             "value": "NoInput",
             "kind": "ConnectionOnly",
             "node": {
-              "idx": 5,
+              "idx": 7,
               "version": 11
             },
             "shown_inline": true
           },
-          "version": 13
+          "version": 15
         },
         {
-          "value": {
-            "id": {
-              "idx": 27,
-              "version": 13
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "New Node"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 5,
-              "version": 11
-            },
-            "shown_inline": true
-          },
-          "version": 13
+          "value": null,
+          "version": 14
+        },
+        {
+          "value": null,
+          "version": 14
         },
         {
           "value": {
             "id": {
               "idx": 28,
-              "version": 9
+              "version": 11
             },
             "typ": "F64",
             "value": {
-              "F64": 1.0
+              "F64": 10.0
             },
             "kind": "ConnectionOrConstant",
             "node": {
-              "idx": 6,
-              "version": 11
+              "idx": 4,
+              "version": 13
             },
             "shown_inline": true
           },
-          "version": 9
+          "version": 11
         },
         {
           "value": {
             "id": {
               "idx": 29,
-              "version": 9
+              "version": 11
             },
             "typ": "F64",
             "value": {
-              "F64": 1.0
+              "F64": 0.1
             },
             "kind": "ConnectionOrConstant",
             "node": {
-              "idx": 6,
-              "version": 11
+              "idx": 4,
+              "version": 13
             },
             "shown_inline": true
           },
-          "version": 9
+          "version": 11
         },
         {
           "value": {
             "id": {
               "idx": 30,
-              "version": 9
+              "version": 13
             },
             "typ": "F64",
             "value": {
-              "F64": 0.05
+              "F64": 0.0
             },
             "kind": "ConnectionOrConstant",
             "node": {
-              "idx": 6,
-              "version": 11
+              "idx": 5,
+              "version": 15
             },
             "shown_inline": true
           },
-          "version": 9
+          "version": 13
         },
         {
           "value": {
             "id": {
               "idx": 31,
-              "version": 11
+              "version": 15
             },
-            "typ": "F64",
+            "typ": "NoConnection",
             "value": {
-              "F64": 0.05
+              "Name": "New Node"
             },
-            "kind": "ConnectionOrConstant",
+            "kind": "ConstantOnly",
             "node": {
-              "idx": 6,
-              "version": 11
+              "idx": 5,
+              "version": 15
             },
             "shown_inline": true
           },
-          "version": 11
+          "version": 15
         },
         {
           "value": {
             "id": {
               "idx": 32,
-              "version": 11
+              "version": 13
             },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
+            "typ": "NoConnection",
+            "value": {
+              "Name": "continents & mountains"
+            },
+            "kind": "ConstantOnly",
             "node": {
-              "idx": 6,
+              "idx": 7,
               "version": 11
             },
             "shown_inline": true
           },
-          "version": 11
+          "version": 13
         },
         {
           "value": {
             "id": {
               "idx": 33,
-              "version": 11
+              "version": 13
             },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "New Node"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 6,
-              "version": 11
-            },
-            "shown_inline": true
-          },
-          "version": 11
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 34,
-              "version": 9
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "New Node"
-            },
-            "kind": "ConstantOnly",
+            "typ": "Noise",
+            "value": "NoInput",
+            "kind": "ConnectionOnly",
             "node": {
               "idx": 7,
-              "version": 9
+              "version": 11
             },
             "shown_inline": true
           },
-          "version": 9
+          "version": 13
+        },
+        {
+          "value": null,
+          "version": 10
         },
         {
           "value": {
@@ -2866,7 +1786,7 @@
             },
             "typ": "F64",
             "value": {
-              "F64": 0.375
+              "F64": 0.5
             },
             "kind": "ConnectionOrConstant",
             "node": {
@@ -2902,7 +1822,7 @@
             },
             "typ": "NoConnection",
             "value": {
-              "Name": "New Node"
+              "Name": "name"
             },
             "kind": "ConstantOnly",
             "node": {
@@ -2933,684 +1853,126 @@
           "version": 7
         },
         {
-          "value": {
-            "id": {
-              "idx": 39,
-              "version": 7
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 0.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 9,
-              "version": 7
-            },
-            "shown_inline": true
-          },
-          "version": 7
+          "value": null,
+          "version": 8
         },
         {
-          "value": {
-            "id": {
-              "idx": 40,
-              "version": 5
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 0.3
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 9,
-              "version": 7
-            },
-            "shown_inline": true
-          },
-          "version": 5
+          "value": null,
+          "version": 6
         },
         {
-          "value": {
-            "id": {
-              "idx": 41,
-              "version": 5
-            },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
-            "node": {
-              "idx": 9,
-              "version": 7
-            },
-            "shown_inline": true
-          },
-          "version": 5
+          "value": null,
+          "version": 6
         },
         {
-          "value": {
-            "id": {
-              "idx": 42,
-              "version": 5
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "Hills Details"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 9,
-              "version": 7
-            },
-            "shown_inline": true
-          },
-          "version": 5
+          "value": null,
+          "version": 6
         },
         {
-          "value": {
-            "id": {
-              "idx": 43,
-              "version": 5
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 0.5
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 14,
-              "version": 3
-            },
-            "shown_inline": true
-          },
-          "version": 5
+          "value": null,
+          "version": 6
         },
         {
-          "value": {
-            "id": {
-              "idx": 44,
-              "version": 5
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 2.0943951023931953
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 14,
-              "version": 3
-            },
-            "shown_inline": true
-          },
-          "version": 5
+          "value": null,
+          "version": 6
         },
         {
-          "value": {
-            "id": {
-              "idx": 45,
-              "version": 1
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "New Node"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 10,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 46,
-              "version": 1
-            },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
-            "node": {
-              "idx": 10,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 47,
-              "version": 1
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 1.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 10,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 48,
-              "version": 1
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 0.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 10,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 49,
-              "version": 1
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "New Node"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 11,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 50,
-              "version": 1
-            },
-            "typ": "F64",
-            "value": {
-              "Operator": "Divide"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 11,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 51,
-              "version": 1
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 0.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 11,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 52,
-              "version": 1
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 2.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 11,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 53,
-              "version": 1
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "New Node"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 12,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 54,
-              "version": 1
-            },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
-            "node": {
-              "idx": 12,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 55,
-              "version": 1
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 1.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 12,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 56,
-              "version": 1
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 1.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 12,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 57,
-              "version": 1
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 1.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 12,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 58,
-              "version": 1
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 1.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 12,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 59,
-              "version": 1
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "New Node"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 13,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 60,
-              "version": 1
-            },
-            "typ": "F64",
-            "value": {
-              "Operator": "Divide"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 13,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 61,
-              "version": 1
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 1.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 13,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 62,
-              "version": 1
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 0.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 13,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 63,
-              "version": 3
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 0.2
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 14,
-              "version": 3
-            },
-            "shown_inline": true
-          },
-          "version": 3
+          "value": null,
+          "version": 4
         },
         {
-          "value": {
-            "id": {
-              "idx": 64,
-              "version": 3
-            },
-            "typ": "Usize",
-            "value": {
-              "Usize": 6
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 14,
-              "version": 3
-            },
-            "shown_inline": true
-          },
-          "version": 3
+          "value": null,
+          "version": 4
         },
         {
-          "value": {
-            "id": {
-              "idx": 65,
-              "version": 3
-            },
-            "typ": "NoiseType",
-            "value": {
-              "NoiseType": "Perlin"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 14,
-              "version": 3
-            },
-            "shown_inline": true
-          },
-          "version": 3
+          "value": null,
+          "version": 4
         },
         {
-          "value": {
-            "id": {
-              "idx": 66,
-              "version": 3
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "New Node"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 14,
-              "version": 3
-            },
-            "shown_inline": true
-          },
-          "version": 3
+          "value": null,
+          "version": 4
         },
         {
-          "value": {
-            "id": {
-              "idx": 67,
-              "version": 3
-            },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
-            "node": {
-              "idx": 21,
-              "version": 3
-            },
-            "shown_inline": true
-          },
-          "version": 3
+          "value": null,
+          "version": 4
         },
         {
           "value": {
             "id": {
               "idx": 68,
-              "version": 3
-            },
-            "typ": "Usize",
-            "value": {
-              "Usize": 3
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 15,
-              "version": 3
-            },
-            "shown_inline": true
-          },
-          "version": 3
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 69,
-              "version": 3
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 0.15
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 15,
-              "version": 3
-            },
-            "shown_inline": true
-          },
-          "version": 3
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 70,
-              "version": 3
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 1.5
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 15,
-              "version": 3
-            },
-            "shown_inline": true
-          },
-          "version": 3
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 71,
-              "version": 3
-            },
-            "typ": "NoiseType",
-            "value": {
-              "NoiseType": "Perlin"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 15,
-              "version": 3
-            },
-            "shown_inline": true
-          },
-          "version": 3
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 72,
-              "version": 3
-            },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
-            "node": {
-              "idx": 15,
-              "version": 3
-            },
-            "shown_inline": true
-          },
-          "version": 3
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 73,
-              "version": 3
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "New Node"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 15,
-              "version": 3
-            },
-            "shown_inline": true
-          },
-          "version": 3
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 74,
-              "version": 11
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 1.5
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 16,
-              "version": 9
-            },
-            "shown_inline": true
-          },
-          "version": 11
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 75,
-              "version": 11
+              "version": 5
             },
             "typ": "F64",
             "value": {
@@ -3619,62 +1981,46 @@
             "kind": "ConnectionOrConstant",
             "node": {
               "idx": 16,
-              "version": 9
+              "version": 13
             },
             "shown_inline": true
           },
-          "version": 11
+          "version": 5
+        },
+        {
+          "value": null,
+          "version": 4
+        },
+        {
+          "value": null,
+          "version": 4
+        },
+        {
+          "value": null,
+          "version": 4
+        },
+        {
+          "value": null,
+          "version": 4
+        },
+        {
+          "value": null,
+          "version": 4
         },
         {
           "value": {
             "id": {
-              "idx": 76,
-              "version": 15
-            },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
-            "node": {
-              "idx": 17,
-              "version": 17
-            },
-            "shown_inline": true
-          },
-          "version": 15
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 77,
-              "version": 15
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "New Node"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 17,
-              "version": 17
-            },
-            "shown_inline": true
-          },
-          "version": 15
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 78,
+              "idx": 74,
               "version": 13
             },
             "typ": "F64",
             "value": {
-              "F64": 0.0
+              "F64": 4.0
             },
             "kind": "ConnectionOrConstant",
             "node": {
-              "idx": 16,
-              "version": 9
+              "idx": 24,
+              "version": 27
             },
             "shown_inline": true
           },
@@ -3683,135 +2029,8 @@
         {
           "value": {
             "id": {
-              "idx": 79,
-              "version": 15
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "Mountain Detail"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 16,
-              "version": 9
-            },
-            "shown_inline": true
-          },
-          "version": 15
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 80,
-              "version": 15
-            },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
-            "node": {
-              "idx": 16,
-              "version": 9
-            },
-            "shown_inline": true
-          },
-          "version": 15
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 81,
-              "version": 15
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 0.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 17,
-              "version": 17
-            },
-            "shown_inline": true
-          },
-          "version": 15
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 82,
-              "version": 19
-            },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
-            "node": {
-              "idx": 16,
-              "version": 9
-            },
-            "shown_inline": true
-          },
-          "version": 19
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 83,
-              "version": 15
-            },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
-            "node": {
-              "idx": 24,
-              "version": 25
-            },
-            "shown_inline": true
-          },
-          "version": 15
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 84,
-              "version": 11
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 2.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 18,
-              "version": 11
-            },
-            "shown_inline": true
-          },
-          "version": 11
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 85,
-              "version": 9
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 0.5
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 18,
-              "version": 11
-            },
-            "shown_inline": true
-          },
-          "version": 9
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 86,
-              "version": 9
+              "idx": 75,
+              "version": 13
             },
             "typ": "F64",
             "value": {
@@ -3819,344 +2038,35 @@
             },
             "kind": "ConnectionOrConstant",
             "node": {
-              "idx": 18,
-              "version": 11
+              "idx": 24,
+              "version": 27
             },
             "shown_inline": true
           },
-          "version": 9
+          "version": 13
+        },
+        {
+          "value": null,
+          "version": 16
+        },
+        {
+          "value": null,
+          "version": 16
         },
         {
           "value": {
             "id": {
-              "idx": 87,
-              "version": 9
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 2.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 18,
-              "version": 11
-            },
-            "shown_inline": true
-          },
-          "version": 9
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 88,
-              "version": 9
-            },
-            "typ": "Usize",
-            "value": {
-              "Usize": 6
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 18,
-              "version": 11
-            },
-            "shown_inline": true
-          },
-          "version": 9
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 89,
-              "version": 9
-            },
-            "typ": "NoiseType",
-            "value": {
-              "NoiseType": "Perlin"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 18,
-              "version": 11
-            },
-            "shown_inline": true
-          },
-          "version": 9
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 90,
-              "version": 9
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "New Node"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 18,
-              "version": 11
-            },
-            "shown_inline": true
-          },
-          "version": 9
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 91,
-              "version": 9
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 1.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 20,
-              "version": 5
-            },
-            "shown_inline": true
-          },
-          "version": 9
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 92,
-              "version": 9
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "Hills"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 21,
-              "version": 3
-            },
-            "shown_inline": true
-          },
-          "version": 9
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 93,
-              "version": 9
-            },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
-            "node": {
-              "idx": 21,
-              "version": 3
-            },
-            "shown_inline": true
-          },
-          "version": 9
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 94,
-              "version": 5
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 0.3
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 20,
-              "version": 5
-            },
-            "shown_inline": true
-          },
-          "version": 5
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 95,
-              "version": 5
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "New Node"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 22,
-              "version": 5
-            },
-            "shown_inline": true
-          },
-          "version": 5
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 96,
-              "version": 5
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "Rolling Hills"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 20,
-              "version": 5
-            },
-            "shown_inline": true
-          },
-          "version": 5
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 97,
-              "version": 5
-            },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
-            "node": {
-              "idx": 20,
-              "version": 5
-            },
-            "shown_inline": true
-          },
-          "version": 5
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 98,
-              "version": 5
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 0.3
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 20,
-              "version": 5
-            },
-            "shown_inline": true
-          },
-          "version": 5
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 99,
-              "version": 5
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 1.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 20,
-              "version": 5
-            },
-            "shown_inline": true
-          },
-          "version": 5
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 100,
-              "version": 11
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 0.25
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 23,
-              "version": 11
-            },
-            "shown_inline": true
-          },
-          "version": 11
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 101,
-              "version": 11
-            },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
-            "node": {
-              "idx": 23,
-              "version": 11
-            },
-            "shown_inline": true
-          },
-          "version": 11
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 102,
-              "version": 11
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "Mountain Shape"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 23,
-              "version": 11
-            },
-            "shown_inline": true
-          },
-          "version": 11
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 103,
+              "idx": 78,
               "version": 15
             },
             "typ": "F64",
             "value": {
-              "F64": 0.2
+              "F64": 0.5
             },
             "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 17,
-              "version": 17
-            },
-            "shown_inline": true
-          },
-          "version": 15
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 104,
-              "version": 15
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "Mountains"
-            },
-            "kind": "ConstantOnly",
             "node": {
               "idx": 24,
-              "version": 25
+              "version": 27
             },
             "shown_inline": true
           },
@@ -4165,34 +2075,17 @@
         {
           "value": {
             "id": {
-              "idx": 105,
-              "version": 15
+              "idx": 79,
+              "version": 17
             },
             "typ": "F64",
             "value": {
-              "F64": 2.0
+              "F64": 1.0
             },
             "kind": "ConnectionOrConstant",
             "node": {
-              "idx": 19,
-              "version": 17
-            },
-            "shown_inline": true
-          },
-          "version": 15
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 106,
-              "version": 17
-            },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
-            "node": {
               "idx": 16,
-              "version": 9
+              "version": 13
             },
             "shown_inline": true
           },
@@ -4201,7 +2094,7 @@
         {
           "value": {
             "id": {
-              "idx": 107,
+              "idx": 80,
               "version": 19
             },
             "typ": "NoConnection",
@@ -4210,42 +2103,29 @@
             },
             "kind": "ConstantOnly",
             "node": {
-              "idx": 19,
-              "version": 17
+              "idx": 16,
+              "version": 13
             },
             "shown_inline": true
           },
           "version": 19
         },
         {
-          "value": {
-            "id": {
-              "idx": 108,
-              "version": 19
-            },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
-            "node": {
-              "idx": 19,
-              "version": 17
-            },
-            "shown_inline": true
-          },
-          "version": 19
+          "value": null,
+          "version": 16
         },
         {
           "value": {
             "id": {
-              "idx": 109,
+              "idx": 82,
               "version": 23
             },
             "typ": "Noise",
             "value": "NoInput",
             "kind": "ConnectionOnly",
             "node": {
-              "idx": 24,
-              "version": 25
+              "idx": 16,
+              "version": 13
             },
             "shown_inline": true
           },
@@ -4254,76 +2134,201 @@
         {
           "value": {
             "id": {
+              "idx": 83,
+              "version": 17
+            },
+            "typ": "NoConnection",
+            "value": {
+              "Name": "New Node"
+            },
+            "kind": "ConstantOnly",
+            "node": {
+              "idx": 24,
+              "version": 27
+            },
+            "shown_inline": true
+          },
+          "version": 17
+        },
+        {
+          "value": null,
+          "version": 12
+        },
+        {
+          "value": null,
+          "version": 10
+        },
+        {
+          "value": null,
+          "version": 10
+        },
+        {
+          "value": null,
+          "version": 10
+        },
+        {
+          "value": null,
+          "version": 10
+        },
+        {
+          "value": null,
+          "version": 10
+        },
+        {
+          "value": null,
+          "version": 10
+        },
+        {
+          "value": null,
+          "version": 10
+        },
+        {
+          "value": null,
+          "version": 10
+        },
+        {
+          "value": null,
+          "version": 10
+        },
+        {
+          "value": null,
+          "version": 6
+        },
+        {
+          "value": null,
+          "version": 6
+        },
+        {
+          "value": null,
+          "version": 6
+        },
+        {
+          "value": null,
+          "version": 6
+        },
+        {
+          "value": null,
+          "version": 6
+        },
+        {
+          "value": null,
+          "version": 6
+        },
+        {
+          "value": null,
+          "version": 12
+        },
+        {
+          "value": null,
+          "version": 12
+        },
+        {
+          "value": null,
+          "version": 12
+        },
+        {
+          "value": null,
+          "version": 16
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 104,
+              "version": 17
+            },
+            "typ": "Usize",
+            "value": {
+              "Usize": 8
+            },
+            "kind": "ConnectionOrConstant",
+            "node": {
+              "idx": 24,
+              "version": 27
+            },
+            "shown_inline": true
+          },
+          "version": 17
+        },
+        {
+          "value": null,
+          "version": 16
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 106,
+              "version": 19
+            },
+            "typ": "F64",
+            "value": {
+              "F64": 2.0
+            },
+            "kind": "ConnectionOrConstant",
+            "node": {
+              "idx": 24,
+              "version": 27
+            },
+            "shown_inline": true
+          },
+          "version": 19
+        },
+        {
+          "value": null,
+          "version": 20
+        },
+        {
+          "value": null,
+          "version": 20
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 109,
+              "version": 25
+            },
+            "typ": "NoiseType",
+            "value": {
+              "NoiseType": "Perlin"
+            },
+            "kind": "ConstantOnly",
+            "node": {
+              "idx": 24,
+              "version": 27
+            },
+            "shown_inline": true
+          },
+          "version": 25
+        },
+        {
+          "value": {
+            "id": {
               "idx": 110,
-              "version": 1
+              "version": 3
             },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
+            "typ": "NoConnection",
+            "value": {
+              "Name": "New Node"
+            },
+            "kind": "ConstantOnly",
             "node": {
-              "idx": 26,
-              "version": 1
+              "idx": 25,
+              "version": 3
             },
             "shown_inline": true
           },
-          "version": 1
+          "version": 3
         },
         {
-          "value": {
-            "id": {
-              "idx": 111,
-              "version": 1
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 0.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 26,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
+          "value": null,
+          "version": 4
         },
         {
-          "value": {
-            "id": {
-              "idx": 112,
-              "version": 1
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 10.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 26,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
+          "value": null,
+          "version": 4
         },
         {
-          "value": {
-            "id": {
-              "idx": 113,
-              "version": 1
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 1.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 26,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
+          "value": null,
+          "version": 4
         },
         {
           "value": {
@@ -4409,7 +2414,7 @@
             },
             "typ": "NoConnection",
             "value": {
-              "Name": "New Node"
+              "Name": "name"
             },
             "kind": "ConstantOnly",
             "node": {
@@ -4463,7 +2468,7 @@
                   {
                     "F64Tuple": [
                       0.25,
-                      1.0
+                      0.5
                     ]
                   },
                   {
@@ -4488,6 +2493,24 @@
                     "F64Tuple": [
                       2.0,
                       0.5
+                    ]
+                  },
+                  {
+                    "F64Tuple": [
+                      1.125,
+                      0.9
+                    ]
+                  },
+                  {
+                    "F64Tuple": [
+                      1.25,
+                      0.95
+                    ]
+                  },
+                  {
+                    "F64Tuple": [
+                      1.5,
+                      0.8
                     ]
                   }
                 ],
@@ -4533,7 +2556,7 @@
             },
             "typ": "NoConnection",
             "value": {
-              "Name": "New Node"
+              "Name": "name"
             },
             "kind": "ConstantOnly",
             "node": {
@@ -4647,7 +2670,7 @@
             },
             "typ": "NoConnection",
             "value": {
-              "Name": "New Node"
+              "Name": "name"
             },
             "kind": "ConstantOnly",
             "node": {
@@ -4685,7 +2708,7 @@
             },
             "typ": "NoConnection",
             "value": {
-              "Name": "New Node"
+              "Name": "name"
             },
             "kind": "ConstantOnly",
             "node": {
@@ -4776,7 +2799,7 @@
             },
             "typ": "NoConnection",
             "value": {
-              "Name": "New Node"
+              "Name": "name"
             },
             "kind": "ConstantOnly",
             "node": {
@@ -4926,7 +2949,7 @@
             },
             "typ": "NoConnection",
             "value": {
-              "Name": "New Node"
+              "Name": "name"
             },
             "kind": "ConstantOnly",
             "node": {
@@ -5038,7 +3061,7 @@
             },
             "typ": "NoConnection",
             "value": {
-              "Name": "New Node"
+              "Name": "name"
             },
             "kind": "ConstantOnly",
             "node": {
@@ -5095,7 +3118,7 @@
             },
             "typ": "F64",
             "value": {
-              "F64": 15.25
+              "F64": 20.0
             },
             "kind": "ConnectionOrConstant",
             "node": {
@@ -5114,7 +3137,7 @@
             },
             "typ": "NoConnection",
             "value": {
-              "Name": "New Node"
+              "Name": "name"
             },
             "kind": "ConstantOnly",
             "node": {
@@ -5171,7 +3194,7 @@
             },
             "typ": "F64",
             "value": {
-              "F64": 1.0
+              "F64": 0.75
             },
             "kind": "ConnectionOrConstant",
             "node": {
@@ -5183,52 +3206,76 @@
           "version": 1
         },
         {
-          "value": {
-            "id": {
-              "idx": 156,
-              "version": 5
-            },
-            "typ": "NoConnection",
-            "value": {
-              "Name": "New Node"
-            },
-            "kind": "ConstantOnly",
-            "node": {
-              "idx": 37,
-              "version": 5
-            },
-            "shown_inline": true
-          },
-          "version": 5
+          "value": null,
+          "version": 6
+        },
+        {
+          "value": null,
+          "version": 6
+        },
+        {
+          "value": null,
+          "version": 4
+        },
+        {
+          "value": null,
+          "version": 4
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
         },
         {
           "value": {
             "id": {
-              "idx": 157,
-              "version": 5
+              "idx": 171,
+              "version": 3
             },
             "typ": "Noise",
             "value": "NoInput",
             "kind": "ConnectionOnly",
             "node": {
-              "idx": 38,
-              "version": 3
-            },
-            "shown_inline": true
-          },
-          "version": 5
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 158,
-              "version": 3
-            },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
-            "node": {
-              "idx": 38,
+              "idx": 43,
               "version": 3
             },
             "shown_inline": true
@@ -5238,16 +3285,141 @@
         {
           "value": {
             "id": {
-              "idx": 159,
-              "version": 3
+              "idx": 172,
+              "version": 1
             },
             "typ": "NoConnection",
             "value": {
-              "Name": "New Node"
+              "Name": "name"
             },
             "kind": "ConstantOnly",
             "node": {
-              "idx": 38,
+              "idx": 42,
+              "version": 1
+            },
+            "shown_inline": true
+          },
+          "version": 1
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 173,
+              "version": 1
+            },
+            "typ": "Noise",
+            "value": "NoInput",
+            "kind": "ConnectionOnly",
+            "node": {
+              "idx": 42,
+              "version": 1
+            },
+            "shown_inline": true
+          },
+          "version": 1
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 174,
+              "version": 1
+            },
+            "typ": "Noise",
+            "value": "NoInput",
+            "kind": "ConnectionOnly",
+            "node": {
+              "idx": 42,
+              "version": 1
+            },
+            "shown_inline": true
+          },
+          "version": 1
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 175,
+              "version": 1
+            },
+            "typ": "Noise",
+            "value": "NoInput",
+            "kind": "ConnectionOnly",
+            "node": {
+              "idx": 42,
+              "version": 1
+            },
+            "shown_inline": true
+          },
+          "version": 1
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 176,
+              "version": 1
+            },
+            "typ": "F64",
+            "value": {
+              "F64": -0.375
+            },
+            "kind": "ConnectionOrConstant",
+            "node": {
+              "idx": 42,
+              "version": 1
+            },
+            "shown_inline": true
+          },
+          "version": 1
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 177,
+              "version": 1
+            },
+            "typ": "F64",
+            "value": {
+              "F64": 100.0
+            },
+            "kind": "ConnectionOrConstant",
+            "node": {
+              "idx": 42,
+              "version": 1
+            },
+            "shown_inline": true
+          },
+          "version": 1
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 178,
+              "version": 1
+            },
+            "typ": "F64",
+            "value": {
+              "F64": 1.0
+            },
+            "kind": "ConnectionOrConstant",
+            "node": {
+              "idx": 42,
+              "version": 1
+            },
+            "shown_inline": true
+          },
+          "version": 1
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 179,
+              "version": 3
+            },
+            "typ": "Noise",
+            "value": "NoInput",
+            "kind": "ConnectionOnly",
+            "node": {
+              "idx": 43,
               "version": 3
             },
             "shown_inline": true
@@ -5257,8 +3429,8 @@
         {
           "value": {
             "id": {
-              "idx": 160,
-              "version": 1
+              "idx": 180,
+              "version": 3
             },
             "typ": "NoConnection",
             "value": {
@@ -5266,111 +3438,73 @@
             },
             "kind": "ConstantOnly",
             "node": {
-              "idx": 39,
-              "version": 1
+              "idx": 43,
+              "version": 3
             },
             "shown_inline": true
           },
-          "version": 1
+          "version": 3
         },
         {
           "value": {
             "id": {
-              "idx": 161,
-              "version": 1
+              "idx": 181,
+              "version": 3
+            },
+            "typ": "F64",
+            "value": {
+              "F64": 0.25
+            },
+            "kind": "ConnectionOrConstant",
+            "node": {
+              "idx": 44,
+              "version": 3
+            },
+            "shown_inline": true
+          },
+          "version": 3
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 182,
+              "version": 3
+            },
+            "typ": "F64",
+            "value": {
+              "F64": 0.25
+            },
+            "kind": "ConnectionOrConstant",
+            "node": {
+              "idx": 44,
+              "version": 3
+            },
+            "shown_inline": true
+          },
+          "version": 3
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 183,
+              "version": 3
             },
             "typ": "Noise",
             "value": "NoInput",
             "kind": "ConnectionOnly",
             "node": {
-              "idx": 39,
-              "version": 1
+              "idx": 44,
+              "version": 3
             },
             "shown_inline": true
           },
-          "version": 1
+          "version": 3
         },
         {
           "value": {
             "id": {
-              "idx": 162,
-              "version": 1
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 0.1
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 39,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 163,
-              "version": 1
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 0.1
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 39,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 164,
-              "version": 1
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 1.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 39,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 165,
-              "version": 1
-            },
-            "typ": "F64",
-            "value": {
-              "F64": 1.0
-            },
-            "kind": "ConnectionOrConstant",
-            "node": {
-              "idx": 39,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 166,
-              "version": 1
+              "idx": 184,
+              "version": 3
             },
             "typ": "NoConnection",
             "value": {
@@ -5378,54 +3512,151 @@
             },
             "kind": "ConstantOnly",
             "node": {
-              "idx": 40,
-              "version": 1
+              "idx": 44,
+              "version": 3
             },
             "shown_inline": true
           },
-          "version": 1
+          "version": 3
         },
         {
           "value": {
             "id": {
-              "idx": 167,
-              "version": 1
-            },
-            "typ": "Noise",
-            "value": "NoInput",
-            "kind": "ConnectionOnly",
-            "node": {
-              "idx": 40,
-              "version": 1
-            },
-            "shown_inline": true
-          },
-          "version": 1
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 168,
-              "version": 1
+              "idx": 185,
+              "version": 3
             },
             "typ": "F64",
             "value": {
-              "F64": 5.0
+              "F64": 2.0
             },
             "kind": "ConnectionOrConstant",
             "node": {
-              "idx": 40,
-              "version": 1
+              "idx": 45,
+              "version": 3
             },
             "shown_inline": true
           },
-          "version": 1
+          "version": 3
         },
         {
           "value": {
             "id": {
-              "idx": 169,
-              "version": 1
+              "idx": 186,
+              "version": 3
+            },
+            "typ": "F64",
+            "value": {
+              "F64": 0.5
+            },
+            "kind": "ConnectionOrConstant",
+            "node": {
+              "idx": 45,
+              "version": 3
+            },
+            "shown_inline": true
+          },
+          "version": 3
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 187,
+              "version": 3
+            },
+            "typ": "F64",
+            "value": {
+              "F64": 2.0943951023931953
+            },
+            "kind": "ConnectionOrConstant",
+            "node": {
+              "idx": 45,
+              "version": 3
+            },
+            "shown_inline": true
+          },
+          "version": 3
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 188,
+              "version": 3
+            },
+            "typ": "F64",
+            "value": {
+              "F64": 6.0
+            },
+            "kind": "ConnectionOrConstant",
+            "node": {
+              "idx": 45,
+              "version": 3
+            },
+            "shown_inline": true
+          },
+          "version": 3
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 189,
+              "version": 3
+            },
+            "typ": "Usize",
+            "value": {
+              "Usize": 6
+            },
+            "kind": "ConnectionOrConstant",
+            "node": {
+              "idx": 45,
+              "version": 3
+            },
+            "shown_inline": true
+          },
+          "version": 3
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 190,
+              "version": 3
+            },
+            "typ": "NoiseType",
+            "value": {
+              "NoiseType": "Perlin"
+            },
+            "kind": "ConstantOnly",
+            "node": {
+              "idx": 45,
+              "version": 3
+            },
+            "shown_inline": true
+          },
+          "version": 3
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 191,
+              "version": 3
+            },
+            "typ": "NoConnection",
+            "value": {
+              "Name": "New Node"
+            },
+            "kind": "ConstantOnly",
+            "node": {
+              "idx": 45,
+              "version": 3
+            },
+            "shown_inline": true
+          },
+          "version": 3
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 192,
+              "version": 3
             },
             "typ": "F64",
             "value": {
@@ -5433,18 +3664,54 @@
             },
             "kind": "ConnectionOrConstant",
             "node": {
-              "idx": 40,
-              "version": 1
+              "idx": 46,
+              "version": 3
             },
             "shown_inline": true
           },
-          "version": 1
+          "version": 3
         },
         {
           "value": {
             "id": {
-              "idx": 170,
-              "version": 1
+              "idx": 193,
+              "version": 5
+            },
+            "typ": "F64",
+            "value": {
+              "F64": 0.2
+            },
+            "kind": "ConnectionOrConstant",
+            "node": {
+              "idx": 46,
+              "version": 3
+            },
+            "shown_inline": true
+          },
+          "version": 5
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 194,
+              "version": 5
+            },
+            "typ": "Noise",
+            "value": "NoInput",
+            "kind": "ConnectionOnly",
+            "node": {
+              "idx": 46,
+              "version": 3
+            },
+            "shown_inline": true
+          },
+          "version": 5
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 195,
+              "version": 9
             },
             "typ": "NoConnection",
             "value": {
@@ -5452,29 +3719,67 @@
             },
             "kind": "ConstantOnly",
             "node": {
-              "idx": 41,
-              "version": 1
+              "idx": 46,
+              "version": 3
             },
             "shown_inline": true
           },
-          "version": 1
+          "version": 9
         },
         {
           "value": {
             "id": {
-              "idx": 171,
-              "version": 1
+              "idx": 196,
+              "version": 9
+            },
+            "typ": "F64",
+            "value": {
+              "F64": 0.5
+            },
+            "kind": "ConnectionOrConstant",
+            "node": {
+              "idx": 47,
+              "version": 11
+            },
+            "shown_inline": true
+          },
+          "version": 9
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 197,
+              "version": 11
             },
             "typ": "Noise",
             "value": "NoInput",
             "kind": "ConnectionOnly",
             "node": {
-              "idx": 41,
-              "version": 1
+              "idx": 47,
+              "version": 11
             },
             "shown_inline": true
           },
-          "version": 1
+          "version": 11
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 198,
+              "version": 11
+            },
+            "typ": "NoConnection",
+            "value": {
+              "Name": "New Node"
+            },
+            "kind": "ConstantOnly",
+            "node": {
+              "idx": 47,
+              "version": 11
+            },
+            "shown_inline": true
+          },
+          "version": 11
         }
       ],
       "outputs": [
@@ -5483,280 +3788,40 @@
           "version": 0
         },
         {
-          "value": {
-            "id": {
-              "idx": 1,
-              "version": 1
-            },
-            "node": {
-              "idx": 1,
-              "version": 1
-            },
-            "typ": "F64"
-          },
-          "version": 1
+          "value": null,
+          "version": 2
         },
         {
-          "value": {
-            "id": {
-              "idx": 2,
-              "version": 5
-            },
-            "node": {
-              "idx": 2,
-              "version": 5
-            },
-            "typ": "Noise"
-          },
-          "version": 5
+          "value": null,
+          "version": 6
         },
         {
-          "value": {
-            "id": {
-              "idx": 3,
-              "version": 5
-            },
-            "node": {
-              "idx": 3,
-              "version": 5
-            },
-            "typ": "Noise"
-          },
-          "version": 5
+          "value": null,
+          "version": 8
         },
         {
           "value": {
             "id": {
               "idx": 4,
-              "version": 7
+              "version": 13
             },
             "node": {
               "idx": 4,
-              "version": 7
+              "version": 13
             },
             "typ": "Noise"
           },
-          "version": 7
+          "version": 13
         },
         {
           "value": {
             "id": {
               "idx": 5,
-              "version": 11
-            },
-            "node": {
-              "idx": 5,
-              "version": 11
-            },
-            "typ": "Noise"
-          },
-          "version": 11
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 6,
-              "version": 11
-            },
-            "node": {
-              "idx": 6,
-              "version": 11
-            },
-            "typ": "Noise"
-          },
-          "version": 11
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 7,
-              "version": 9
-            },
-            "node": {
-              "idx": 7,
-              "version": 9
-            },
-            "typ": "Noise"
-          },
-          "version": 9
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 8,
-              "version": 7
-            },
-            "node": {
-              "idx": 8,
-              "version": 7
-            },
-            "typ": "Noise"
-          },
-          "version": 7
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 9,
-              "version": 7
-            },
-            "node": {
-              "idx": 9,
-              "version": 7
-            },
-            "typ": "Noise"
-          },
-          "version": 7
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 10,
-              "version": 1
-            },
-            "node": {
-              "idx": 10,
-              "version": 1
-            },
-            "typ": "Noise"
-          },
-          "version": 1
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 11,
-              "version": 1
-            },
-            "node": {
-              "idx": 11,
-              "version": 1
-            },
-            "typ": "F64"
-          },
-          "version": 1
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 12,
-              "version": 1
-            },
-            "node": {
-              "idx": 12,
-              "version": 1
-            },
-            "typ": "Noise"
-          },
-          "version": 1
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 13,
-              "version": 1
-            },
-            "node": {
-              "idx": 13,
-              "version": 1
-            },
-            "typ": "F64"
-          },
-          "version": 1
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 14,
-              "version": 3
-            },
-            "node": {
-              "idx": 14,
-              "version": 3
-            },
-            "typ": "Noise"
-          },
-          "version": 3
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 15,
-              "version": 3
-            },
-            "node": {
-              "idx": 15,
-              "version": 3
-            },
-            "typ": "Noise"
-          },
-          "version": 3
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 16,
-              "version": 9
-            },
-            "node": {
-              "idx": 16,
-              "version": 9
-            },
-            "typ": "Noise"
-          },
-          "version": 9
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 17,
-              "version": 17
-            },
-            "node": {
-              "idx": 17,
-              "version": 17
-            },
-            "typ": "Noise"
-          },
-          "version": 17
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 18,
-              "version": 11
-            },
-            "node": {
-              "idx": 18,
-              "version": 11
-            },
-            "typ": "Noise"
-          },
-          "version": 11
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 19,
-              "version": 5
-            },
-            "node": {
-              "idx": 20,
-              "version": 5
-            },
-            "typ": "Noise"
-          },
-          "version": 5
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 20,
               "version": 15
             },
             "node": {
-              "idx": 19,
-              "version": 17
+              "idx": 5,
+              "version": 15
             },
             "typ": "Noise"
           },
@@ -5765,39 +3830,25 @@
         {
           "value": {
             "id": {
-              "idx": 21,
-              "version": 3
+              "idx": 6,
+              "version": 13
             },
             "node": {
-              "idx": 21,
-              "version": 3
+              "idx": 6,
+              "version": 13
             },
             "typ": "Noise"
           },
-          "version": 3
+          "version": 13
         },
         {
           "value": {
             "id": {
-              "idx": 22,
-              "version": 5
-            },
-            "node": {
-              "idx": 22,
-              "version": 5
-            },
-            "typ": "Noise"
-          },
-          "version": 5
-        },
-        {
-          "value": {
-            "id": {
-              "idx": 23,
+              "idx": 7,
               "version": 11
             },
             "node": {
-              "idx": 23,
+              "idx": 7,
               "version": 11
             },
             "typ": "Noise"
@@ -5807,44 +3858,118 @@
         {
           "value": {
             "id": {
-              "idx": 24,
-              "version": 25
+              "idx": 8,
+              "version": 7
             },
             "node": {
-              "idx": 24,
-              "version": 25
+              "idx": 8,
+              "version": 7
             },
             "typ": "Noise"
           },
-          "version": 25
+          "version": 7
+        },
+        {
+          "value": null,
+          "version": 8
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 4
+        },
+        {
+          "value": null,
+          "version": 4
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 16,
+              "version": 13
+            },
+            "node": {
+              "idx": 16,
+              "version": 13
+            },
+            "typ": "Noise"
+          },
+          "version": 13
+        },
+        {
+          "value": null,
+          "version": 18
+        },
+        {
+          "value": null,
+          "version": 12
+        },
+        {
+          "value": null,
+          "version": 6
+        },
+        {
+          "value": null,
+          "version": 16
+        },
+        {
+          "value": null,
+          "version": 4
+        },
+        {
+          "value": null,
+          "version": 6
+        },
+        {
+          "value": null,
+          "version": 12
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 24,
+              "version": 27
+            },
+            "node": {
+              "idx": 24,
+              "version": 27
+            },
+            "typ": "Noise"
+          },
+          "version": 27
         },
         {
           "value": {
             "id": {
               "idx": 25,
-              "version": 1
+              "version": 3
             },
             "node": {
               "idx": 25,
-              "version": 1
+              "version": 3
             },
             "typ": "Noise"
           },
-          "version": 1
+          "version": 3
         },
         {
-          "value": {
-            "id": {
-              "idx": 26,
-              "version": 1
-            },
-            "node": {
-              "idx": 26,
-              "version": 1
-            },
-            "typ": "Noise"
-          },
-          "version": 1
+          "value": null,
+          "version": 4
         },
         {
           "value": {
@@ -5987,27 +4112,47 @@
           "version": 1
         },
         {
-          "value": {
-            "id": {
-              "idx": 37,
-              "version": 5
-            },
-            "node": {
-              "idx": 37,
-              "version": 5
-            },
-            "typ": "Noise"
-          },
-          "version": 5
+          "value": null,
+          "version": 6
+        },
+        {
+          "value": null,
+          "version": 4
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
+        },
+        {
+          "value": null,
+          "version": 2
         },
         {
           "value": {
             "id": {
-              "idx": 38,
+              "idx": 42,
+              "version": 1
+            },
+            "node": {
+              "idx": 42,
+              "version": 1
+            },
+            "typ": "Noise"
+          },
+          "version": 1
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 43,
               "version": 3
             },
             "node": {
-              "idx": 38,
+              "idx": 43,
               "version": 3
             },
             "typ": "Noise"
@@ -6017,44 +4162,58 @@
         {
           "value": {
             "id": {
-              "idx": 39,
-              "version": 1
+              "idx": 44,
+              "version": 3
             },
             "node": {
-              "idx": 39,
-              "version": 1
+              "idx": 44,
+              "version": 3
             },
             "typ": "Noise"
           },
-          "version": 1
+          "version": 3
         },
         {
           "value": {
             "id": {
-              "idx": 40,
-              "version": 1
+              "idx": 45,
+              "version": 3
             },
             "node": {
-              "idx": 40,
-              "version": 1
+              "idx": 45,
+              "version": 3
             },
             "typ": "Noise"
           },
-          "version": 1
+          "version": 3
         },
         {
           "value": {
             "id": {
-              "idx": 41,
-              "version": 1
+              "idx": 46,
+              "version": 3
             },
             "node": {
-              "idx": 41,
-              "version": 1
+              "idx": 46,
+              "version": 3
             },
             "typ": "Noise"
           },
-          "version": 1
+          "version": 3
+        },
+        {
+          "value": {
+            "id": {
+              "idx": 47,
+              "version": 11
+            },
+            "node": {
+              "idx": 47,
+              "version": 11
+            },
+            "typ": "Noise"
+          },
+          "version": 11
         }
       ],
       "connections": [
@@ -6100,89 +4259,37 @@
         },
         {
           "value": {
-            "idx": 4,
-            "version": 7
-          },
-          "version": 3
-        },
-        {
-          "value": {
-            "idx": 3,
-            "version": 5
-          },
-          "version": 3
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": {
-            "idx": 6,
-            "version": 11
-          },
-          "version": 3
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": {
-            "idx": 38,
-            "version": 3
-          },
-          "version": 5
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": {
-            "idx": 21,
-            "version": 3
-          },
-          "version": 5
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": {
             "idx": 7,
-            "version": 9
+            "version": 11
           },
-          "version": 13
+          "version": 5
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": {
+            "idx": 33,
+            "version": 1
+          },
+          "version": 5
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
         },
         {
           "value": null,
@@ -6206,14 +4313,66 @@
         },
         {
           "value": {
-            "idx": 5,
-            "version": 11
+            "idx": 33,
+            "version": 1
           },
           "version": 11
         },
         {
+          "value": {
+            "idx": 5,
+            "version": 15
+          },
+          "version": 13
+        },
+        {
+          "value": {
+            "idx": 46,
+            "version": 3
+          },
+          "version": 13
+        },
+        {
+          "value": {
+            "idx": 33,
+            "version": 1
+          },
+          "version": 15
+        },
+        {
           "value": null,
           "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": {
+            "idx": 4,
+            "version": 13
+          },
+          "version": 13
         },
         {
           "value": null,
@@ -6247,11 +4406,20 @@
           "version": 0
         },
         {
-          "value": {
-            "idx": 14,
-            "version": 3
-          },
-          "version": 5
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
         },
         {
           "value": null,
@@ -6270,85 +4438,6 @@
           "version": 0
         },
         {
-          "value": {
-            "idx": 38,
-            "version": 3
-          },
-          "version": 1
-        },
-        {
-          "value": {
-            "idx": 11,
-            "version": 1
-          },
-          "version": 1
-        },
-        {
-          "value": {
-            "idx": 11,
-            "version": 1
-          },
-          "version": 1
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": {
-            "idx": 1,
-            "version": 1
-          },
-          "version": 1
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": {
-            "idx": 10,
-            "version": 1
-          },
-          "version": 1
-        },
-        {
-          "value": {
-            "idx": 13,
-            "version": 1
-          },
-          "version": 1
-        },
-        {
-          "value": {
-            "idx": 13,
-            "version": 1
-          },
-          "version": 1
-        },
-        {
-          "value": {
-            "idx": 13,
-            "version": 1
-          },
-          "version": 1
-        },
-        {
-          "value": {
-            "idx": 13,
-            "version": 1
-          },
-          "version": 1
-        },
-        {
           "value": null,
           "version": 0
         },
@@ -6361,11 +4450,8 @@
           "version": 0
         },
         {
-          "value": {
-            "idx": 1,
-            "version": 1
-          },
-          "version": 1
+          "value": null,
+          "version": 0
         },
         {
           "value": null,
@@ -6384,11 +4470,20 @@
           "version": 0
         },
         {
-          "value": {
-            "idx": 9,
-            "version": 7
-          },
-          "version": 3
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
         },
         {
           "value": null,
@@ -6407,11 +4502,16 @@
           "version": 0
         },
         {
-          "value": {
-            "idx": 17,
-            "version": 17
-          },
-          "version": 3
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
         },
         {
           "value": null,
@@ -6426,48 +4526,12 @@
           "version": 0
         },
         {
-          "value": {
-            "idx": 18,
-            "version": 11
-          },
-          "version": 15
-        },
-        {
           "value": null,
           "version": 0
         },
         {
           "value": null,
           "version": 0
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": {
-            "idx": 23,
-            "version": 11
-          },
-          "version": 15
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": {
-            "idx": 15,
-            "version": 3
-          },
-          "version": 19
-        },
-        {
-          "value": {
-            "idx": 16,
-            "version": 9
-          },
-          "version": 15
         },
         {
           "value": null,
@@ -6507,96 +4571,122 @@
         },
         {
           "value": {
-            "idx": 19,
-            "version": 5
-          },
-          "version": 9
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": {
-            "idx": 22,
-            "version": 5
-          },
-          "version": 5
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": {
-            "idx": 20,
-            "version": 15
-          },
-          "version": 11
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": {
-            "idx": 23,
-            "version": 11
-          },
-          "version": 17
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": {
-            "idx": 2,
-            "version": 5
-          },
-          "version": 19
-        },
-        {
-          "value": {
-            "idx": 23,
-            "version": 11
+            "idx": 24,
+            "version": 27
           },
           "version": 23
         },
         {
-          "value": {
-            "idx": 25,
-            "version": 1
-          },
-          "version": 1
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
         },
         {
           "value": null,
@@ -6730,8 +4820,8 @@
         },
         {
           "value": {
-            "idx": 8,
-            "version": 7
+            "idx": 29,
+            "version": 3
           },
           "version": 1
         },
@@ -6819,16 +4909,109 @@
           "version": 0
         },
         {
-          "value": {
-            "idx": 24,
-            "version": 25
-          },
-          "version": 5
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
         },
         {
           "value": {
-            "idx": 41,
+            "idx": 44,
+            "version": 3
+          },
+          "version": 3
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": {
+            "idx": 33,
             "version": 1
+          },
+          "version": 1
+        },
+        {
+          "value": {
+            "idx": 34,
+            "version": 1
+          },
+          "version": 1
+        },
+        {
+          "value": {
+            "idx": 33,
+            "version": 1
+          },
+          "version": 1
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": {
+            "idx": 47,
+            "version": 11
           },
           "version": 3
         },
@@ -6841,38 +5024,43 @@
           "version": 0
         },
         {
-          "value": {
-            "idx": 37,
-            "version": 5
-          },
-          "version": 1
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
-          "value": null,
-          "version": 0
-        },
-        {
           "value": null,
           "version": 0
         },
         {
           "value": {
-            "idx": 39,
-            "version": 1
+            "idx": 45,
+            "version": 3
           },
-          "version": 1
+          "version": 3
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
         },
         {
           "value": null,
@@ -6888,101 +5076,36 @@
         },
         {
           "value": {
-            "idx": 40,
-            "version": 1
+            "idx": 43,
+            "version": 3
           },
-          "version": 1
+          "version": 5
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": null,
+          "version": 0
+        },
+        {
+          "value": {
+            "idx": 16,
+            "version": 13
+          },
+          "version": 11
+        },
+        {
+          "value": null,
+          "version": 0
         }
       ]
     },
     "node_order": [
       {
-        "idx": 1,
-        "version": 1
-      },
-      {
-        "idx": 13,
-        "version": 1
-      },
-      {
-        "idx": 12,
-        "version": 1
-      },
-      {
-        "idx": 2,
-        "version": 5
-      },
-      {
-        "idx": 19,
-        "version": 17
-      },
-      {
-        "idx": 16,
-        "version": 9
-      },
-      {
-        "idx": 15,
-        "version": 3
-      },
-      {
-        "idx": 17,
-        "version": 17
-      },
-      {
-        "idx": 18,
-        "version": 11
-      },
-      {
-        "idx": 23,
-        "version": 11
-      },
-      {
-        "idx": 22,
-        "version": 5
-      },
-      {
-        "idx": 7,
-        "version": 9
-      },
-      {
-        "idx": 20,
-        "version": 5
-      },
-      {
-        "idx": 9,
-        "version": 7
-      },
-      {
-        "idx": 14,
-        "version": 3
-      },
-      {
-        "idx": 6,
-        "version": 11
-      },
-      {
-        "idx": 21,
-        "version": 3
-      },
-      {
-        "idx": 4,
-        "version": 7
-      },
-      {
-        "idx": 5,
-        "version": 11
-      },
-      {
-        "idx": 25,
-        "version": 1
-      },
-      {
         "idx": 30,
         "version": 7
-      },
-      {
-        "idx": 29,
-        "version": 3
       },
       {
         "idx": 28,
@@ -6994,18 +5117,6 @@
       },
       {
         "idx": 32,
-        "version": 1
-      },
-      {
-        "idx": 8,
-        "version": 7
-      },
-      {
-        "idx": 33,
-        "version": 1
-      },
-      {
-        "idx": 34,
         "version": 1
       },
       {
@@ -7021,44 +5132,72 @@
         "version": 1
       },
       {
-        "idx": 10,
-        "version": 1
-      },
-      {
-        "idx": 11,
-        "version": 1
-      },
-      {
-        "idx": 26,
-        "version": 1
-      },
-      {
-        "idx": 24,
-        "version": 25
-      },
-      {
-        "idx": 38,
+        "idx": 29,
         "version": 3
       },
       {
-        "idx": 37,
-        "version": 5
+        "idx": 8,
+        "version": 7
       },
       {
-        "idx": 39,
+        "idx": 42,
         "version": 1
       },
       {
-        "idx": 41,
+        "idx": 34,
         "version": 1
       },
       {
-        "idx": 40,
+        "idx": 25,
+        "version": 3
+      },
+      {
+        "idx": 6,
+        "version": 13
+      },
+      {
+        "idx": 33,
         "version": 1
       },
       {
-        "idx": 3,
-        "version": 5
+        "idx": 7,
+        "version": 11
+      },
+      {
+        "idx": 24,
+        "version": 27
+      },
+      {
+        "idx": 16,
+        "version": 13
+      },
+      {
+        "idx": 5,
+        "version": 15
+      },
+      {
+        "idx": 46,
+        "version": 3
+      },
+      {
+        "idx": 4,
+        "version": 13
+      },
+      {
+        "idx": 45,
+        "version": 3
+      },
+      {
+        "idx": 44,
+        "version": 3
+      },
+      {
+        "idx": 43,
+        "version": 3
+      },
+      {
+        "idx": 47,
+        "version": 11
       }
     ],
     "connection_in_progress": null,
@@ -7070,186 +5209,132 @@
         "version": 0
       },
       {
-        "value": {
-          "x": 1474.0,
-          "y": 78.0
-        },
-        "version": 1
+        "value": null,
+        "version": 0
+      },
+      {
+        "value": null,
+        "version": 0
+      },
+      {
+        "value": null,
+        "version": 0
       },
       {
         "value": {
-          "x": -1028.0,
-          "y": -206.0
+          "x": 1589.0,
+          "y": 560.0
         },
-        "version": 5
+        "version": 13
       },
       {
         "value": {
-          "x": 746.0,
-          "y": 237.0
+          "x": 1162.0,
+          "y": 595.0
         },
-        "version": 5
+        "version": 15
       },
       {
         "value": {
-          "x": 608.0,
-          "y": 609.0
+          "x": 1769.0,
+          "y": 1064.0
+        },
+        "version": 13
+      },
+      {
+        "value": {
+          "x": 1906.0,
+          "y": 576.0
+        },
+        "version": 11
+      },
+      {
+        "value": {
+          "x": 1351.0,
+          "y": 1608.0
         },
         "version": 7
       },
       {
-        "value": {
-          "x": 52.0,
-          "y": 1200.0
-        },
-        "version": 11
+        "value": null,
+        "version": 0
+      },
+      {
+        "value": null,
+        "version": 0
+      },
+      {
+        "value": null,
+        "version": 0
+      },
+      {
+        "value": null,
+        "version": 0
+      },
+      {
+        "value": null,
+        "version": 0
+      },
+      {
+        "value": null,
+        "version": 0
+      },
+      {
+        "value": null,
+        "version": 0
       },
       {
         "value": {
-          "x": 441.0,
-          "y": 998.0
+          "x": 481.0,
+          "y": 49.0
         },
-        "version": 11
+        "version": 13
+      },
+      {
+        "value": null,
+        "version": 0
+      },
+      {
+        "value": null,
+        "version": 0
+      },
+      {
+        "value": null,
+        "version": 0
+      },
+      {
+        "value": null,
+        "version": 0
+      },
+      {
+        "value": null,
+        "version": 0
+      },
+      {
+        "value": null,
+        "version": 0
+      },
+      {
+        "value": null,
+        "version": 0
       },
       {
         "value": {
-          "x": -341.0,
-          "y": 1299.0
+          "x": 212.0,
+          "y": -70.0
         },
-        "version": 9
+        "version": 27
       },
       {
         "value": {
-          "x": 1355.0,
-          "y": 1451.0
-        },
-        "version": 7
-      },
-      {
-        "value": {
-          "x": -87.0,
-          "y": 886.0
-        },
-        "version": 7
-      },
-      {
-        "value": {
-          "x": 1961.0,
-          "y": 506.0
-        },
-        "version": 1
-      },
-      {
-        "value": {
-          "x": 1723.0,
-          "y": 264.0
-        },
-        "version": 1
-      },
-      {
-        "value": {
-          "x": 2339.0,
-          "y": 507.0
-        },
-        "version": 1
-      },
-      {
-        "value": {
-          "x": 2014.0,
-          "y": 123.0
-        },
-        "version": 1
-      },
-      {
-        "value": {
-          "x": -440.0,
-          "y": 856.0
+          "x": 2234.0,
+          "y": 484.0
         },
         "version": 3
       },
       {
-        "value": {
-          "x": -398.0,
-          "y": 210.0
-        },
-        "version": 3
-      },
-      {
-        "value": {
-          "x": 5.0,
-          "y": 326.0
-        },
-        "version": 9
-      },
-      {
-        "value": {
-          "x": -684.0,
-          "y": 207.0
-        },
-        "version": 17
-      },
-      {
-        "value": {
-          "x": -948.0,
-          "y": 141.0
-        },
-        "version": 11
-      },
-      {
-        "value": {
-          "x": -719.0,
-          "y": -66.0
-        },
-        "version": 17
-      },
-      {
-        "value": {
-          "x": -81.0,
-          "y": 648.0
-        },
-        "version": 5
-      },
-      {
-        "value": {
-          "x": 302.0,
-          "y": 616.0
-        },
-        "version": 3
-      },
-      {
-        "value": {
-          "x": -443.0,
-          "y": 698.0
-        },
-        "version": 5
-      },
-      {
-        "value": {
-          "x": -417.0,
-          "y": -3.0
-        },
-        "version": 11
-      },
-      {
-        "value": {
-          "x": 204.0,
-          "y": 161.0
-        },
-        "version": 25
-      },
-      {
-        "value": {
-          "x": 683.0,
-          "y": 929.0
-        },
-        "version": 1
-      },
-      {
-        "value": {
-          "x": 1086.0,
-          "y": 493.0
-        },
-        "version": 1
+        "value": null,
+        "version": 0
       },
       {
         "value": {
@@ -7295,15 +5380,15 @@
       },
       {
         "value": {
-          "x": 1648.0,
-          "y": 1448.0
+          "x": 1358.0,
+          "y": 1039.0
         },
         "version": 1
       },
       {
         "value": {
-          "x": 2280.0,
-          "y": 1376.0
+          "x": 2099.0,
+          "y": 1433.0
         },
         "version": 1
       },
@@ -7322,46 +5407,73 @@
         "version": 1
       },
       {
-        "value": {
-          "x": -539.0,
-          "y": -305.0
-        },
-        "version": 5
+        "value": null,
+        "version": 0
+      },
+      {
+        "value": null,
+        "version": 0
+      },
+      {
+        "value": null,
+        "version": 0
+      },
+      {
+        "value": null,
+        "version": 0
+      },
+      {
+        "value": null,
+        "version": 0
       },
       {
         "value": {
-          "x": 458.0,
-          "y": 12.0
+          "x": 2136.0,
+          "y": 1082.0
+        },
+        "version": 1
+      },
+      {
+        "value": {
+          "x": 1028.0,
+          "y": 289.0
         },
         "version": 3
       },
       {
         "value": {
-          "x": -261.0,
-          "y": -291.0
+          "x": 473.0,
+          "y": 320.0
         },
-        "version": 1
+        "version": 3
       },
       {
         "value": {
-          "x": -38.0,
-          "y": -213.0
+          "x": 190.0,
+          "y": 263.0
         },
-        "version": 1
+        "version": 3
       },
       {
         "value": {
-          "x": 207.0,
-          "y": -136.0
+          "x": 1358.0,
+          "y": 345.0
         },
-        "version": 1
+        "version": 3
+      },
+      {
+        "value": {
+          "x": 735.0,
+          "y": 68.0
+        },
+        "version": 11
       }
     ],
     "node_finder": null,
     "pan_zoom": {
       "pan": {
-        "x": 135.0,
-        "y": 230.0
+        "x": -398.0,
+        "y": 171.0
       },
       "zoom": 11.0
     },
@@ -7369,8 +5481,8 @@
   },
   "user_state": {
     "active_node": {
-      "idx": 12,
-      "version": 1
+      "idx": 25,
+      "version": 3
     }
   }
 }

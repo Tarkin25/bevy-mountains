@@ -273,11 +273,11 @@ impl ChunksConfig {
 impl Default for ChunksConfig {
     fn default() -> Self {
         Self {
-            size: 64.0,
+            size: 128.0,
             cell_size: 0.5,
             render_distance: 40,
             updates_per_frame: 4,
-            lod_breakpoints: [(0, 0.5), (4, 1.0), (8, 2.0), (16, 4.0)]
+            lod_breakpoints: [(0, 0.5), (4, 1.0), (8, 4.0), (16, 8.0), (24, 16.0), (32, 16.0), (48, 32.0)]
                 .into_iter()
                 .collect(),
             load_chunks: true,

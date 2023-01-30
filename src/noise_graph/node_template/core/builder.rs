@@ -22,7 +22,7 @@ impl<'a> NodeBuilder<'a> {
     pub fn input_name(&mut self) -> &mut Self {
         self.graph.add_input_param(
             self.node_id,
-            "New Node".into(),
+            "name".into(),
             ConnectionType::NoConnection,
             NodeAttribute::Name("New Node".into()),
             InputParamKind::ConstantOnly,

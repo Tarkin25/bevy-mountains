@@ -36,6 +36,7 @@ mod perlin_surflet;
 mod power;
 mod ridged_multi;
 mod rotate_point;
+mod scale;
 mod scale_bias;
 mod scale_point;
 mod select;
@@ -48,7 +49,7 @@ mod value;
 mod worley;
 
 pub use self::core::{evaluate_node, NodeBuilder, NodeEvaluator};
-use self::{arithmetic::Arithmetic, cache::SyncCache, float::Float, worley::SyncWorley};
+use self::{arithmetic::Arithmetic, cache::SyncCache, float::Float, worley::SyncWorley, scale::Scale};
 
 use super::{
     connection_type::ConnectionType, node_attribute::NodeAttribute, NoiseGraph, NodeData,
@@ -93,6 +94,7 @@ pub enum NodeTemplate {
     Power,
     RidgedMulti,
     RotatePoint,
+    Scale,
     ScaleBias,
     ScalePoint,
     Select,
@@ -195,6 +197,7 @@ impl NodeTemplateTrait for NodeTemplate {
             NodeTemplate::Power => Power::build(builder),
             NodeTemplate::RidgedMulti => RidgedMulti::build(builder),
             NodeTemplate::RotatePoint => RotatePoint::build(builder),
+            NodeTemplate::Scale => Scale::build(builder),
             NodeTemplate::ScaleBias => ScaleBias::build(builder),
             NodeTemplate::ScalePoint => ScalePoint::build(builder),
             NodeTemplate::Select => Select::build(builder),
