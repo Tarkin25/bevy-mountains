@@ -185,17 +185,14 @@ fn generate_chunk_data(
     assert!(size % cell_size == 0.0);
     let cells_per_side = (size / cell_size) as usize;
     let mut mesh = Mesh::new(PrimitiveTopology::TriangleList);
-    let (vertices, max_height) = vertices(cell_size, cells_per_side, position, compute_height);
+    let vertices = vertices(cell_size, cells_per_side, position, compute_height);
     mesh.insert_attribute(Mesh::ATTRIBUTE_POSITION, vertices);
     mesh.set_indices(Some(Indices::U32(indices(cells_per_side))));
     mesh.duplicate_vertices();
     mesh.set_indices(None);
     mesh.compute_flat_normals();
 
-    let aabb = Aabb {
-        center: Vec3::new(0.0, max_height / 2.0, 0.0).into(),
-        half_extents: Vec3::new(size / 2.0, max_height / 2.0, size / 2.0).into(),
-    };
+    let aabb = mesh.compute_aabb().expect("Failed to compute Mesh Aabb");
 
     ChunkData { mesh, aabb }
 }
@@ -205,10 +202,9 @@ fn vertices(
     cells_per_side: usize,
     position: Vec3,
     mut compute_height: impl FnMut(f32, f32) -> f32,
-) -> (Vec<[f32; 3]>, f32) {
+) -> Vec<[f32; 3]> {
     let mut vertices = Vec::with_capacity((cells_per_side + 1) * (cells_per_side + 1));
     let cells_per_direction = cells_per_side as isize / 2;
-    let mut max_height = 0.0;
 
     for x_index in -cells_per_direction..=cells_per_direction {
         for z_index in -cells_per_direction..=cells_per_direction {
@@ -217,14 +213,10 @@ fn vertices(
             let y = compute_height(x + position.x, z + position.z);
 
             vertices.push([x, y, z]);
-
-            if y > max_height {
-                max_height = y;
-            }
         }
     }
 
-    (vertices, max_height)
+    vertices
 }
 
 fn indices(cells_per_side: usize) -> Vec<u32> {
