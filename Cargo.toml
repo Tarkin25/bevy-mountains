@@ -1,5 +1,5 @@
 [package]
-name = "bevy-mountains"
+name = "world-generator"
 version = "0.1.0"
 edition = "2021"
 

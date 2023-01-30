@@ -321,23 +321,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "bevy-mountains"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "bevy",
- "bevy-inspector-egui",
- "bevy_egui 0.17.1",
- "dashmap",
- "egui_node_graph",
- "futures-lite",
- "noise",
- "serde",
- "serde_json",
- "strum",
-]
-
-[[package]]
 name = "bevy_animation"
 version = "0.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4055,6 +4038,23 @@ dependencies = [
  "web-sys",
  "windows-sys 0.36.1",
  "x11-dl",
+]
+
+[[package]]
+name = "world-generator"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "bevy",
+ "bevy-inspector-egui",
+ "bevy_egui 0.17.1",
+ "dashmap",
+ "egui_node_graph",
+ "futures-lite",
+ "noise",
+ "serde",
+ "serde_json",
+ "strum",
 ]
 
 [[package]]

@@ -25,7 +25,7 @@ fn main() {
     App::new()
         .add_plugins(DefaultPlugins.set(WindowPlugin {
             window: WindowDescriptor {
-                title: "Mountains".into(),
+                title: "World Generator".into(),
                 mode: WindowMode::Fullscreen,
                 cursor_grab_mode: CursorGrabMode::Locked,
                 cursor_visible: false,
