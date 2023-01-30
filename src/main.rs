@@ -6,20 +6,20 @@ use bevy::{
 use bevy_egui::EguiPlugin;
 use bevy_inspector_egui::DefaultInspectorConfigPlugin;
 use camera_controller::CameraControllerPlugin;
+use chunk::ChunkPlugin;
 use learn_shaders::LearnShadersPlugin;
 use light::LightPlugin;
-use mountain::MountainPlugin;
 use noise_graph::NoiseGraphPlugin;
 use pause::PausePlugin;
 use wireframe_controller::WireframeControllerPlugin;
 
 pub mod camera_controller;
 pub mod light;
-pub mod mountain;
 pub mod noise_graph;
 pub mod pause;
 pub mod wireframe_controller;
 pub mod learn_shaders;
+pub mod chunk;
 
 fn main() {
     App::new()
@@ -38,10 +38,10 @@ fn main() {
         .add_plugin(CameraControllerPlugin {
             transform: Transform::from_xyz(0.0, 100.0, -10.0).looking_at(Vec3::ZERO, Vec3::Y),
         })
-        .add_plugin(MountainPlugin)
         .add_plugin(LearnShadersPlugin)
         .add_plugin(WireframeControllerPlugin)
         .add_plugin(PausePlugin)
+        .add_plugin(ChunkPlugin)
         .add_plugin(NoiseGraphPlugin)
         .add_plugin(EguiPlugin)
         .add_plugin(DefaultInspectorConfigPlugin)
