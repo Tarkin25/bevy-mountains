@@ -9,12 +9,12 @@ use crate::noise_graph::{
     node_template::{
         arithmetic::Arithmetic, cache::SyncCache, float::Float, NodeImpl, NodeTemplate, worley::SyncWorley,
     },
-    DynNoiseFn, MyGraph, OutputsCache,
+    DynNoiseFn, NoiseGraph, OutputsCache,
 };
 
 /// Recursively evaluates all dependencies of this node, then evaluates the node itself.
 pub fn evaluate_node(
-    graph: &MyGraph,
+    graph: &NoiseGraph,
     node_id: NodeId,
     outputs_cache: &mut OutputsCache,
 ) -> anyhow::Result<NodeAttribute> {
@@ -62,12 +62,12 @@ pub fn evaluate_node(
 }
 
 pub struct NodeEvaluator<'a> {
-    graph: &'a MyGraph,
+    graph: &'a NoiseGraph,
     outputs_cache: &'a mut OutputsCache,
     node_id: NodeId,
 }
 impl<'a> NodeEvaluator<'a> {
-    pub fn new(graph: &'a MyGraph, outputs_cache: &'a mut OutputsCache, node_id: NodeId) -> Self {
+    pub fn new(graph: &'a NoiseGraph, outputs_cache: &'a mut OutputsCache, node_id: NodeId) -> Self {
         Self {
             graph,
             outputs_cache,
@@ -132,7 +132,7 @@ impl<'a> NodeEvaluator<'a> {
 }
 
 fn populate_output(
-    graph: &MyGraph,
+    graph: &NoiseGraph,
     outputs_cache: &mut OutputsCache,
     node_id: NodeId,
     param_name: &str,
@@ -145,7 +145,7 @@ fn populate_output(
 
 // Evaluates the input value of
 fn evaluate_input(
-    graph: &MyGraph,
+    graph: &NoiseGraph,
     node_id: NodeId,
     param_name: &str,
     outputs_cache: &mut OutputsCache,

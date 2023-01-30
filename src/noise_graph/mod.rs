@@ -31,22 +31,26 @@ pub struct NoiseGraphPlugin;
 
 impl Plugin for NoiseGraphPlugin {
     fn build(&self, app: &mut App) {
-        let graph = NoiseGraph::load().unwrap_or_else(|e| {
+        let graph = NoiseGraphResource::load().unwrap_or_else(|e| {
             error!("{}", e);
             Default::default()
         });
 
         app.insert_resource(graph)
             .add_system_set(SystemSet::on_update(GameState::Paused).with_system(draw_graph))
-            .add_system_set(SystemSet::on_exit(GameState::Paused).with_system(save_graph));
+            .add_system_set(SystemSet::on_exit(GameState::Paused).with_system(evaluate_graph).with_system(save_graph));
     }
 }
 
-fn draw_graph(mut context: ResMut<EguiContext>, mut graph: ResMut<NoiseGraph>) {
+fn draw_graph(mut context: ResMut<EguiContext>, mut graph: ResMut<NoiseGraphResource>) {
     graph.draw(context.ctx_mut());
 }
 
-fn save_graph(graph: Res<NoiseGraph>) {
+fn evaluate_graph(mut graph: ResMut<NoiseGraphResource>) {
+    graph.update_current_noise();
+}
+
+fn save_graph(graph: Res<NoiseGraphResource>) {
     if let Err(e) = graph.save() {
         error!("Error while saving noise graph: {}", e);
     }
@@ -138,20 +142,18 @@ impl NodeDataTrait for NodeData {
     }
 }
 
-type MyGraph = Graph<NodeData, ConnectionType, NodeAttribute>;
-type MyEditorState =
-    GraphEditorState<NodeData, ConnectionType, NodeAttribute, NodeTemplate, NoiseGraphState>;
+pub type NoiseGraph = Graph<NodeData, ConnectionType, NodeAttribute>;
 
 #[derive(Default, Resource, Serialize, Deserialize)]
-pub struct NoiseGraph {
+pub struct NoiseGraphResource {
     // The `GraphEditorState` is the top-level object. You "register" all your
     // custom types by specifying it as its generic parameters.
-    state: MyEditorState,
+    state: GraphEditorState<NodeData, ConnectionType, NodeAttribute, NodeTemplate, NoiseGraphState>,
 
     user_state: NoiseGraphState,
 }
 
-impl NoiseGraph {
+impl NoiseGraphResource {
     const FILE_PATH: &'static str = "assets/noise_graph.json";
 
     fn load() -> anyhow::Result<Self> {
@@ -179,7 +181,7 @@ impl NoiseGraph {
         writer.flush().context("Unable to save file")
     }
 
-    pub fn get_noise_fn(&self) -> DynNoiseFn {
+    pub fn get_noise_fn(&self) -> DynNoiseFn {        
         self.user_state
             .current_noise
             .as_ref()
@@ -205,8 +207,6 @@ impl NoiseGraph {
                 }
             }
         }
-
-        self.update_current_noise();
     }
 
     fn update_current_noise(&mut self) {

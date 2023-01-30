@@ -51,7 +51,7 @@ pub use self::core::{evaluate_node, NodeBuilder, NodeEvaluator};
 use self::{arithmetic::Arithmetic, cache::SyncCache, float::Float, worley::SyncWorley};
 
 use super::{
-    connection_type::ConnectionType, node_attribute::NodeAttribute, MyGraph, NodeData,
+    connection_type::ConnectionType, node_attribute::NodeAttribute, NoiseGraph, NodeData,
     NoiseGraphState, OutputsCache,
 };
 
@@ -107,7 +107,7 @@ pub enum NodeTemplate {
 
 impl NodeTemplate {
     pub fn evaluate(
-        graph: &MyGraph,
+        graph: &NoiseGraph,
         node_id: NodeId,
         outputs_cache: &mut OutputsCache,
     ) -> anyhow::Result<NodeAttribute> {

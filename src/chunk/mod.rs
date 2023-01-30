@@ -8,7 +8,7 @@ use bevy_inspector_egui::prelude::*;
 use futures_lite::future;
 use noise::NoiseFn;
 
-use crate::{camera_controller::CameraController, noise_graph::NoiseGraph, pause::GameState, learn_shaders::LearnShadersMaterial};
+use crate::{camera_controller::CameraController, noise_graph::NoiseGraphResource, pause::GameState, learn_shaders::LearnShadersMaterial};
 
 use self::grid::{ChunkGrid, ChunkGridPlugin, GridCoordinates};
 
@@ -83,7 +83,7 @@ fn trigger_chunk_creation(
 }
 
 fn spawn_compute_mesh_tasks(
-    noise_graph: Res<NoiseGraph>,
+    noise_graph: Res<NoiseGraphResource>,
     mut commands: Commands,
     query: Query<(Entity, &GridCoordinates, &Chunk), With<LoadChunk>>,
     chunks_config: Res<ChunksConfig>,
