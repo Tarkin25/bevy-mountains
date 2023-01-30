@@ -155,7 +155,7 @@ fn unload_chunks(
     mut commands: Commands,
     chunks: Query<
         (Entity, &GridCoordinates),
-        (With<Chunk>, Without<LoadChunk>, Without<ComputeMesh>),
+        (With<Chunk>, Without<ComputeMesh>),
     >,
     camera: Query<&GridCoordinates, With<CameraController>>,
     chunks_config: Res<ChunksConfig>,
