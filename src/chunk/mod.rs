@@ -244,8 +244,7 @@ pub struct Chunk {
     cell_size: f32,
 }
 
-#[derive(Resource, InspectorOptions, Reflect, PartialEq, Clone)]
-#[reflect(InspectorOptions)]
+#[derive(Resource, Reflect, PartialEq, Clone)]
 pub struct ChunksConfig {
     size: f32,
     cell_size: f32,

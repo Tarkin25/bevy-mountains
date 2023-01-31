@@ -4,7 +4,6 @@ use bevy::{
     window::{close_on_esc, CursorGrabMode},
 };
 use bevy_egui::EguiPlugin;
-use bevy_inspector_egui::DefaultInspectorConfigPlugin;
 use camera_controller::CameraControllerPlugin;
 use chunk::ChunkPlugin;
 use learn_shaders::LearnShadersPlugin;
@@ -27,8 +26,6 @@ fn main() {
             window: WindowDescriptor {
                 title: "World Generator".into(),
                 mode: WindowMode::Fullscreen,
-                cursor_grab_mode: CursorGrabMode::Locked,
-                cursor_visible: false,
                 ..Default::default()
             },
             ..Default::default()
@@ -36,7 +33,7 @@ fn main() {
         .add_plugin(FrameTimeDiagnosticsPlugin)
         .add_plugin(LightPlugin)
         .add_plugin(CameraControllerPlugin {
-            transform: Transform::from_xyz(0.0, 100.0, -10.0).looking_at(Vec3::ZERO, Vec3::Y),
+            transform: Transform::from_xyz(0.0, 100.0, -10.0),
         })
         .add_plugin(LearnShadersPlugin)
         .add_plugin(WireframeControllerPlugin)
@@ -44,7 +41,6 @@ fn main() {
         .add_plugin(ChunkPlugin)
         .add_plugin(NoiseGraphPlugin)
         .add_plugin(EguiPlugin)
-        .add_plugin(DefaultInspectorConfigPlugin)
         .add_system(close_on_esc)
         .run();
 }

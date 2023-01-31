@@ -43,7 +43,16 @@ impl Plugin for NoiseGraphPlugin {
 }
 
 fn draw_graph(mut context: ResMut<EguiContext>, mut graph: ResMut<NoiseGraphResource>) {
-    graph.draw(context.ctx_mut());
+    let ctx = context.ctx_mut();
+    egui::TopBottomPanel::top("Top panel").show(ctx, |ui| {
+        ui.label("Top Panel");
+    });
+    egui::SidePanel::left("Side panel").show(ctx, |ui| {
+        ui.label("Side Panel");
+    });
+    egui::Window::new("noise graph").title_bar(false).default_rect(ctx.available_rect()).show(ctx, |ui| {
+        ui.add(&mut *graph)
+    });
 }
 
 fn evaluate_graph(mut graph: ResMut<NoiseGraphResource>) {
@@ -205,34 +214,6 @@ impl NoiseGraphResource {
             .unwrap_or_else(|| DynNoiseFn::new(Checkerboard::default()))
     }
 
-    fn draw(&mut self, ctx: &egui::Context) {
-        let graph_response = egui::CentralPanel::default()
-            .show(ctx, |ui| {
-                self.state
-                    .draw_graph_editor(ui, AllNodeTemplates, &mut self.user_state)
-            })
-            .inner;
-        for node_response in graph_response.node_responses {
-            // Here, we ignore all other graph events. But you may find
-            // some use for them. For example, by playing a sound when a new
-            // connection is created
-            if let NodeResponse::User(user_event) = node_response {
-                match user_event {
-                    MyResponse::SetActiveNode(node) => self.user_state.active_node = Some(node),
-                    MyResponse::ClearActiveNode => self.user_state.active_node = None,
-                    MyResponse::SaveImage =>  {
-                        self.update_current_noise();
-                        
-                        if let Err(e) = self.save_image() {
-                            error!("{e}");
-                            Self::debug_text(ctx, e)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     fn debug_text(ctx: &egui::Context, text: impl ToString) {
         ctx.debug_painter().text(
             egui::pos2(10.0, 35.0),
@@ -255,6 +236,34 @@ impl NoiseGraphResource {
                 self.user_state.active_node = None;
             }
         }
+    }
+}
+
+impl egui::Widget for &mut NoiseGraphResource {
+    fn ui(self, ui: &mut egui::Ui) -> egui::Response {
+        let graph_response = self.state.draw_graph_editor(ui, AllNodeTemplates, &mut self.user_state);
+
+        for node_response in graph_response.node_responses {
+            // Here, we ignore all other graph events. But you may find
+            // some use for them. For example, by playing a sound when a new
+            // connection is created
+            if let NodeResponse::User(user_event) = node_response {
+                match user_event {
+                    MyResponse::SetActiveNode(node) => self.user_state.active_node = Some(node),
+                    MyResponse::ClearActiveNode => self.user_state.active_node = None,
+                    MyResponse::SaveImage =>  {
+                        self.update_current_noise();
+                        
+                        if let Err(e) = self.save_image() {
+                            error!("{e}");
+                            NoiseGraphResource::debug_text(ui.ctx(), e)
+                        }
+                    }
+                }
+            }
+        }
+
+        ui.allocate_rect(ui.min_rect(), egui::Sense::click().union(egui::Sense::drag()))
     }
 }
 

@@ -4,7 +4,6 @@ use std::{
 };
 
 use bevy::prelude::*;
-use bevy_inspector_egui::prelude::*;
 use dashmap::DashSet;
 
 use crate::{camera_controller::CameraController, pause::GameState};
@@ -62,8 +61,7 @@ impl Deref for ChunkGrid {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Component, Reflect, InspectorOptions)]
-#[reflect(InspectorOptions)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Component, Reflect)]
 pub struct GridCoordinates {
     pub x: i32,
     pub z: i32,
