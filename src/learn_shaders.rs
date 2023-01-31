@@ -141,7 +141,12 @@ impl Widget for &mut ColorGradient {
     fn ui(self, ui: &mut Ui) -> Response {
         ui.horizontal(|ui| {
             ui.label("gradient_points");
-            ui.add(ListWidget(&mut self.gradient_points))
+            ui.vertical(|ui| {
+                ui.add(ListWidget(&mut self.gradient_points));
+                if ui.button("Sort").clicked() {
+                    self.gradient_points.sort_by(|a, b| a.height.total_cmp(&b.height));
+                }
+            });
         }).response
     }
 }

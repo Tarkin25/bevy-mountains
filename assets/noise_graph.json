@@ -1042,7 +1042,7 @@
         },
         {
           "value": null,
-          "version": 2
+          "version": 6
         },
         {
           "value": {
@@ -3275,11 +3275,11 @@
         },
         {
           "value": null,
-          "version": 2
+          "version": 6
         },
         {
           "value": null,
-          "version": 2
+          "version": 4
         },
         {
           "value": {
@@ -4253,7 +4253,7 @@
         },
         {
           "value": null,
-          "version": 2
+          "version": 6
         },
         {
           "value": {
@@ -4397,8 +4397,8 @@
         },
         {
           "value": {
-            "idx": 33,
-            "version": 1
+            "idx": 7,
+            "version": 11
           },
           "version": 5
         },
@@ -5620,8 +5620,8 @@
     "node_finder": null,
     "pan_zoom": {
       "pan": {
-        "x": 199.0,
-        "y": 141.0
+        "x": -893.0,
+        "y": 259.0
       },
       "zoom": 11.0
     },
