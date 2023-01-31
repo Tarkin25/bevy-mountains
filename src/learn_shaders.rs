@@ -1,37 +1,40 @@
 use bevy::{prelude::*, reflect::TypeUuid, render::{render_resource::{AsBindGroup, ShaderType, BindGroupLayout, PreparedBindGroup, AsBindGroupError, encase::StorageBuffer, OwnedBindingResource, BufferInitDescriptor, BufferUsages, BindGroupDescriptor, BindGroupEntry, BindGroupLayoutDescriptor, BindGroupLayoutEntry, ShaderStages, BindingType, BufferBindingType, ShaderRef}, renderer::RenderDevice, render_asset::RenderAssets, texture::FallbackImage}};
+use bevy_inspector_egui::egui::{Widget, Ui, Response, DragValue};
+
+use crate::{pause::GameState, widgets::{ColorWidget, ListWidget}};
 
 pub struct LearnShadersPlugin;
 
 impl Plugin for LearnShadersPlugin {
     fn build(&self, app: &mut App) {
-        app.add_plugin(MaterialPlugin::<LearnShadersMaterial>::default())
-        .add_startup_system(setup);
+        app
+        .init_resource::<ColorGradient>()
+        .add_plugin(MaterialPlugin::<LearnShadersMaterial>::default())
+        .add_system_set(SystemSet::on_enter(GameState::Running).with_system(update_materials))
+        .add_startup_system(insert_material_config);
     }
 }
 
-fn setup(mut commands: Commands, mut materials: ResMut<Assets<LearnShadersMaterial>>, mut meshes: ResMut<Assets<Mesh>>) {
-    commands.spawn(MaterialMeshBundle {
-        mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
-        material: materials.add(LearnShadersMaterial::default()),
-        ..Default::default()
+fn insert_material_config(color_gradient: Res<ColorGradient>, mut materials: ResMut<Assets<LearnShadersMaterial>>, mut commands: Commands) {
+    commands.insert_resource(MaterialConfig {
+        chunk_material: materials.add(LearnShadersMaterial { gradient_points: color_gradient.gradient_points.clone() }),
     });
+}
+
+fn update_materials(mut materials: ResMut<Assets<LearnShadersMaterial>>, color_gradient: Res<ColorGradient>, query: Query<&Handle<LearnShadersMaterial>>) {
+    query.for_each(|handle| {
+        if let Some(material) = materials.get_mut(handle) {
+            if material.gradient_points != color_gradient.gradient_points {
+                material.gradient_points = color_gradient.gradient_points.clone();
+            }
+        }
+    })
 }
 
 #[derive(TypeUuid, Debug, Clone)]
 #[uuid = "6cf55774-e3e4-4cf8-81b3-dd3641cc90de"]
 pub struct LearnShadersMaterial {
     pub gradient_points: Vec<GradientPoint>,
-}
-
-impl Default for LearnShadersMaterial {
-    fn default() -> Self {
-        Self {
-            gradient_points: vec![
-                GradientPoint { height: -1.0, color: Color::BLACK },
-                GradientPoint { height: 1.0, color: Color::WHITE },
-            ]
-        }
-    }
 }
 
 impl AsBindGroup for LearnShadersMaterial {
@@ -106,8 +109,44 @@ impl Material for LearnShadersMaterial {
     }
 }
 
-#[derive(Clone, Copy, Debug, Default, ShaderType)]
+#[derive(Clone, Copy, Debug, Default, ShaderType, PartialEq)]
 pub struct GradientPoint {
     pub color: Color,
     pub height: f32,
+}
+
+impl Widget for &mut GradientPoint {
+    fn ui(self, ui: &mut Ui) -> Response {
+        ui.horizontal(|ui| {
+            ui.add(DragValue::new(&mut self.height).max_decimals(5));
+            ui.add(ColorWidget(&mut self.color));
+        }).response
+    }
+}
+
+#[derive(Debug, Resource)]
+pub struct ColorGradient {
+    pub gradient_points: Vec<GradientPoint>,
+}
+
+impl Default for ColorGradient {
+    fn default() -> Self {
+        Self {
+            gradient_points: vec![GradientPoint { height: 0.0, color: Color::PURPLE }]
+        }
+    }
+}
+
+impl Widget for &mut ColorGradient {
+    fn ui(self, ui: &mut Ui) -> Response {
+        ui.horizontal(|ui| {
+            ui.label("gradient_points");
+            ui.add(ListWidget(&mut self.gradient_points))
+        }).response
+    }
+}
+
+#[derive(Default, Debug, Resource)]
+pub struct MaterialConfig {
+    pub chunk_material: Handle<LearnShadersMaterial>,
 }

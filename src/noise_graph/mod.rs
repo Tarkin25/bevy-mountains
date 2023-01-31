@@ -12,10 +12,10 @@ use bevy_egui::{egui, EguiContext};
 use egui_node_graph::{
     Graph, GraphEditorState, NodeDataTrait, NodeId, NodeResponse, OutputId, UserResponseTrait,
 };
-use noise::{Checkerboard, NoiseFn, utils::{PlaneMapBuilder, NoiseMapBuilder, ImageRenderer, ColorGradient}};
+use noise::{Checkerboard, NoiseFn, utils::{PlaneMapBuilder, NoiseMapBuilder, ImageRenderer}};
 use serde::{Deserialize, Serialize};
 
-use crate::pause::GameState;
+use crate::{pause::GameState, learn_shaders::ColorGradient};
 
 use self::{
     connection_type::ConnectionType,
@@ -42,7 +42,7 @@ impl Plugin for NoiseGraphPlugin {
     }
 }
 
-fn draw_graph(mut context: ResMut<EguiContext>, mut graph: ResMut<NoiseGraphResource>) {
+fn draw_graph(mut context: ResMut<EguiContext>, mut graph: ResMut<NoiseGraphResource>, mut color_gradient: ResMut<ColorGradient>) {
     let ctx = context.ctx_mut();
     /* egui::TopBottomPanel::top("Top panel").show(ctx, |ui| {
         ui.horizontal(|ui| {
@@ -50,9 +50,9 @@ fn draw_graph(mut context: ResMut<EguiContext>, mut graph: ResMut<NoiseGraphReso
         })
     }); */
     egui::SidePanel::left("Side panel").show(ctx, |ui| {
-        ui.label("Side Panel");
+        ui.add(&mut *color_gradient);
     });
-    egui::Window::new("noise graph").title_bar(false).default_rect(ctx.available_rect()).show(ctx, |ui| {
+    egui::Window::new("noise graph").title_bar(false).fixed_rect(ctx.available_rect()).show(ctx, |ui| {
         ui.add(&mut *graph)
     });
 }
@@ -203,7 +203,7 @@ impl NoiseGraphResource {
         .set_y_bounds(-half_bounds, half_bounds)
         .build();
 
-        ImageRenderer::new().set_gradient(ColorGradient::new().build_terrain_gradient()).render(&map).write_to_file(&format!("{name}.png"));
+        ImageRenderer::new().set_gradient(noise::utils::ColorGradient::new().build_terrain_gradient()).render(&map).write_to_file(&format!("{name}.png"));
         
         Ok(())
     }

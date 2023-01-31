@@ -1,7 +1,7 @@
 use bevy::{
     diagnostic::FrameTimeDiagnosticsPlugin,
     prelude::*,
-    window::{close_on_esc, CursorGrabMode},
+    window::close_on_esc,
 };
 use bevy_egui::EguiPlugin;
 use camera_controller::CameraControllerPlugin;
@@ -19,6 +19,7 @@ pub mod pause;
 pub mod wireframe_controller;
 pub mod learn_shaders;
 pub mod chunk;
+pub mod widgets;
 
 fn main() {
     App::new()

@@ -4,11 +4,10 @@ use bevy::{
     tasks::{AsyncComputeTaskPool, Task},
     utils::HashMap,
 };
-use bevy_inspector_egui::prelude::*;
 use futures_lite::future;
 use noise::NoiseFn;
 
-use crate::{camera_controller::CameraController, noise_graph::NoiseGraphResource, pause::GameState, learn_shaders::LearnShadersMaterial};
+use crate::{camera_controller::CameraController, noise_graph::NoiseGraphResource, pause::GameState, learn_shaders::MaterialConfig};
 
 use self::grid::{ChunkGrid, ChunkGridPlugin, GridCoordinates};
 
@@ -38,7 +37,7 @@ fn trigger_chunk_creation(
     chunk_grid: Res<ChunkGrid>,
     config: Res<ChunksConfig>,
     mut commands: Commands,
-    mut materials: ResMut<Assets<LearnShadersMaterial>>,
+    material_config: Res<MaterialConfig>,
 ) {
     if config.load_chunks {
         let render_distance = config.render_distance;
@@ -65,7 +64,7 @@ fn trigger_chunk_creation(
                             visibility: Visibility::VISIBLE,
                             computed: ComputedVisibility::default(),
                         },
-                        materials.add(LearnShadersMaterial::default()),
+                        material_config.chunk_material.clone(),
                     ));
                 }
             };
