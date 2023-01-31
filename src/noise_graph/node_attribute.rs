@@ -1,5 +1,6 @@
 use bevy_egui::egui::{self, Color32, ComboBox, DragValue, TextEdit};
 use egui_node_graph::{NodeId, WidgetValueTrait};
+use noise::core::worley::ReturnType;
 use serde::{Deserialize, Serialize};
 use std::fmt::Debug;
 use strum::IntoEnumIterator;
@@ -31,6 +32,7 @@ pub enum NodeAttribute {
         template: Box<NodeAttribute>,
     },
     F64Tuple(f64, f64),
+    ReturnType(WorleyReturnType),
 }
 
 #[derive(
@@ -64,6 +66,23 @@ impl Operator {
     }
 }
 
+#[derive(
+    Clone, Copy, PartialEq, Eq, Debug, strum::Display, strum::EnumIter, Deserialize, Serialize,
+)]
+pub enum WorleyReturnType {
+    Distance,
+    Value,
+}
+
+impl From<WorleyReturnType> for ReturnType {
+    fn from(value: WorleyReturnType) -> Self {
+        match value {
+            WorleyReturnType::Distance => ReturnType::Distance,
+            WorleyReturnType::Value => ReturnType::Value,
+        }
+    }
+}
+
 impl WidgetValueTrait for NodeAttribute {
     type UserState = NoiseGraphState;
     type NodeData = NodeData;
@@ -77,7 +96,7 @@ impl WidgetValueTrait for NodeAttribute {
         node_state: &NodeData,
     ) -> Vec<MyResponse> {
         const MAX_DECIMALS: usize = 5;
-        
+
         // This trait is used to tell the library which UI to display for the
         // inline parameter widgets.
         match self {
@@ -125,7 +144,7 @@ impl WidgetValueTrait for NodeAttribute {
                 ui.indent("values", |ui| {
                     ui.vertical(|ui| {
                         let mut indices_to_remove = Vec::with_capacity(values.len());
-                        
+
                         for i in 0..values.len() {
                             ui.horizontal(|ui| {
                                 values[i].value_widget(
@@ -155,6 +174,18 @@ impl WidgetValueTrait for NodeAttribute {
                     ui.label(param_name);
                     ui.add(DragValue::new(first).max_decimals(MAX_DECIMALS));
                     ui.add(DragValue::new(second).max_decimals(MAX_DECIMALS));
+                });
+            }
+            NodeAttribute::ReturnType(return_type) => {
+                ui.horizontal(|ui| {
+                    ui.label(param_name);
+                    ComboBox::from_id_source(param_name)
+                        .selected_text(return_type.to_string())
+                        .show_ui(ui, |ui| {
+                            for available in WorleyReturnType::iter() {
+                                ui.selectable_value(return_type, available, available.to_string());
+                            }
+                        });
                 });
             }
             _ => {
@@ -228,6 +259,14 @@ impl NodeAttribute {
             Ok((first, second))
         } else {
             self.invalid_cast("F64Tuple")
+        }
+    }
+
+    pub fn try_to_return_type(self) -> anyhow::Result<WorleyReturnType> {
+        if let NodeAttribute::ReturnType(return_type) = self {
+            Ok(return_type)
+        } else {
+            self.invalid_cast("ReturnType")
         }
     }
 

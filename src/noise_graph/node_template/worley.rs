@@ -1,6 +1,10 @@
 use std::sync::Arc;
 
-use noise::{core::worley::{ReturnType, distance_functions, worley_2d}, permutationtable::PermutationTable, NoiseFn, Seedable};
+use noise::{
+    core::worley::{distance_functions, worley_2d, ReturnType},
+    permutationtable::PermutationTable,
+    NoiseFn, Seedable,
+};
 
 use super::NodeImpl;
 
@@ -17,11 +21,20 @@ pub type DistanceFunction = dyn Fn(&[f64], &[f64]) -> f64 + Send + Sync;
 
 impl NodeImpl for SyncWorley {
     fn build(builder: &mut super::NodeBuilder) {
-        builder.output_noise();
+        builder
+            .input_f64("frequency", Self::DEFAULT_FREQUENCY)
+            .input_return_type()
+            .output_noise();
     }
 
-    fn evaluate(evaluator: &mut super::NodeEvaluator) -> anyhow::Result<crate::noise_graph::node_attribute::NodeAttribute> {
-        let noise = SyncWorley::default()._set_return_type(ReturnType::Distance);
+    fn evaluate(
+        evaluator: &mut super::NodeEvaluator,
+    ) -> anyhow::Result<crate::noise_graph::node_attribute::NodeAttribute> {
+        let frequency = evaluator.get_f64("frequency")?;
+        let return_type = evaluator.get_return_type()?;
+        let noise = SyncWorley::default()
+            .set_return_type(return_type.into())
+            .set_frequency(frequency);
         evaluator.output_noise(noise)
     }
 }
@@ -53,7 +66,7 @@ impl SyncWorley {
 
     /// Enables or disables applying the distance from the nearest seed point
     /// to the output value.
-    pub fn _set_return_type(self, return_type: ReturnType) -> Self {
+    pub fn set_return_type(self, return_type: ReturnType) -> Self {
         Self {
             return_type,
             ..self
@@ -61,7 +74,7 @@ impl SyncWorley {
     }
 
     /// Sets the frequency of the seed points.
-    pub fn _set_frequency(self, frequency: f64) -> Self {
+    pub fn set_frequency(self, frequency: f64) -> Self {
         Self { frequency, ..self }
     }
 }

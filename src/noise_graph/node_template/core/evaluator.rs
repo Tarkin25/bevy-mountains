@@ -1,13 +1,16 @@
 use egui_node_graph::NodeId;
 use noise::{
     Abs, Add, BasicMulti, Billow, Blend, Checkerboard, Clamp, Constant, Curve, Cylinders, Displace,
-    Fbm, NoiseFn, Perlin, RidgedMulti, ScaleBias, ScalePoint, Select, Terrace, Turbulence, Exponent, HybridMulti, Max, Min, Multiply, Negate, OpenSimplex, PerlinSurflet, Power, RotatePoint, Simplex, SuperSimplex, TranslatePoint, Value,
+    Exponent, Fbm, HybridMulti, Max, Min, Multiply, Negate, NoiseFn, OpenSimplex, Perlin,
+    PerlinSurflet, Power, RidgedMulti, RotatePoint, ScaleBias, ScalePoint, Select, Simplex,
+    SuperSimplex, Terrace, TranslatePoint, Turbulence, Value,
 };
 
 use crate::noise_graph::{
-    node_attribute::{NodeAttribute, NoiseType, Operator},
+    node_attribute::{NodeAttribute, NoiseType, Operator, WorleyReturnType},
     node_template::{
-        arithmetic::Arithmetic, cache::SyncCache, float::Float, NodeImpl, NodeTemplate, worley::SyncWorley, scale::Scale,
+        arithmetic::Arithmetic, cache::SyncCache, float::Float, scale::Scale, worley::SyncWorley,
+        NodeImpl, NodeTemplate,
     },
     DynNoiseFn, NoiseGraph, OutputsCache,
 };
@@ -68,7 +71,11 @@ pub struct NodeEvaluator<'a> {
     node_id: NodeId,
 }
 impl<'a> NodeEvaluator<'a> {
-    pub fn new(graph: &'a NoiseGraph, outputs_cache: &'a mut OutputsCache, node_id: NodeId) -> Self {
+    pub fn new(
+        graph: &'a NoiseGraph,
+        outputs_cache: &'a mut OutputsCache,
+        node_id: NodeId,
+    ) -> Self {
         Self {
             graph,
             outputs_cache,
@@ -118,8 +125,8 @@ impl<'a> NodeEvaluator<'a> {
     pub fn get_vec(&mut self, name: &str) -> anyhow::Result<Vec<NodeAttribute>> {
         self.evaluate_input(name)?.try_to_vec()
     }
-    pub fn get_f64_tuple(&mut self, name: &str) -> anyhow::Result<(f64, f64)> {
-        self.evaluate_input(name)?.try_to_f64_tuple()
+    pub fn get_return_type(&mut self) -> anyhow::Result<WorleyReturnType> {
+        self.evaluate_input("return type")?.try_to_return_type()
     }
     pub fn output_noise(
         &mut self,

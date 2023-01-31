@@ -2,7 +2,7 @@ use egui_node_graph::{Graph, InputParamKind, NodeId};
 
 use crate::noise_graph::{
     connection_type::ConnectionType,
-    node_attribute::{NodeAttribute, NoiseType, Operator},
+    node_attribute::{NodeAttribute, NoiseType, Operator, WorleyReturnType},
     NodeData,
 };
 
@@ -100,6 +100,18 @@ impl<'a> NodeBuilder<'a> {
                 values: vec![],
                 template: Box::new(template),
             },
+            InputParamKind::ConstantOnly,
+            true,
+        );
+        self
+    }
+
+    pub fn input_return_type(&mut self) -> &mut Self {
+        self.graph.add_input_param(
+            self.node_id,
+            "return type".into(),
+            ConnectionType::NoConnection,
+            NodeAttribute::ReturnType(WorleyReturnType::Distance),
             InputParamKind::ConstantOnly,
             true,
         );
