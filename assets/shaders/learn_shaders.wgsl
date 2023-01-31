@@ -19,29 +19,26 @@ struct GradientPoint {
     height: f32,
 };
 
-var<private> gradient_points: array<GradientPoint, 3> = array<GradientPoint, 3>(
-    GradientPoint(vec4<f32>(0.0, 0.0, 0.0, 1.0), -1.0),
-    GradientPoint(vec4<f32>(0.5, 0.5, 0.5, 1.0), 0.0),
-    GradientPoint(vec4<f32>(1.0, 1.0, 1.0, 1.0), 1.0),
-);
+@group(1) @binding(0)
+var<storage, read> gradient_points: array<GradientPoint>;
 
 @fragment
 fn fragment(in: FragmentInput) -> @location(0) vec4<f32> {
     let lowest_gradient_point = gradient_points[0].height;
-    let highest_gradient_point = gradient_points[2].height;
+    let highest_gradient_point = gradient_points[arrayLength(&gradient_points) - 1u].height;
     
     var output_color: vec4<f32>;
 
-    // custom stuff
+    //custom stuff
     let height = in.world_position.y;
 
     if height < lowest_gradient_point {
         output_color = gradient_points[0].color;
     } else if height > highest_gradient_point {
-        output_color = gradient_points[3u - 1u].color;
+        output_color = gradient_points[arrayLength(&gradient_points) - 1u].color;
     }
 
-    for (var i = 0u; i < 3u - 1u; i++) {        
+    for (var i = 0u; i < arrayLength(&gradient_points) - 1u; i++) {        
         if gradient_points[i].height <= height && gradient_points[i+1u].height > height {
             let alpha = (height - gradient_points[i].height) / (gradient_points[i+1u].height - gradient_points[i].height);
             output_color = mix(gradient_points[i].color, gradient_points[i+1u].color, alpha);

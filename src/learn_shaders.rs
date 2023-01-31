@@ -1,4 +1,4 @@
-use bevy::{prelude::*, reflect::TypeUuid, render::render_resource::{AsBindGroup, ShaderType}};
+use bevy::{prelude::*, reflect::TypeUuid, render::{render_resource::{AsBindGroup, ShaderType, BindGroupLayout, PreparedBindGroup, AsBindGroupError, encase::StorageBuffer, OwnedBindingResource, BufferInitDescriptor, BufferUsages, BindGroupDescriptor, BindGroupEntry, BindGroupLayoutDescriptor, BindGroupLayoutEntry, ShaderStages, BindingType, BufferBindingType, ShaderRef}, renderer::RenderDevice, render_asset::RenderAssets, texture::FallbackImage}};
 
 pub struct LearnShadersPlugin;
 
@@ -17,20 +17,97 @@ fn setup(mut commands: Commands, mut materials: ResMut<Assets<LearnShadersMateri
     });
 }
 
-#[derive(AsBindGroup, TypeUuid, Debug, Clone, Default)]
+#[derive(TypeUuid, Debug, Clone)]
 #[uuid = "6cf55774-e3e4-4cf8-81b3-dd3641cc90de"]
 pub struct LearnShadersMaterial {
     pub gradient_points: Vec<GradientPoint>,
 }
 
+impl Default for LearnShadersMaterial {
+    fn default() -> Self {
+        Self {
+            gradient_points: vec![
+                GradientPoint { height: -1.0, color: Color::BLACK },
+                GradientPoint { height: 1.0, color: Color::WHITE },
+            ]
+        }
+    }
+}
+
+impl AsBindGroup for LearnShadersMaterial {
+    type Data = ();
+    fn as_bind_group(
+        &self,
+        layout: &BindGroupLayout,
+        render_device: &RenderDevice,
+        _images: &RenderAssets<Image>,
+        _fallback_image: &FallbackImage,
+    ) -> Result<
+        PreparedBindGroup<Self>,
+        AsBindGroupError,
+    > {
+        let bindings = vec![{
+            let mut buffer = StorageBuffer::new(Vec::new());
+            buffer.write(&self.gradient_points).unwrap();
+            OwnedBindingResource::Buffer(
+                render_device.create_buffer_with_data(
+                    &BufferInitDescriptor {
+                        label: None,
+                        usage: BufferUsages::COPY_DST
+                            | BufferUsages::STORAGE,
+                        contents: buffer.as_ref(),
+                    },
+                ),
+            )
+        }];
+        let bind_group = {
+            let descriptor = BindGroupDescriptor {
+                entries: &[BindGroupEntry {
+                    binding: 0u32,
+                    resource: bindings[0usize].get_binding(),
+                }],
+                label: None,
+                layout: &layout,
+            };
+            render_device.create_bind_group(&descriptor)
+        };
+        Ok(PreparedBindGroup {
+            bindings,
+            bind_group,
+            data: (),
+        })
+    }
+    fn bind_group_layout(
+        render_device: &RenderDevice,
+    ) -> BindGroupLayout {
+        render_device
+            .create_bind_group_layout(&BindGroupLayoutDescriptor {
+            entries: &[BindGroupLayoutEntry {
+                binding: 0u32,
+                visibility: ShaderStages::all(),
+                ty: BindingType::Buffer {
+                    ty: BufferBindingType::Storage { read_only: true },
+                    has_dynamic_offset: false,
+                    min_binding_size: Some(
+                        <Vec<GradientPoint> as ShaderType>::min_size(
+                        ),
+                    ),
+                },
+                count: None,
+            }],
+            label: None,
+        })
+    }
+}
+
 impl Material for LearnShadersMaterial {
-    fn fragment_shader() -> bevy::render::render_resource::ShaderRef {
+    fn fragment_shader() -> ShaderRef {
         "shaders/learn_shaders.wgsl".into()
     }
 }
 
 #[derive(Clone, Copy, Debug, Default, ShaderType)]
 pub struct GradientPoint {
-    pub height: f32,
     pub color: Color,
+    pub height: f32,
 }

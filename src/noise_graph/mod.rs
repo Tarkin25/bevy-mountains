@@ -44,9 +44,11 @@ impl Plugin for NoiseGraphPlugin {
 
 fn draw_graph(mut context: ResMut<EguiContext>, mut graph: ResMut<NoiseGraphResource>) {
     let ctx = context.ctx_mut();
-    egui::TopBottomPanel::top("Top panel").show(ctx, |ui| {
-        ui.label("Top Panel");
-    });
+    /* egui::TopBottomPanel::top("Top panel").show(ctx, |ui| {
+        ui.horizontal(|ui| {
+            ui.label("Top Panel");
+        })
+    }); */
     egui::SidePanel::left("Side panel").show(ctx, |ui| {
         ui.label("Side Panel");
     });
