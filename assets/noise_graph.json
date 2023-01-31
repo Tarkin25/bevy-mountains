@@ -296,29 +296,36 @@
           "value": {
             "id": {
               "idx": 16,
-              "version": 17
+              "version": 21
             },
-            "label": "Exponent",
+            "label": "ScaleBias",
             "inputs": [
               [
                 "name",
                 {
                   "idx": 79,
-                  "version": 21
+                  "version": 25
                 }
               ],
               [
                 "source",
                 {
                   "idx": 68,
-                  "version": 9
+                  "version": 13
                 }
               ],
               [
-                "exponent",
+                "scale",
                 {
                   "idx": 82,
-                  "version": 25
+                  "version": 29
+                }
+              ],
+              [
+                "bias",
+                {
+                  "idx": 163,
+                  "version": 11
                 }
               ]
             ],
@@ -327,15 +334,15 @@
                 "out",
                 {
                   "idx": 16,
-                  "version": 17
+                  "version": 21
                 }
               ]
             ],
             "user_data": {
-              "template": "Exponent"
+              "template": "ScaleBias"
             }
           },
-          "version": 17
+          "version": 21
         },
         {
           "value": null,
@@ -1038,11 +1045,11 @@
         },
         {
           "value": null,
-          "version": 2
+          "version": 6
         },
         {
           "value": null,
-          "version": 6
+          "version": 10
         },
         {
           "value": {
@@ -2027,18 +2034,18 @@
           "value": {
             "id": {
               "idx": 68,
-              "version": 9
+              "version": 13
             },
             "typ": "Noise",
             "value": "NoInput",
             "kind": "ConnectionOnly",
             "node": {
               "idx": 16,
-              "version": 17
+              "version": 21
             },
             "shown_inline": true
           },
-          "version": 9
+          "version": 13
         },
         {
           "value": null,
@@ -2068,7 +2075,7 @@
             },
             "typ": "F64",
             "value": {
-              "F64": 0.4
+              "F64": 1.0
             },
             "kind": "ConnectionOrConstant",
             "node": {
@@ -2129,7 +2136,7 @@
           "value": {
             "id": {
               "idx": 79,
-              "version": 21
+              "version": 25
             },
             "typ": "NoConnection",
             "value": {
@@ -2138,11 +2145,11 @@
             "kind": "ConstantOnly",
             "node": {
               "idx": 16,
-              "version": 17
+              "version": 21
             },
             "shown_inline": true
           },
-          "version": 21
+          "version": 25
         },
         {
           "value": null,
@@ -2156,20 +2163,20 @@
           "value": {
             "id": {
               "idx": 82,
-              "version": 25
+              "version": 29
             },
             "typ": "F64",
             "value": {
-              "F64": 2.0
+              "F64": 1.0
             },
             "kind": "ConnectionOrConstant",
             "node": {
               "idx": 16,
-              "version": 17
+              "version": 21
             },
             "shown_inline": true
           },
-          "version": 25
+          "version": 29
         },
         {
           "value": {
@@ -3247,6 +3254,22 @@
         },
         {
           "value": null,
+          "version": 8
+        },
+        {
+          "value": null,
+          "version": 8
+        },
+        {
+          "value": null,
+          "version": 6
+        },
+        {
+          "value": null,
+          "version": 8
+        },
+        {
+          "value": null,
           "version": 6
         },
         {
@@ -3255,31 +3278,30 @@
         },
         {
           "value": null,
-          "version": 4
-        },
-        {
-          "value": null,
-          "version": 4
-        },
-        {
-          "value": null,
-          "version": 2
-        },
-        {
-          "value": null,
-          "version": 2
-        },
-        {
-          "value": null,
-          "version": 2
-        },
-        {
-          "value": null,
           "version": 6
         },
         {
+          "value": {
+            "id": {
+              "idx": 163,
+              "version": 11
+            },
+            "typ": "F64",
+            "value": {
+              "F64": 1.0
+            },
+            "kind": "ConnectionOrConstant",
+            "node": {
+              "idx": 16,
+              "version": 21
+            },
+            "shown_inline": true
+          },
+          "version": 11
+        },
+        {
           "value": null,
-          "version": 4
+          "version": 8
         },
         {
           "value": {
@@ -3289,7 +3311,7 @@
             },
             "typ": "Usize",
             "value": {
-              "Usize": 3
+              "Usize": 10
             },
             "kind": "ConnectionOrConstant",
             "node": {
@@ -3581,7 +3603,7 @@
             },
             "typ": "F64",
             "value": {
-              "F64": 0.25
+              "F64": 0.0
             },
             "kind": "ConnectionOrConstant",
             "node": {
@@ -3600,7 +3622,7 @@
             },
             "typ": "F64",
             "value": {
-              "F64": 0.25
+              "F64": 0.0
             },
             "kind": "ConnectionOrConstant",
             "node": {
@@ -3788,7 +3810,7 @@
             },
             "typ": "F64",
             "value": {
-              "F64": 0.0
+              "F64": -0.8
             },
             "kind": "ConnectionOrConstant",
             "node": {
@@ -3807,7 +3829,7 @@
             },
             "typ": "F64",
             "value": {
-              "F64": 0.2
+              "F64": 1.0
             },
             "kind": "ConnectionOrConstant",
             "node": {
@@ -4029,15 +4051,15 @@
           "value": {
             "id": {
               "idx": 16,
-              "version": 17
+              "version": 21
             },
             "node": {
               "idx": 16,
-              "version": 17
+              "version": 21
             },
             "typ": "Noise"
           },
-          "version": 17
+          "version": 21
         },
         {
           "value": null,
@@ -4249,11 +4271,11 @@
         },
         {
           "value": null,
-          "version": 2
+          "version": 6
         },
         {
           "value": null,
-          "version": 6
+          "version": 10
         },
         {
           "value": {
@@ -4653,10 +4675,10 @@
         },
         {
           "value": {
-            "idx": 24,
-            "version": 27
+            "idx": 41,
+            "version": 3
           },
-          "version": 9
+          "version": 13
         },
         {
           "value": null,
@@ -5096,8 +5118,8 @@
         },
         {
           "value": {
-            "idx": 44,
-            "version": 3
+            "idx": 24,
+            "version": 27
           },
           "version": 3
         },
@@ -5107,7 +5129,7 @@
         },
         {
           "value": {
-            "idx": 41,
+            "idx": 44,
             "version": 3
           },
           "version": 3
@@ -5217,8 +5239,8 @@
         },
         {
           "value": {
-            "idx": 43,
-            "version": 3
+            "idx": 47,
+            "version": 11
           },
           "version": 5
         },
@@ -5233,7 +5255,7 @@
         {
           "value": {
             "idx": 16,
-            "version": 17
+            "version": 21
           },
           "version": 11
         },
@@ -5281,20 +5303,8 @@
         "version": 7
       },
       {
-        "idx": 42,
-        "version": 1
-      },
-      {
         "idx": 34,
         "version": 1
-      },
-      {
-        "idx": 25,
-        "version": 3
-      },
-      {
-        "idx": 6,
-        "version": 13
       },
       {
         "idx": 33,
@@ -5309,24 +5319,24 @@
         "version": 15
       },
       {
-        "idx": 46,
-        "version": 3
-      },
-      {
         "idx": 4,
         "version": 13
       },
       {
+        "idx": 6,
+        "version": 13
+      },
+      {
+        "idx": 42,
+        "version": 1
+      },
+      {
+        "idx": 46,
+        "version": 3
+      },
+      {
         "idx": 45,
         "version": 3
-      },
-      {
-        "idx": 43,
-        "version": 3
-      },
-      {
-        "idx": 47,
-        "version": 11
       },
       {
         "idx": 44,
@@ -5337,12 +5347,24 @@
         "version": 27
       },
       {
+        "idx": 47,
+        "version": 11
+      },
+      {
+        "idx": 25,
+        "version": 3
+      },
+      {
+        "idx": 43,
+        "version": 3
+      },
+      {
         "idx": 41,
         "version": 3
       },
       {
         "idx": 16,
-        "version": 17
+        "version": 21
       }
     ],
     "connection_in_progress": null,
@@ -5381,8 +5403,8 @@
       },
       {
         "value": {
-          "x": 1769.0,
-          "y": 1064.0
+          "x": 1790.0,
+          "y": 969.0
         },
         "version": 13
       },
@@ -5430,10 +5452,10 @@
       },
       {
         "value": {
-          "x": 419.0,
+          "x": 239.0,
           "y": 33.0
         },
-        "version": 17
+        "version": 21
       },
       {
         "value": null,
@@ -5465,15 +5487,15 @@
       },
       {
         "value": {
-          "x": 69.0,
-          "y": -78.0
+          "x": -370.0,
+          "y": -110.0
         },
         "version": 27
       },
       {
         "value": {
-          "x": 2234.0,
-          "y": 484.0
+          "x": 2246.0,
+          "y": 435.0
         },
         "version": 3
       },
@@ -5569,50 +5591,50 @@
       },
       {
         "value": {
-          "x": 491.0,
-          "y": 320.0
+          "x": -71.0,
+          "y": -46.0
         },
         "version": 3
       },
       {
         "value": {
-          "x": 2136.0,
-          "y": 1082.0
+          "x": 2127.0,
+          "y": 1070.0
         },
         "version": 1
       },
       {
         "value": {
-          "x": 1028.0,
-          "y": 289.0
+          "x": 892.0,
+          "y": 360.0
         },
         "version": 3
       },
       {
         "value": {
-          "x": 162.0,
-          "y": 310.0
+          "x": 491.0,
+          "y": 300.0
         },
         "version": 3
       },
       {
         "value": {
-          "x": -121.0,
-          "y": 253.0
+          "x": 127.0,
+          "y": 247.0
         },
         "version": 3
       },
       {
         "value": {
-          "x": 1358.0,
-          "y": 345.0
+          "x": 1325.0,
+          "y": 377.0
         },
         "version": 3
       },
       {
         "value": {
-          "x": 756.0,
-          "y": 77.0
+          "x": 700.0,
+          "y": 109.0
         },
         "version": 11
       }
@@ -5620,8 +5642,8 @@
     "node_finder": null,
     "pan_zoom": {
       "pan": {
-        "x": -893.0,
-        "y": 259.0
+        "x": -437.0,
+        "y": 131.0
       },
       "zoom": 11.0
     },

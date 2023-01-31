@@ -132,7 +132,11 @@ pub struct ColorGradient {
 impl Default for ColorGradient {
     fn default() -> Self {
         Self {
-            gradient_points: vec![GradientPoint { height: 0.0, color: Color::PURPLE }]
+            gradient_points: vec![
+                GradientPoint { height: -1.0, color: Color::PURPLE },
+                GradientPoint { height: 0.0, color: Color::WHITE },
+                GradientPoint { height: 1.0, color: Color::CYAN },
+            ]
         }
     }
 }
