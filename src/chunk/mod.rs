@@ -303,14 +303,14 @@ impl Default for ChunksConfig {
     fn default() -> Self {
         Self {
             size: 128.0,
-            render_distance: 30,
+            render_distance: 20,
             updates_per_frame: 4,
             lod_breakpoints: vec![
                 LodBreakpoint::new(0, 0.5),
-                LodBreakpoint::new(4, 1.0),
-                LodBreakpoint::new(8, 4.0),
-                LodBreakpoint::new(16, 8.0),
-                LodBreakpoint::new(24, 16.0),
+                LodBreakpoint::new(4, 0.5),
+                LodBreakpoint::new(8, 2.0),
+                LodBreakpoint::new(16, 4.0),
+                LodBreakpoint::new(24, 8.0),
                 LodBreakpoint::new(32, 16.0),
                 LodBreakpoint::new(48, 32.0),
             ],

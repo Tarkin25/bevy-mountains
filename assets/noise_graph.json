@@ -1572,7 +1572,7 @@
             },
             "typ": "F64",
             "value": {
-              "F64": 100.0
+              "F64": 1000.0
             },
             "kind": "ConnectionOrConstant",
             "node": {
@@ -5768,8 +5768,8 @@
     "node_finder": null,
     "pan_zoom": {
       "pan": {
-        "x": -175.0,
-        "y": -733.0
+        "x": -1136.0,
+        "y": 34.0
       },
       "zoom": 11.0
     },
