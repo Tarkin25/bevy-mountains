@@ -2,12 +2,14 @@ use bevy::{
     prelude::*,
     render::{mesh::Indices, primitives::Aabb, render_resource::PrimitiveTopology},
     tasks::{AsyncComputeTaskPool, Task},
-    utils::HashMap,
 };
 use futures_lite::future;
 use noise::NoiseFn;
 
-use crate::{camera_controller::CameraController, noise_graph::NoiseGraphResource, pause::GameState, learn_shaders::MaterialConfig};
+use crate::{
+    camera_controller::CameraController, learn_shaders::MaterialConfig,
+    noise_graph::NoiseGraphResource, pause::GameState,
+};
 
 use self::grid::{ChunkGrid, ChunkGridPlugin, GridCoordinates};
 
@@ -152,10 +154,7 @@ fn reload_chunks(
 
 fn unload_chunks(
     mut commands: Commands,
-    chunks: Query<
-        (Entity, &GridCoordinates),
-        (With<Chunk>, Without<ComputeMesh>),
-    >,
+    chunks: Query<(Entity, &GridCoordinates), (With<Chunk>, Without<ComputeMesh>)>,
     camera: Query<&GridCoordinates, With<CameraController>>,
     chunks_config: Res<ChunksConfig>,
     chunk_grid: Res<ChunkGrid>,
@@ -249,22 +248,35 @@ pub struct ChunksConfig {
     cell_size: f32,
     render_distance: u32,
     updates_per_frame: usize,
-    lod_breakpoints: HashMap<u32, f32>,
+    lod_breakpoints: Vec<(u32, f32)>,
     load_chunks: bool,
 }
 
 impl ChunksConfig {
     pub fn get_cell_size(&self, chunk: GridCoordinates, camera: GridCoordinates) -> f32 {
         let distance = chunk.distance(camera).round() as u32;
-
-        let breakpoint = self
+        let lowest_breakpoint = self
             .lod_breakpoints
-            .keys()
-            .filter(|k| **k <= distance)
-            .max()
-            .unwrap_or_else(|| self.lod_breakpoints.keys().max().unwrap());
+            .first()
+            .expect("Expected at least 1 lod_breakpoint");
+        let highest_breakpoint = self
+            .lod_breakpoints
+            .last()
+            .expect("Expected at least 1 lod_breakpoint");
 
-        *self.lod_breakpoints.get(breakpoint).unwrap()
+        if distance <= lowest_breakpoint.0 {
+            return lowest_breakpoint.1;
+        } else if distance >= highest_breakpoint.0 {
+            return highest_breakpoint.1;
+        } else {
+            for window in self.lod_breakpoints.windows(2) {
+                if window[0].0 <= distance && window[1].0 > distance {
+                    return window[0].1;
+                }
+            }
+
+            unreachable!();
+        }
     }
 }
 
@@ -275,9 +287,15 @@ impl Default for ChunksConfig {
             cell_size: 0.5,
             render_distance: 40,
             updates_per_frame: 4,
-            lod_breakpoints: [(0, 0.5), (4, 1.0), (8, 4.0), (16, 8.0), (24, 16.0), (32, 16.0), (48, 32.0)]
-                .into_iter()
-                .collect(),
+            lod_breakpoints: vec![
+                (0, 0.5),
+                (4, 1.0),
+                (8, 4.0),
+                (16, 8.0),
+                (24, 16.0),
+                (32, 16.0),
+                (48, 32.0),
+            ],
             load_chunks: true,
         }
     }
