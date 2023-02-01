@@ -8,14 +8,17 @@ use std::{
 
 use anyhow::Context;
 use bevy::prelude::*;
-use bevy_egui::{egui, EguiContext};
+use bevy_egui::egui;
 use egui_node_graph::{
     Graph, GraphEditorState, NodeDataTrait, NodeId, NodeResponse, OutputId, UserResponseTrait,
 };
-use noise::{Checkerboard, NoiseFn, utils::{PlaneMapBuilder, NoiseMapBuilder, ImageRenderer}};
+use noise::{
+    utils::{ImageRenderer, NoiseMapBuilder, PlaneMapBuilder},
+    Checkerboard, NoiseFn,
+};
 use serde::{Deserialize, Serialize};
 
-use crate::{pause::GameState, learn_shaders::ColorGradient};
+use crate::pause::GameState;
 
 use self::{
     connection_type::ConnectionType,
@@ -36,25 +39,12 @@ impl Plugin for NoiseGraphPlugin {
             Default::default()
         });
 
-        app.insert_resource(graph)
-            .add_system_set(SystemSet::on_update(GameState::Paused).with_system(draw_graph))
-            .add_system_set(SystemSet::on_exit(GameState::Paused).with_system(evaluate_graph).with_system(save_graph));
+        app.insert_resource(graph).add_system_set(
+            SystemSet::on_exit(GameState::Paused)
+                .with_system(evaluate_graph)
+                .with_system(save_graph),
+        );
     }
-}
-
-fn draw_graph(mut context: ResMut<EguiContext>, mut graph: ResMut<NoiseGraphResource>, mut color_gradient: ResMut<ColorGradient>) {
-    let ctx = context.ctx_mut();
-    /* egui::TopBottomPanel::top("Top panel").show(ctx, |ui| {
-        ui.horizontal(|ui| {
-            ui.label("Top Panel");
-        })
-    }); */
-    egui::SidePanel::left("Side panel").show(ctx, |ui| {
-        ui.add(&mut *color_gradient);
-    });
-    egui::Window::new("noise graph").title_bar(false).fixed_rect(ctx.available_rect()).show(ctx, |ui| {
-        ui.add(&mut *graph)
-    });
 }
 
 fn evaluate_graph(mut graph: ResMut<NoiseGraphResource>) {
@@ -127,7 +117,10 @@ impl NodeDataTrait for NodeData {
             .active_node
             .map(|id| id == node_id)
             .unwrap_or(false);
-        if graph[node_id].outputs(graph).any(|output| output.typ == ConnectionType::Noise) {
+        if graph[node_id]
+            .outputs(graph)
+            .any(|output| output.typ == ConnectionType::Noise)
+        {
             if !is_active {
                 if ui.button("👁 Set active").clicked() {
                     responses.push(NodeResponse::User(MyResponse::SetActiveNode(node_id)));
@@ -188,27 +181,34 @@ impl NoiseGraphResource {
         writer.flush().context("Unable to save file")
     }
 
-    fn save_image(&self) -> anyhow::Result<()> {        
-        let node = self.user_state.active_node.map(|id| &self.state.graph[id]).ok_or(anyhow::anyhow!("No active node"))?;
+    fn save_image(&self) -> anyhow::Result<()> {
+        let node = self
+            .user_state
+            .active_node
+            .map(|id| &self.state.graph[id])
+            .ok_or(anyhow::anyhow!("No active node"))?;
         let name = match self.state.graph.get_input(node.get_input("name")?).value() {
             NodeAttribute::Name(name) => name,
-            _ => anyhow::bail!("Node doesn't have a name")
+            _ => anyhow::bail!("Node doesn't have a name"),
         };
 
         let half_bounds = 2048.0;
         let size = 1024;
         let map = PlaneMapBuilder::new(self.get_noise_fn())
-        .set_size(size, size)
-        .set_x_bounds(-half_bounds, half_bounds)
-        .set_y_bounds(-half_bounds, half_bounds)
-        .build();
+            .set_size(size, size)
+            .set_x_bounds(-half_bounds, half_bounds)
+            .set_y_bounds(-half_bounds, half_bounds)
+            .build();
 
-        ImageRenderer::new().set_gradient(noise::utils::ColorGradient::new().build_terrain_gradient()).render(&map).write_to_file(&format!("{name}.png"));
-        
+        ImageRenderer::new()
+            .set_gradient(noise::utils::ColorGradient::new().build_terrain_gradient())
+            .render(&map)
+            .write_to_file(&format!("{name}.png"));
+
         Ok(())
     }
 
-    pub fn get_noise_fn(&self) -> DynNoiseFn {        
+    pub fn get_noise_fn(&self) -> DynNoiseFn {
         self.user_state
             .current_noise
             .as_ref()
@@ -243,7 +243,9 @@ impl NoiseGraphResource {
 
 impl egui::Widget for &mut NoiseGraphResource {
     fn ui(self, ui: &mut egui::Ui) -> egui::Response {
-        let graph_response = self.state.draw_graph_editor(ui, AllNodeTemplates, &mut self.user_state);
+        let graph_response =
+            self.state
+                .draw_graph_editor(ui, AllNodeTemplates, &mut self.user_state);
 
         for node_response in graph_response.node_responses {
             // Here, we ignore all other graph events. But you may find
@@ -253,9 +255,9 @@ impl egui::Widget for &mut NoiseGraphResource {
                 match user_event {
                     MyResponse::SetActiveNode(node) => self.user_state.active_node = Some(node),
                     MyResponse::ClearActiveNode => self.user_state.active_node = None,
-                    MyResponse::SaveImage =>  {
+                    MyResponse::SaveImage => {
                         self.update_current_noise();
-                        
+
                         if let Err(e) = self.save_image() {
                             error!("{e}");
                             NoiseGraphResource::debug_text(ui.ctx(), e)
@@ -265,7 +267,10 @@ impl egui::Widget for &mut NoiseGraphResource {
             }
         }
 
-        ui.allocate_rect(ui.min_rect(), egui::Sense::click().union(egui::Sense::drag()))
+        ui.allocate_rect(
+            ui.min_rect(),
+            egui::Sense::click().union(egui::Sense::drag()),
+        )
     }
 }
 

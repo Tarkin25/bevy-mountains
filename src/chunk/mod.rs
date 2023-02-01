@@ -3,12 +3,13 @@ use bevy::{
     render::{mesh::Indices, primitives::Aabb, render_resource::PrimitiveTopology},
     tasks::{AsyncComputeTaskPool, Task},
 };
+use bevy_inspector_egui::egui::{Checkbox, DragValue, Widget};
 use futures_lite::future;
 use noise::NoiseFn;
 
 use crate::{
     camera_controller::CameraController, learn_shaders::MaterialConfig,
-    noise_graph::NoiseGraphResource, pause::GameState,
+    noise_graph::NoiseGraphResource, pause::GameState, widgets::ListWidget,
 };
 
 use self::grid::{ChunkGrid, ChunkGridPlugin, GridCoordinates};
@@ -20,7 +21,6 @@ pub struct ChunkPlugin;
 impl Plugin for ChunkPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<ChunksConfig>()
-            .register_type::<ChunksConfig>()
             .add_plugin(ChunkGridPlugin)
             .add_system_set(
                 SystemSet::on_update(GameState::Running)
@@ -242,63 +242,19 @@ pub struct Chunk {
     cell_size: f32,
 }
 
-#[derive(Resource, Reflect, PartialEq, Clone)]
+#[derive(Resource)]
 pub struct ChunksConfig {
     size: f32,
-    cell_size: f32,
     render_distance: u32,
     updates_per_frame: usize,
-    lod_breakpoints: Vec<(u32, f32)>,
+    lod_breakpoints: Vec<LodBreakpoint>,
     load_chunks: bool,
 }
 
-impl ChunksConfig {
-    pub fn get_cell_size(&self, chunk: GridCoordinates, camera: GridCoordinates) -> f32 {
-        let distance = chunk.distance(camera).round() as u32;
-        let lowest_breakpoint = self
-            .lod_breakpoints
-            .first()
-            .expect("Expected at least 1 lod_breakpoint");
-        let highest_breakpoint = self
-            .lod_breakpoints
-            .last()
-            .expect("Expected at least 1 lod_breakpoint");
-
-        if distance <= lowest_breakpoint.0 {
-            return lowest_breakpoint.1;
-        } else if distance >= highest_breakpoint.0 {
-            return highest_breakpoint.1;
-        } else {
-            for window in self.lod_breakpoints.windows(2) {
-                if window[0].0 <= distance && window[1].0 > distance {
-                    return window[0].1;
-                }
-            }
-
-            unreachable!();
-        }
-    }
-}
-
-impl Default for ChunksConfig {
-    fn default() -> Self {
-        Self {
-            size: 128.0,
-            cell_size: 0.5,
-            render_distance: 40,
-            updates_per_frame: 4,
-            lod_breakpoints: vec![
-                (0, 0.5),
-                (4, 1.0),
-                (8, 4.0),
-                (16, 8.0),
-                (24, 16.0),
-                (32, 16.0),
-                (48, 32.0),
-            ],
-            load_chunks: true,
-        }
-    }
+#[derive(Default)]
+struct LodBreakpoint {
+    distance: u32,
+    cell_size: f32,
 }
 
 #[derive(Debug, Component)]
@@ -314,3 +270,103 @@ struct ChunkData {
 
 #[derive(Component)]
 struct DespawnChunk;
+
+impl ChunksConfig {
+    pub fn get_cell_size(&self, chunk: GridCoordinates, camera: GridCoordinates) -> f32 {
+        let distance = chunk.distance(camera).round() as u32;
+        let lowest_breakpoint = self
+            .lod_breakpoints
+            .first()
+            .expect("Expected at least 1 lod_breakpoint");
+        let highest_breakpoint = self
+            .lod_breakpoints
+            .last()
+            .expect("Expected at least 1 lod_breakpoint");
+
+        if distance <= lowest_breakpoint.distance {
+            return lowest_breakpoint.cell_size;
+        } else if distance >= highest_breakpoint.distance {
+            return highest_breakpoint.cell_size;
+        } else {
+            for window in self.lod_breakpoints.windows(2) {
+                if window[0].distance <= distance && window[1].distance > distance {
+                    return window[0].cell_size;
+                }
+            }
+
+            unreachable!();
+        }
+    }
+}
+
+impl Default for ChunksConfig {
+    fn default() -> Self {
+        Self {
+            size: 128.0,
+            render_distance: 30,
+            updates_per_frame: 4,
+            lod_breakpoints: vec![
+                LodBreakpoint::new(0, 0.5),
+                LodBreakpoint::new(4, 1.0),
+                LodBreakpoint::new(8, 4.0),
+                LodBreakpoint::new(16, 8.0),
+                LodBreakpoint::new(24, 16.0),
+                LodBreakpoint::new(32, 16.0),
+                LodBreakpoint::new(48, 32.0),
+            ],
+            load_chunks: true,
+        }
+    }
+}
+
+impl Widget for &mut ChunksConfig {
+    fn ui(self, ui: &mut bevy_inspector_egui::egui::Ui) -> bevy_inspector_egui::egui::Response {
+        ui.heading("ChunksConfig");
+        ui.vertical(|ui| {
+            ui.horizontal(|ui| {
+                ui.label("size");
+                ui.add(DragValue::new(&mut self.size));
+            });
+            ui.horizontal(|ui| {
+                ui.label("render distance");
+                ui.add(DragValue::new(&mut self.render_distance));
+            });
+            ui.horizontal(|ui| {
+                ui.label("updates per frame");
+                ui.add(DragValue::new(&mut self.updates_per_frame));
+            });
+            ui.horizontal(|ui| {
+                ui.label("lod breakpoints");
+                let breakpoints_response = ui.add(ListWidget(&mut self.lod_breakpoints));
+                if !breakpoints_response.has_focus() {
+                    self.lod_breakpoints
+                        .sort_by_key(|breakpoint| breakpoint.distance);
+                }
+            });
+            ui.horizontal(|ui| {
+                ui.label("load chunks");
+                ui.add(Checkbox::new(&mut self.load_chunks, ""));
+            })
+        })
+        .response
+    }
+}
+
+impl Widget for &mut LodBreakpoint {
+    fn ui(self, ui: &mut bevy_inspector_egui::egui::Ui) -> bevy_inspector_egui::egui::Response {
+        ui.horizontal(|ui| {
+            ui.add(DragValue::new(&mut self.distance));
+            ui.add(DragValue::new(&mut self.cell_size));
+        })
+        .response
+    }
+}
+
+impl LodBreakpoint {
+    fn new(distance: u32, cell_size: f32) -> Self {
+        Self {
+            distance,
+            cell_size,
+        }
+    }
+}

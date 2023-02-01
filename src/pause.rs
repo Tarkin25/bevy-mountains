@@ -1,4 +1,8 @@
 use bevy::{prelude::*, window::CursorGrabMode};
+use bevy_egui::EguiContext;
+use bevy_inspector_egui::egui::{SidePanel, Window};
+
+use crate::{chunk::ChunksConfig, learn_shaders::ColorGradient, noise_graph::NoiseGraphResource};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum GameState {
@@ -13,8 +17,29 @@ impl Plugin for PausePlugin {
         app.add_state(GameState::Running)
             .add_system_set(SystemSet::on_enter(GameState::Running).with_system(lock_cursor))
             .add_system_set(SystemSet::on_enter(GameState::Paused).with_system(free_cursor))
+            .add_system_set(SystemSet::on_update(GameState::Paused).with_system(draw_pause_menu))
             .add_system(toggle_game_state);
     }
+}
+
+fn draw_pause_menu(
+    mut context: ResMut<EguiContext>,
+    mut graph: ResMut<NoiseGraphResource>,
+    mut color_gradient: ResMut<ColorGradient>,
+    mut chunks_config: ResMut<ChunksConfig>,
+) {
+    let ctx = context.ctx_mut();
+
+    SidePanel::left("Side Panel").show(ctx, |ui| {
+        ui.add(&mut *color_gradient);
+        ui.separator();
+        ui.add(&mut *chunks_config);
+        ui.separator();
+    });
+    Window::new("noise graph")
+        .title_bar(false)
+        .fixed_rect(ctx.available_rect())
+        .show(ctx, |ui| ui.add(&mut *graph));
 }
 
 fn lock_cursor(mut windows: ResMut<Windows>) {
