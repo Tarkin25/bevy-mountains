@@ -7,7 +7,7 @@ use std::{
 };
 
 use anyhow::Context;
-use bevy::prelude::*;
+use bevy::{prelude::*, reflect::TypeUuid};
 use bevy_egui::egui;
 use egui_node_graph::{
     Graph, GraphEditorState, NodeDataTrait, NodeId, NodeResponse, OutputId, UserResponseTrait,
@@ -34,13 +34,8 @@ pub struct NoiseGraphPlugin;
 
 impl Plugin for NoiseGraphPlugin {
     fn build(&self, app: &mut App) {
-        let graph = NoiseGraphResource::load().unwrap_or_else(|e| {
-            error!("{}", e);
-            Default::default()
-        });
-
-        app.insert_resource(graph).add_system_set(
-            SystemSet::on_exit(GameState::Paused)
+        app.add_system_set(
+            SystemSet::on_enter(GameState::Running)
                 .with_system(evaluate_graph)
                 .with_system(save_graph),
         );
@@ -88,6 +83,23 @@ pub struct NoiseGraphState {
     current_noise: Option<DynNoiseFn>,
 }
 
+pub type NoiseGraph = Graph<NodeData, ConnectionType, NodeAttribute>;
+
+#[derive(Default, Resource, Serialize, Deserialize, TypeUuid)]
+#[uuid = "b452a8a1-82fe-42a1-be25-c931c310e008"]
+pub struct NoiseGraphResource {
+    // The `GraphEditorState` is the top-level object. You "register" all your
+    // custom types by specifying it as its generic parameters.
+    state: GraphEditorState<NodeData, ConnectionType, NodeAttribute, NodeTemplate, NoiseGraphState>,
+
+    user_state: NoiseGraphState,
+}
+
+type OutputsCache = HashMap<OutputId, NodeAttribute>;
+
+#[derive(Clone)]
+pub struct DynNoiseFn(Arc<dyn NoiseFn<f64, 2> + Send + Sync>);
+
 // =========== Then, you need to implement some traits ============
 
 impl UserResponseTrait for MyResponse {}
@@ -117,10 +129,12 @@ impl NodeDataTrait for NodeData {
             .active_node
             .map(|id| id == node_id)
             .unwrap_or(false);
-        if graph[node_id]
+
+        let outputs_noise = graph[node_id]
             .outputs(graph)
-            .any(|output| output.typ == ConnectionType::Noise)
-        {
+            .any(|output| output.typ == ConnectionType::Noise);
+
+        if outputs_noise {
             if !is_active {
                 if ui.button("👁 Set active").clicked() {
                     responses.push(NodeResponse::User(MyResponse::SetActiveNode(node_id)));
@@ -140,17 +154,6 @@ impl NodeDataTrait for NodeData {
 
         responses
     }
-}
-
-pub type NoiseGraph = Graph<NodeData, ConnectionType, NodeAttribute>;
-
-#[derive(Default, Resource, Serialize, Deserialize)]
-pub struct NoiseGraphResource {
-    // The `GraphEditorState` is the top-level object. You "register" all your
-    // custom types by specifying it as its generic parameters.
-    state: GraphEditorState<NodeData, ConnectionType, NodeAttribute, NodeTemplate, NoiseGraphState>,
-
-    user_state: NoiseGraphState,
 }
 
 impl NoiseGraphResource {
@@ -273,11 +276,6 @@ impl egui::Widget for &mut NoiseGraphResource {
         )
     }
 }
-
-type OutputsCache = HashMap<OutputId, NodeAttribute>;
-
-#[derive(Clone)]
-pub struct DynNoiseFn(Arc<dyn NoiseFn<f64, 2> + Send + Sync>);
 
 impl DynNoiseFn {
     fn new<T: NoiseFn<f64, 2> + Send + Sync + 'static>(noise: T) -> Self {

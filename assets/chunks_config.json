@@ -1,0 +1,15 @@
+{
+    "size": 128.0,
+    "render_distance": 20,
+    "updates_per_frame": 2,
+    "lod_breakpoints": [
+        { "distance": 0, "cell_size": 0.5 },
+        { "distance": 4, "cell_size": 0.5 },
+        { "distance": 8, "cell_size": 2.0 },
+        { "distance": 16, "cell_size": 4.0 },
+        { "distance": 24, "cell_size": 8.0 },
+        { "distance": 32, "cell_size": 16.0 },
+        { "distance": 48, "cell_size": 32.0 }
+    ],
+    "load_chunks": true
+}

@@ -1,11 +1,13 @@
 use bevy::{
     prelude::*,
+    reflect::TypeUuid,
     render::{mesh::Indices, primitives::Aabb, render_resource::PrimitiveTopology},
     tasks::{AsyncComputeTaskPool, Task},
 };
 use bevy_inspector_egui::egui::{Checkbox, DragValue, Grid, Widget};
 use futures_lite::future;
 use noise::NoiseFn;
+use serde::{Deserialize, Serialize};
 
 use crate::{
     camera_controller::CameraController, learn_shaders::MaterialConfig,
@@ -20,8 +22,7 @@ pub struct ChunkPlugin;
 
 impl Plugin for ChunkPlugin {
     fn build(&self, app: &mut App) {
-        app.init_resource::<ChunksConfig>()
-            .add_plugin(ChunkGridPlugin)
+        app.add_plugin(ChunkGridPlugin)
             .add_system_set(
                 SystemSet::on_update(GameState::Running)
                     .with_system(trigger_chunk_creation.before(spawn_compute_mesh_tasks))
@@ -242,7 +243,8 @@ pub struct Chunk {
     cell_size: f32,
 }
 
-#[derive(Resource)]
+#[derive(Resource, Deserialize, Serialize, TypeUuid, Debug)]
+#[uuid = "17ceeeb7-8c21-4b5d-8899-fbe15a96870a"]
 pub struct ChunksConfig {
     size: f32,
     render_distance: u32,
@@ -251,7 +253,7 @@ pub struct ChunksConfig {
     load_chunks: bool,
 }
 
-#[derive(Default)]
+#[derive(Default, Deserialize, Serialize, Debug)]
 struct LodBreakpoint {
     distance: u32,
     cell_size: f32,

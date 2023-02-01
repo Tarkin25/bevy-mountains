@@ -6,6 +6,7 @@ use crate::{chunk::ChunksConfig, learn_shaders::ColorGradient, noise_graph::Nois
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum GameState {
+    AssetsLoading,
     Paused,
     Running,
 }
@@ -14,8 +15,7 @@ pub struct PausePlugin;
 
 impl Plugin for PausePlugin {
     fn build(&self, app: &mut App) {
-        app.add_state(GameState::Running)
-            .add_system_set(SystemSet::on_enter(GameState::Running).with_system(lock_cursor))
+        app.add_system_set(SystemSet::on_enter(GameState::Running).with_system(lock_cursor))
             .add_system_set(SystemSet::on_enter(GameState::Paused).with_system(free_cursor))
             .add_system_set(SystemSet::on_update(GameState::Paused).with_system(draw_pause_menu))
             .add_system(toggle_game_state);
@@ -59,6 +59,7 @@ fn toggle_game_state(input: Res<Input<KeyCode>>, mut state: ResMut<State<GameSta
         let new_state = match state.current() {
             GameState::Paused => GameState::Running,
             GameState::Running => GameState::Paused,
+            _ => return,
         };
 
         state.set(new_state).unwrap();

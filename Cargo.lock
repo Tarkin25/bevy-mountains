@@ -348,6 +348,30 @@ dependencies = [
 ]
 
 [[package]]
+name = "bevy_asset_loader"
+version = "0.14.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "636bfbf59389a96bf1caa9e1ea6cdf966f7a294829ee784ef65c2e88ce504802"
+dependencies = [
+ "anyhow",
+ "bevy",
+ "bevy_asset_loader_derive",
+ "bevy_common_assets",
+ "serde",
+]
+
+[[package]]
+name = "bevy_asset_loader_derive"
+version = "0.14.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c80a8c433e1c39abc2a71a241a3993acbaddc9b9475a3e9b12639d2963335fdc"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "bevy_audio"
 version = "0.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -361,6 +385,19 @@ dependencies = [
  "bevy_utils",
  "parking_lot",
  "rodio",
+]
+
+[[package]]
+name = "bevy_common_assets"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4f6b7df078908d118a55440470962f4393ac6a4ce89b13a3cd5bff49d4a06f29"
+dependencies = [
+ "anyhow",
+ "bevy",
+ "ron 0.7.1",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -765,7 +802,7 @@ dependencies = [
  "bevy_render",
  "bevy_transform",
  "bevy_utils",
- "ron",
+ "ron 0.8.0",
  "serde",
  "thiserror",
  "uuid",
@@ -1437,7 +1474,7 @@ dependencies = [
  "ahash 0.8.2",
  "epaint",
  "nohash-hasher",
- "ron",
+ "ron 0.8.0",
  "serde",
 ]
 
@@ -3039,6 +3076,17 @@ dependencies = [
 
 [[package]]
 name = "ron"
+version = "0.7.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "88073939a61e5b7680558e6be56b419e208420c2adb92be54921fa6b72283f1a"
+dependencies = [
+ "base64",
+ "bitflags",
+ "serde",
+]
+
+[[package]]
+name = "ron"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "300a51053b1cb55c80b7a9fde4120726ddf25ca241a1cbb926626f62fb136bff"
@@ -4022,6 +4070,8 @@ dependencies = [
  "anyhow",
  "bevy",
  "bevy-inspector-egui",
+ "bevy_asset_loader",
+ "bevy_common_assets",
  "bevy_egui",
  "dashmap",
  "egui_node_graph",

@@ -5450,10 +5450,6 @@
         "version": 11
       },
       {
-        "idx": 25,
-        "version": 3
-      },
-      {
         "idx": 43,
         "version": 3
       },
@@ -5488,6 +5484,10 @@
       {
         "idx": 40,
         "version": 15
+      },
+      {
+        "idx": 25,
+        "version": 3
       }
     ],
     "connection_in_progress": null,
@@ -5768,8 +5768,8 @@
     "node_finder": null,
     "pan_zoom": {
       "pan": {
-        "x": -1136.0,
-        "y": 34.0
+        "x": -783.0,
+        "y": -3.0
       },
       "zoom": 11.0
     },

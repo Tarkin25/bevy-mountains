@@ -1,3 +1,4 @@
+use assets::AssetsPlugin;
 use bevy::{prelude::*, window::close_on_esc};
 use bevy_egui::EguiPlugin;
 use camera_controller::CameraControllerPlugin;
@@ -8,6 +9,7 @@ use noise_graph::NoiseGraphPlugin;
 use pause::PausePlugin;
 use wireframe_controller::WireframeControllerPlugin;
 
+pub mod assets;
 pub mod camera_controller;
 pub mod chunk;
 pub mod learn_shaders;
@@ -34,6 +36,7 @@ fn main() {
                     ..Default::default()
                 }),
         )
+        .add_plugin(AssetsPlugin)
         .add_plugin(LightPlugin)
         .add_plugin(CameraControllerPlugin {
             transform: Transform::from_xyz(0.0, 100.0, -10.0),
