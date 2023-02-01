@@ -1,5 +1,5 @@
 use bevy::prelude::Color;
-use bevy_inspector_egui::egui::{Widget, Color32};
+use bevy_inspector_egui::egui::{Color32, Widget};
 
 pub struct ColorWidget<'a>(pub &'a mut Color);
 
@@ -19,7 +19,7 @@ pub struct ListWidget<'a, T>(pub &'a mut Vec<T>);
 impl<'a, T> Widget for ListWidget<'a, T>
 where
     T: Default,
-    for<'r> &'r mut T: Widget
+    for<'r> &'r mut T: Widget,
 {
     fn ui(self, ui: &mut bevy_inspector_egui::egui::Ui) -> bevy_inspector_egui::egui::Response {
         ui.vertical(|ui| {
@@ -29,7 +29,7 @@ where
             for i in 0..list.len() {
                 ui.horizontal(|ui| {
                     ui.add(&mut list[i]);
-                    if ui.button("X").clicked() {
+                    if ui.button("x").clicked() {
                         indices_to_remove.push(i);
                     }
                 });
@@ -42,6 +42,7 @@ where
             if ui.button("+").clicked() {
                 list.push(T::default());
             }
-        }).response
+        })
+        .response
     }
 }

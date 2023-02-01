@@ -13,7 +13,7 @@ use bevy::{
         texture::FallbackImage,
     },
 };
-use bevy_inspector_egui::egui::{DragValue, Response, Ui, Widget};
+use bevy_inspector_egui::egui::{DragValue, Grid, Response, Ui, Widget};
 
 use crate::{
     pause::GameState,
@@ -150,7 +150,7 @@ impl Default for ColorGradient {
             gradient_points: vec![
                 GradientPoint {
                     height: -1.0,
-                    color: Color::PURPLE,
+                    color: Color::MIDNIGHT_BLUE,
                 },
                 GradientPoint {
                     height: 0.0,
@@ -158,7 +158,7 @@ impl Default for ColorGradient {
                 },
                 GradientPoint {
                     height: 1.0,
-                    color: Color::CYAN,
+                    color: Color::DARK_GREEN,
                 },
             ],
         }
@@ -168,17 +168,18 @@ impl Default for ColorGradient {
 impl Widget for &mut ColorGradient {
     fn ui(self, ui: &mut Ui) -> Response {
         ui.heading("Color Gradient");
-        ui.horizontal(|ui| {
-            ui.label("gradient_points");
-            ui.vertical(|ui| {
-                ui.add(ListWidget(&mut self.gradient_points));
-                if ui.button("Sort").clicked() {
-                    self.gradient_points
-                        .sort_by(|a, b| a.height.total_cmp(&b.height));
-                }
-            });
-        })
-        .response
+        Grid::new("ColorGradient.grid")
+            .show(ui, |ui| {
+                ui.label("gradient_points");
+                ui.vertical(|ui| {
+                    ui.add(ListWidget(&mut self.gradient_points));
+                    if ui.button("Sort").clicked() {
+                        self.gradient_points
+                            .sort_by(|a, b| a.height.total_cmp(&b.height));
+                    }
+                });
+            })
+            .response
     }
 }
 

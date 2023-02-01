@@ -3,7 +3,7 @@ use bevy::{
     render::{mesh::Indices, primitives::Aabb, render_resource::PrimitiveTopology},
     tasks::{AsyncComputeTaskPool, Task},
 };
-use bevy_inspector_egui::egui::{Checkbox, DragValue, Widget};
+use bevy_inspector_egui::egui::{Checkbox, DragValue, Grid, Widget};
 use futures_lite::future;
 use noise::NoiseFn;
 
@@ -322,33 +322,33 @@ impl Default for ChunksConfig {
 impl Widget for &mut ChunksConfig {
     fn ui(self, ui: &mut bevy_inspector_egui::egui::Ui) -> bevy_inspector_egui::egui::Response {
         ui.heading("ChunksConfig");
-        ui.vertical(|ui| {
-            ui.horizontal(|ui| {
+        Grid::new("ChunksConfig.grid")
+            .show(ui, |ui| {
                 ui.label("size");
                 ui.add(DragValue::new(&mut self.size));
-            });
-            ui.horizontal(|ui| {
+                ui.end_row();
+
                 ui.label("render distance");
                 ui.add(DragValue::new(&mut self.render_distance));
-            });
-            ui.horizontal(|ui| {
+                ui.end_row();
+
                 ui.label("updates per frame");
                 ui.add(DragValue::new(&mut self.updates_per_frame));
-            });
-            ui.horizontal(|ui| {
+                ui.end_row();
+
                 ui.label("lod breakpoints");
                 let breakpoints_response = ui.add(ListWidget(&mut self.lod_breakpoints));
                 if !breakpoints_response.has_focus() {
                     self.lod_breakpoints
                         .sort_by_key(|breakpoint| breakpoint.distance);
                 }
-            });
-            ui.horizontal(|ui| {
+                ui.end_row();
+
                 ui.label("load chunks");
                 ui.add(Checkbox::new(&mut self.load_chunks, ""));
+                ui.end_row();
             })
-        })
-        .response
+            .response
     }
 }
 
