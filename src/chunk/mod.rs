@@ -25,8 +25,8 @@ impl Plugin for ChunkPlugin {
         app.add_plugin(ChunkGridPlugin)
             .add_system_set(
                 SystemSet::on_update(GameState::Running)
+                    .with_system(update_level_of_detail.before(trigger_chunk_creation))
                     .with_system(trigger_chunk_creation.before(spawn_compute_mesh_tasks))
-                    .with_system(update_level_of_detail.before(spawn_compute_mesh_tasks))
                     .with_system(spawn_compute_mesh_tasks.before(insert_mesh))
                     .with_system(insert_mesh.before(unload_chunks))
                     .with_system(unload_chunks)
