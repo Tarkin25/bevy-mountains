@@ -30,7 +30,7 @@ mod connection_type;
 mod node_attribute;
 mod node_template;
 
-pub struct NoiseGraphPlugin;
+pub struct NoiseGraphPlugin; // TODO - use asset handles all over + save extension for AssetServer
 
 impl Plugin for NoiseGraphPlugin {
     fn build(&self, app: &mut App) {

@@ -29,7 +29,8 @@ impl Plugin for ChunkPlugin {
                     .with_system(update_level_of_detail.before(spawn_compute_mesh_tasks))
                     .with_system(spawn_compute_mesh_tasks.before(insert_mesh))
                     .with_system(insert_mesh.before(unload_chunks))
-                    .with_system(unload_chunks), //.with_system(add_center_point_to_chunks)
+                    .with_system(unload_chunks)
+                    .with_system(despawn_chunks),
             )
             .add_system_set(SystemSet::on_enter(GameState::Running).with_system(reload_chunks));
     }
@@ -155,7 +156,7 @@ fn reload_chunks(
 
 fn unload_chunks(
     mut commands: Commands,
-    chunks: Query<(Entity, &GridCoordinates), (With<Chunk>, Without<ComputeMesh>)>,
+    chunks: Query<(Entity, &GridCoordinates), (With<Chunk>, Without<DespawnChunk>)>,
     camera: Query<&GridCoordinates, With<CameraController>>,
     chunks_config: Res<ChunksConfig>,
     chunk_grid: Res<ChunkGrid>,
@@ -167,12 +168,25 @@ fn unload_chunks(
                     camera.distance_squared(*coordinates) > chunks_config.render_distance.pow(2);
 
                 if is_outside_render_distance {
-                    commands.entity(entity).despawn_recursive();
+                    commands.entity(entity).insert(DespawnChunk);
                     chunk_grid.remove(coordinates);
                 }
             });
         }
     }
+}
+
+fn despawn_chunks(
+    mut commands: Commands,
+    chunks: Query<Entity, With<DespawnChunk>>,
+    chunks_config: Res<ChunksConfig>,
+) {
+    chunks
+        .iter()
+        .take(chunks_config.updates_per_frame)
+        .for_each(|entity| {
+            commands.entity(entity).despawn_recursive();
+        })
 }
 
 fn generate_chunk_data(
