@@ -23,11 +23,13 @@ pub struct ChunkPlugin;
 impl Plugin for ChunkPlugin {
     fn build(&self, app: &mut App) {
         app.add_plugin(ChunkGridPlugin)
+            .add_asset::<ChunkData>()
             .add_system_set(
                 SystemSet::on_update(GameState::Running)
                     .with_system(update_level_of_detail.before(trigger_chunk_creation))
                     .with_system(trigger_chunk_creation.before(spawn_compute_mesh_tasks))
-                    .with_system(spawn_compute_mesh_tasks.before(insert_mesh))
+                    .with_system(spawn_compute_mesh_tasks.before(poll_tasks))
+                    .with_system(poll_tasks.before(insert_mesh))
                     .with_system(insert_mesh.before(unload_chunks))
                     .with_system(unload_chunks)
                     .with_system(despawn_chunks),
@@ -93,7 +95,7 @@ fn spawn_compute_mesh_tasks(
 ) {
     let pool = AsyncComputeTaskPool::get();
 
-    for (entity, grid_coordinates, chunk) in query.iter().take(chunks_config.updates_per_frame) {
+    for (entity, grid_coordinates, chunk) in query.iter() {
         let grid_coordinates = *grid_coordinates;
         let Chunk { cell_size } = *chunk;
         let noise = noise_graph.get_noise_fn().clone();
@@ -109,24 +111,46 @@ fn spawn_compute_mesh_tasks(
     }
 }
 
-fn insert_mesh(
-    mut query: Query<(Entity, &mut ComputeMesh)>,
+fn poll_tasks(
+    mut query: Query<(Entity, &mut ComputeMesh), Without<DespawnChunk>>,
     mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    config: Res<ChunksConfig>,
+    mut chunk_data_assets: ResMut<Assets<ChunkData>>,
 ) {
-    for (entity, mut task) in query.iter_mut().take(config.updates_per_frame) {
-        if let Some(ChunkData { mesh, aabb }) = future::block_on(future::poll_once(&mut task.0)) {
-            let mut entity = commands.entity(entity);
-            entity.remove::<ComputeMesh>();
-            entity.remove::<Handle<Mesh>>();
-            entity.insert((meshes.add(mesh), aabb));
-        }
+    query
+        .iter_mut() /* .take(100) */
+        .for_each(|(entity, mut task)| {
+            if let Some(chunk_data) = future::block_on(future::poll_once(&mut task.0)) {
+                commands
+                    .entity(entity)
+                    .remove::<ComputeMesh>()
+                    .insert(chunk_data_assets.add(chunk_data));
+            }
+        })
+}
+
+fn insert_mesh(
+    mut commands: Commands,
+    config: Res<ChunksConfig>,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut chunk_data_assets: ResMut<Assets<ChunkData>>,
+    query: Query<(Entity, &Handle<ChunkData>), Without<DespawnChunk>>,
+) {
+    for (entity, chunk_data_handle) in query.iter().take(config.updates_per_frame) {
+        let ChunkData { mesh, aabb } = chunk_data_assets
+            .remove(chunk_data_handle)
+            .expect("Expected a valid chunk data handle");
+
+        commands
+            .entity(entity)
+            .remove::<Handle<Mesh>>()
+            .remove::<Handle<ChunkData>>()
+            .insert(meshes.add(mesh))
+            .insert(aabb);
     }
 }
 
 fn update_level_of_detail(
-    mut chunks: Query<(Entity, &mut Chunk, &GridCoordinates)>,
+    mut chunks: Query<(Entity, &mut Chunk, &GridCoordinates), Without<DespawnChunk>>,
     mut commands: Commands,
     camera: Query<&GridCoordinates, With<CameraController>>,
     config: Res<ChunksConfig>,
@@ -279,6 +303,8 @@ struct LoadChunk;
 #[derive(Component)]
 struct ComputeMesh(Task<ChunkData>);
 
+#[derive(TypeUuid)]
+#[uuid = "d2d3971c-81a1-4133-b4a2-07b1551b6af8"]
 struct ChunkData {
     mesh: Mesh,
     aabb: Aabb,
