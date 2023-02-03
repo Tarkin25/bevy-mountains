@@ -1,5 +1,4 @@
 use std::{
-    collections::HashMap,
     fmt::Debug,
     fs::OpenOptions,
     io::{BufWriter, Write},
@@ -10,7 +9,7 @@ use anyhow::Context;
 use bevy::{prelude::*, reflect::TypeUuid};
 use bevy_egui::egui;
 use egui_node_graph::{
-    Graph, GraphEditorState, NodeDataTrait, NodeId, NodeResponse, OutputId, UserResponseTrait,
+    Graph, GraphEditorState, NodeDataTrait, NodeId, NodeResponse, UserResponseTrait,
 };
 use noise::{
     utils::{ImageRenderer, NoiseMapBuilder, PlaneMapBuilder},
@@ -22,11 +21,13 @@ use crate::pause::GameState;
 
 use self::{
     connection_type::ConnectionType,
+    graph_ext::GraphExt,
     node_attribute::NodeAttribute,
     node_template::{AllNodeTemplates, NodeTemplate},
 };
 
 mod connection_type;
+mod graph_ext;
 mod node_attribute;
 mod node_template;
 
@@ -95,14 +96,13 @@ pub struct NoiseGraphResource {
     user_state: NoiseGraphState,
 }
 
-type OutputsCache = HashMap<OutputId, NodeAttribute>;
-
 #[derive(Clone)]
 pub struct DynNoiseFn(Arc<dyn NoiseFn<f64, 2> + Send + Sync>);
 
 // =========== Then, you need to implement some traits ============
 
 impl UserResponseTrait for MyResponse {}
+
 impl NodeDataTrait for NodeData {
     type Response = MyResponse;
     type UserState = NoiseGraphState;
@@ -220,9 +220,7 @@ impl NoiseGraphResource {
     fn update_current_noise(&mut self) {
         if let Some(node) = self.user_state.active_node {
             if self.state.graph.nodes.contains_key(node) {
-                if let Ok(value) =
-                    NodeTemplate::evaluate(&self.state.graph, node, &mut HashMap::new())
-                {
+                if let Ok(value) = self.state.graph.evaluate(node) {
                     self.user_state.current_noise = value.try_to_noise_function().ok();
                 }
             } else {

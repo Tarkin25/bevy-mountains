@@ -3,57 +3,22 @@ use std::borrow::Cow;
 use egui_node_graph::{Graph, NodeId, NodeTemplateTrait};
 use noise::{
     Abs, Add, BasicMulti, Billow, Blend, Checkerboard, Clamp, Constant, Curve, Cylinders, Displace,
-    Fbm, Perlin, RidgedMulti, ScaleBias, ScalePoint, Select, Terrace, Turbulence, Exponent, HybridMulti, Max, Min, Multiply, Negate, OpenSimplex, PerlinSurflet, Power, RotatePoint, Simplex, SuperSimplex, TranslatePoint, Value,
+    Exponent, Fbm, HybridMulti, Max, Min, Multiply, Negate, OpenSimplex, Perlin, PerlinSurflet,
+    Power, RidgedMulti, RotatePoint, ScaleBias, ScalePoint, Select, Simplex, SuperSimplex, Terrace,
+    TranslatePoint, Turbulence, Value,
 };
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
 
-mod abs;
-mod add;
-mod arithmetic;
-mod basic_multi;
-mod billow;
-mod blend;
-mod cache;
-mod checkerboard;
-mod clamp;
-mod constant;
 mod core;
-mod curve;
-mod cylinders;
-mod displace;
-mod exponent;
-mod fbm;
-mod float;
-mod hybrid_multi;
-mod max;
-mod min;
-mod multiply;
-mod negate;
-mod open_simplex;
-mod perlin;
-mod perlin_surflet;
-mod power;
-mod ridged_multi;
-mod rotate_point;
-mod scale;
-mod scale_bias;
-mod scale_point;
-mod select;
-mod simplex;
-mod super_simplex;
-mod terrace;
-mod translate_point;
-mod turbulence;
-mod value;
-mod worley;
+mod implementation;
 
-pub use self::core::{evaluate_node, NodeBuilder, NodeEvaluator};
-use self::{arithmetic::Arithmetic, cache::SyncCache, float::Float, worley::SyncWorley, scale::Scale};
+pub use self::core::NodeBuilder;
+pub use implementation::*;
 
 use super::{
-    connection_type::ConnectionType, node_attribute::NodeAttribute, NoiseGraph, NodeData,
-    NoiseGraphState, OutputsCache,
+    connection_type::ConnectionType, graph_ext::NodeEvaluator, node_attribute::NodeAttribute,
+    NodeData, NoiseGraphState,
 };
 
 pub trait NodeImpl {
@@ -105,16 +70,6 @@ pub enum NodeTemplate {
     Turbulence,
     Value,
     Worley,
-}
-
-impl NodeTemplate {
-    pub fn evaluate(
-        graph: &NoiseGraph,
-        node_id: NodeId,
-        outputs_cache: &mut OutputsCache,
-    ) -> anyhow::Result<NodeAttribute> {
-        evaluate_node(graph, node_id, outputs_cache)
-    }
 }
 
 pub struct AllNodeTemplates;
