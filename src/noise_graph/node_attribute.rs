@@ -154,7 +154,7 @@ impl WidgetValueTrait for NodeAttribute {
                                     user_state,
                                     node_state,
                                 );
-                                if ui.button("Delete").clicked() {
+                                if ui.button("x").clicked() {
                                     indices_to_remove.push(i);
                                 }
                             });
@@ -164,7 +164,7 @@ impl WidgetValueTrait for NodeAttribute {
                             values.remove(index);
                         }
                     });
-                    if ui.button("Add element").clicked() {
+                    if ui.button("+").clicked() {
                         values.push(*template.clone());
                     }
                 });

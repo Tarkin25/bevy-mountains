@@ -1,7 +1,8 @@
 {
     "size": 128.0,
     "render_distance": 20,
-    "updates_per_frame": 2,
+    "mesh_updates_per_frame": 2,
+    "task_polls_per_frame": 100,
     "lod_breakpoints": [
         { "distance": 0, "cell_size": 0.5 },
         { "distance": 4, "cell_size": 0.5 },

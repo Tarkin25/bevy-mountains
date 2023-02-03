@@ -39,8 +39,8 @@ fn fragment(in: FragmentInput) -> @location(0) vec4<f32> {
     } else {
         for (var i = 0u; i < arrayLength(&gradient_points) - 1u; i++) {
             if gradient_points[i].height <= height && gradient_points[i + 1u].height > height {
-            let alpha = (height - gradient_points[i].height) / (gradient_points[i+1u].height - gradient_points[i].height);
-            output_color = mix(gradient_points[i].color, gradient_points[i+1u].color, alpha);
+              let alpha = (height - gradient_points[i].height) / (gradient_points[i+1u].height - gradient_points[i].height);
+              output_color = mix(gradient_points[i].color, gradient_points[i+1u].color, alpha);
                 //output_color = gradient_points[i].color;
             }
         }

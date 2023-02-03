@@ -115,9 +115,11 @@ fn poll_tasks(
     mut query: Query<(Entity, &mut ComputeMesh), Without<DespawnChunk>>,
     mut commands: Commands,
     mut chunk_data_assets: ResMut<Assets<ChunkData>>,
+    config: Res<ChunksConfig>,
 ) {
     query
-        .iter_mut() /* .take(100) */
+        .iter_mut()
+        .take(config.task_polls_per_frame)
         .for_each(|(entity, mut task)| {
             if let Some(chunk_data) = future::block_on(future::poll_once(&mut task.0)) {
                 commands
@@ -135,7 +137,7 @@ fn insert_mesh(
     mut chunk_data_assets: ResMut<Assets<ChunkData>>,
     query: Query<(Entity, &Handle<ChunkData>), Without<DespawnChunk>>,
 ) {
-    for (entity, chunk_data_handle) in query.iter().take(config.updates_per_frame) {
+    for (entity, chunk_data_handle) in query.iter().take(config.mesh_updates_per_frame) {
         let ChunkData { mesh, aabb } = chunk_data_assets
             .remove(chunk_data_handle)
             .expect("Expected a valid chunk data handle");
@@ -207,7 +209,7 @@ fn despawn_chunks(
 ) {
     chunks
         .iter()
-        .take(chunks_config.updates_per_frame)
+        .take(chunks_config.mesh_updates_per_frame)
         .for_each(|entity| {
             commands.entity(entity).despawn_recursive();
         })
@@ -286,7 +288,8 @@ pub struct Chunk {
 pub struct ChunksConfig {
     size: f32,
     render_distance: u32,
-    updates_per_frame: usize,
+    mesh_updates_per_frame: usize,
+    task_polls_per_frame: usize,
     lod_breakpoints: Vec<LodBreakpoint>,
     load_chunks: bool,
 }
@@ -346,7 +349,8 @@ impl Default for ChunksConfig {
         Self {
             size: 128.0,
             render_distance: 20,
-            updates_per_frame: 4,
+            mesh_updates_per_frame: 4,
+            task_polls_per_frame: 100,
             lod_breakpoints: vec![
                 LodBreakpoint::new(0, 0.5),
                 LodBreakpoint::new(4, 0.5),
@@ -374,8 +378,12 @@ impl Widget for &mut ChunksConfig {
                 ui.add(DragValue::new(&mut self.render_distance));
                 ui.end_row();
 
-                ui.label("updates per frame");
-                ui.add(DragValue::new(&mut self.updates_per_frame));
+                ui.label("mesh updates per frame");
+                ui.add(DragValue::new(&mut self.mesh_updates_per_frame));
+                ui.end_row();
+
+                ui.label("task polls per frame");
+                ui.add(DragValue::new(&mut self.task_polls_per_frame));
                 ui.end_row();
 
                 ui.label("lod breakpoints");

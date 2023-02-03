@@ -2,7 +2,7 @@ use std::{
     collections::HashMap,
     fmt::Debug,
     fs::OpenOptions,
-    io::{BufReader, BufWriter, Write},
+    io::{BufWriter, Write},
     sync::Arc,
 };
 
@@ -158,18 +158,6 @@ impl NodeDataTrait for NodeData {
 
 impl NoiseGraphResource {
     const FILE_PATH: &'static str = "assets/noise_graph.json";
-
-    fn load() -> anyhow::Result<Self> {
-        let mut graph: Self = serde_json::from_reader(BufReader::new(
-            OpenOptions::new()
-                .read(true)
-                .open(Self::FILE_PATH)
-                .context("Unable to open file")?,
-        ))
-        .context("Unable to parse json")?;
-        graph.update_current_noise();
-        Ok(graph)
-    }
 
     fn save(&self) -> anyhow::Result<()> {
         let mut writer = BufWriter::new(
