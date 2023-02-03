@@ -1,5 +1,3 @@
-use std::sync::Arc;
-
 use noise::{
     core::worley::{distance_functions, worley_2d, ReturnType},
     permutationtable::PermutationTable,
@@ -10,14 +8,14 @@ use super::NodeImpl;
 
 #[derive(Clone)]
 pub struct SyncWorley {
-    pub distance_function: Arc<DistanceFunction>,
-    pub return_type: ReturnType,
-    pub frequency: f64,
+    distance_function: DistanceFunction,
+    return_type: ReturnType,
+    frequency: f64,
     seed: u32,
     perm_table: PermutationTable,
 }
 
-pub type DistanceFunction = dyn Fn(&[f64], &[f64]) -> f64 + Send + Sync;
+pub type DistanceFunction = fn(&[f64], &[f64]) -> f64;
 
 impl NodeImpl for SyncWorley {
     fn build(builder: &mut super::NodeBuilder) {
@@ -47,20 +45,9 @@ impl SyncWorley {
         Self {
             perm_table: PermutationTable::new(seed),
             seed,
-            distance_function: Arc::new(distance_functions::euclidean),
+            distance_function: distance_functions::euclidean,
             return_type: ReturnType::Value,
             frequency: Self::DEFAULT_FREQUENCY,
-        }
-    }
-
-    /// Sets the distance function used by the Worley cells.
-    pub fn _set_distance_function<F>(self, function: F) -> Self
-    where
-        F: Fn(&[f64], &[f64]) -> f64 + Send + Sync + 'static,
-    {
-        Self {
-            distance_function: Arc::new(function),
-            ..self
         }
     }
 
@@ -110,7 +97,7 @@ impl NoiseFn<f64, 2> for SyncWorley {
     fn get(&self, [x, y]: [f64; 2]) -> f64 {
         worley_2d(
             &self.perm_table,
-            &*self.distance_function,
+            self.distance_function,
             self.return_type,
             [x * self.frequency, y * self.frequency],
         )
