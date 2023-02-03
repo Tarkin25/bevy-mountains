@@ -4072,7 +4072,6 @@ dependencies = [
  "bevy-inspector-egui",
  "bevy_asset_loader",
  "bevy_common_assets",
- "bevy_egui",
  "dashmap",
  "egui_node_graph",
  "futures-lite",

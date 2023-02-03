@@ -7,7 +7,7 @@ use crate::noise_graph::{
 };
 
 pub struct NodeBuilder<'a> {
-    graph: &'a mut Graph<NodeData, ConnectionType, NodeAttribute>,
+    pub graph: &'a mut Graph<NodeData, ConnectionType, NodeAttribute>,
     node_id: NodeId,
 }
 

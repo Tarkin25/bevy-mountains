@@ -1,11 +1,12 @@
-use bevy_egui::egui::{self, Color32, ComboBox, DragValue, TextEdit};
+use bevy_inspector_egui::bevy_egui::egui::{self, Color32, ComboBox, DragValue, TextEdit};
 use egui_node_graph::{NodeId, WidgetValueTrait};
 use noise::core::worley::ReturnType;
 use serde::{Deserialize, Serialize};
 use std::fmt::Debug;
 use strum::IntoEnumIterator;
+use crate::noise_graph::graph_manager::GraphId;
 
-use super::{DynNoiseFn, MyResponse, NodeData, NoiseGraphState};
+use super::{DynNoiseFn, UserResponse, NodeData, NoiseGraphState};
 
 /// In the graph, input parameters can optionally have a constant value. This
 /// value can be directly edited in a widget inside the node itself.
@@ -33,6 +34,7 @@ pub enum NodeAttribute {
     },
     F64Tuple(f64, f64),
     ReturnType(WorleyReturnType),
+    SubGraph(GraphId),
 }
 
 #[derive(
@@ -84,9 +86,9 @@ impl From<WorleyReturnType> for ReturnType {
 }
 
 impl WidgetValueTrait for NodeAttribute {
+    type Response = UserResponse;
     type UserState = NoiseGraphState;
     type NodeData = NodeData;
-    type Response = MyResponse;
     fn value_widget(
         &mut self,
         param_name: &str,
@@ -94,7 +96,7 @@ impl WidgetValueTrait for NodeAttribute {
         ui: &mut egui::Ui,
         user_state: &mut NoiseGraphState,
         node_state: &NodeData,
-    ) -> Vec<MyResponse> {
+    ) -> Vec<UserResponse> {
         const MAX_DECIMALS: usize = 5;
 
         // This trait is used to tell the library which UI to display for the

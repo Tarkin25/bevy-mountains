@@ -7,7 +7,7 @@ use std::{
 
 use anyhow::Context;
 use bevy::{prelude::*, reflect::TypeUuid};
-use bevy_egui::egui;
+use bevy_inspector_egui::bevy_egui::egui;
 use egui_node_graph::{
     Graph, GraphEditorState, NodeDataTrait, NodeId, NodeResponse, UserResponseTrait,
 };
@@ -16,6 +16,7 @@ use noise::{
     Checkerboard, NoiseFn,
 };
 use serde::{Deserialize, Serialize};
+use crate::noise_graph::graph_manager::{GraphId, ManagerMessage, NoiseGraphManager};
 
 use crate::pause::GameState;
 
@@ -30,12 +31,15 @@ mod connection_type;
 mod graph_ext;
 mod node_attribute;
 mod node_template;
+pub mod graph_manager;
 
 pub struct NoiseGraphPlugin; // TODO - use asset handles all over + save extension for AssetServer
 
 impl Plugin for NoiseGraphPlugin {
     fn build(&self, app: &mut App) {
-        app.add_system_set(
+        app
+            .init_resource::<NoiseGraphManager>()
+            .add_system_set(
             SystemSet::on_enter(GameState::Running)
                 .with_system(evaluate_graph)
                 .with_system(save_graph),
@@ -43,11 +47,11 @@ impl Plugin for NoiseGraphPlugin {
     }
 }
 
-fn evaluate_graph(mut graph: ResMut<NoiseGraphResource>) {
+fn evaluate_graph(mut graph: ResMut<NoiseGraph>) {
     graph.update_current_noise();
 }
 
-fn save_graph(graph: Res<NoiseGraphResource>) {
+fn save_graph(graph: Res<NoiseGraph>) {
     if let Err(e) = graph.save() {
         error!("Error while saving noise graph: {}", e);
     }
@@ -61,6 +65,7 @@ fn save_graph(graph: Res<NoiseGraphResource>) {
 #[derive(Serialize, Deserialize)]
 pub struct NodeData {
     template: NodeTemplate,
+    graph_id: Option<GraphId>,
 }
 
 /// The response type is used to encode side-effects produced when drawing a
@@ -68,10 +73,12 @@ pub struct NodeData {
 /// nodes, handling connections...) are already handled by the library, but this
 /// mechanism allows creating additional side effects from user code.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum MyResponse {
+pub enum UserResponse {
     SetActiveNode(NodeId),
     ClearActiveNode,
     SaveImage,
+    ShowSubGraph(GraphId),
+    CloseSubGraph,
 }
 
 /// The graph 'global' state. This state struct is passed around to the node and
@@ -82,13 +89,15 @@ pub struct NoiseGraphState {
     active_node: Option<NodeId>,
     #[serde(skip)]
     current_noise: Option<DynNoiseFn>,
+    #[serde(skip)]
+    message_to_manager: Option<ManagerMessage>,
+    #[serde(skip)]
+    next_graph_id: GraphId,
 }
-
-pub type NoiseGraph = Graph<NodeData, ConnectionType, NodeAttribute>;
 
 #[derive(Default, Resource, Serialize, Deserialize, TypeUuid)]
 #[uuid = "b452a8a1-82fe-42a1-be25-c931c310e008"]
-pub struct NoiseGraphResource {
+pub struct NoiseGraph {
     // The `GraphEditorState` is the top-level object. You "register" all your
     // custom types by specifying it as its generic parameters.
     state: GraphEditorState<NodeData, ConnectionType, NodeAttribute, NodeTemplate, NoiseGraphState>,
@@ -101,10 +110,10 @@ pub struct DynNoiseFn(Arc<dyn NoiseFn<f64, 2> + Send + Sync>);
 
 // =========== Then, you need to implement some traits ============
 
-impl UserResponseTrait for MyResponse {}
+impl UserResponseTrait for UserResponse {}
 
 impl NodeDataTrait for NodeData {
-    type Response = MyResponse;
+    type Response = UserResponse;
     type UserState = NoiseGraphState;
     type DataType = ConnectionType;
     type ValueType = NodeAttribute;
@@ -120,9 +129,9 @@ impl NodeDataTrait for NodeData {
         node_id: NodeId,
         graph: &Graph<NodeData, ConnectionType, NodeAttribute>,
         user_state: &mut Self::UserState,
-    ) -> Vec<NodeResponse<MyResponse, NodeData>>
+    ) -> Vec<NodeResponse<UserResponse, NodeData>>
     where
-        MyResponse: UserResponseTrait,
+        UserResponse: UserResponseTrait,
     {
         let mut responses = vec![];
         let is_active = user_state
@@ -137,18 +146,24 @@ impl NodeDataTrait for NodeData {
         if outputs_noise {
             if !is_active {
                 if ui.button("👁 Set active").clicked() {
-                    responses.push(NodeResponse::User(MyResponse::SetActiveNode(node_id)));
+                    responses.push(NodeResponse::User(UserResponse::SetActiveNode(node_id)));
                 }
             } else {
                 let button =
                     egui::Button::new(egui::RichText::new("👁 Active").color(egui::Color32::BLACK))
                         .fill(egui::Color32::GOLD);
                 if ui.add(button).clicked() {
-                    responses.push(NodeResponse::User(MyResponse::ClearActiveNode));
+                    responses.push(NodeResponse::User(UserResponse::ClearActiveNode));
                 }
                 if ui.button("Save image").clicked() {
-                    responses.push(NodeResponse::User(MyResponse::SaveImage));
+                    responses.push(NodeResponse::User(UserResponse::SaveImage));
                 }
+            }
+        }
+
+        if matches!(graph[node_id].user_data.template, NodeTemplate::SubGraph) {
+            if ui.button("Show").clicked() {
+                responses.push(NodeResponse::User(UserResponse::ShowSubGraph(graph[node_id].user_data.graph_id.expect("SubGraph node without graph id"))));
             }
         }
 
@@ -156,7 +171,7 @@ impl NodeDataTrait for NodeData {
     }
 }
 
-impl NoiseGraphResource {
+impl NoiseGraph {
     const FILE_PATH: &'static str = "assets/noise_graph.json";
 
     fn save(&self) -> anyhow::Result<()> {
@@ -230,7 +245,7 @@ impl NoiseGraphResource {
     }
 }
 
-impl egui::Widget for &mut NoiseGraphResource {
+impl egui::Widget for &mut NoiseGraph {
     fn ui(self, ui: &mut egui::Ui) -> egui::Response {
         let graph_response =
             self.state
@@ -242,16 +257,22 @@ impl egui::Widget for &mut NoiseGraphResource {
             // connection is created
             if let NodeResponse::User(user_event) = node_response {
                 match user_event {
-                    MyResponse::SetActiveNode(node) => self.user_state.active_node = Some(node),
-                    MyResponse::ClearActiveNode => self.user_state.active_node = None,
-                    MyResponse::SaveImage => {
+                    UserResponse::SetActiveNode(node) => self.user_state.active_node = Some(node),
+                    UserResponse::ClearActiveNode => self.user_state.active_node = None,
+                    UserResponse::SaveImage => {
                         self.update_current_noise();
 
                         if let Err(e) = self.save_image() {
                             error!("{e}");
-                            NoiseGraphResource::debug_text(ui.ctx(), e)
+                            NoiseGraph::debug_text(ui.ctx(), e)
                         }
-                    }
+                    },
+                    UserResponse::ShowSubGraph(id) => {
+
+                    },
+                    UserResponse::CloseSubGraph => {
+
+                    },
                 }
             }
         }

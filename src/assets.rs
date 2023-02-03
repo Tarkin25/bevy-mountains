@@ -4,7 +4,7 @@ use bevy_common_assets::json::JsonAssetPlugin;
 use serde::Deserialize;
 use serde_json::Value;
 
-use crate::{chunk::ChunksConfig, noise_graph::NoiseGraphResource, pause::GameState};
+use crate::{chunk::ChunksConfig, noise_graph::NoiseGraph, pause::GameState};
 
 pub struct AssetsPlugin;
 
@@ -52,7 +52,7 @@ fn insert_assets_as_resources(
     mut json_assets: ResMut<Assets<ValueWrapper>>,
 ) {
     let noise_graph = json_assets.remove(assets.noise_graph.clone()).unwrap();
-    let noise_graph: NoiseGraphResource =
+    let noise_graph: NoiseGraph =
         serde_json::from_value(noise_graph.0).expect("Failed to parse noise graph");
     let chunks_config = json_assets.remove(assets.chunks_config.clone()).unwrap();
     let chunks_config: ChunksConfig =

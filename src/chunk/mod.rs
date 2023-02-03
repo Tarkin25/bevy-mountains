@@ -11,7 +11,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     camera_controller::CameraController, learn_shaders::MaterialConfig,
-    noise_graph::NoiseGraphResource, pause::GameState, widgets::ListWidget,
+    noise_graph::NoiseGraph, pause::GameState, widgets::ListWidget,
 };
 
 use self::grid::{ChunkGrid, ChunkGridPlugin, GridCoordinates};
@@ -88,7 +88,7 @@ fn trigger_chunk_creation(
 }
 
 fn spawn_compute_mesh_tasks(
-    noise_graph: Res<NoiseGraphResource>,
+    noise_graph: Res<NoiseGraph>,
     mut commands: Commands,
     query: Query<(Entity, &GridCoordinates, &Chunk), With<LoadChunk>>,
     chunks_config: Res<ChunksConfig>,

@@ -10,11 +10,12 @@ use noise::{
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
 
-mod core;
 mod implementation;
+mod builder;
 
-pub use self::core::NodeBuilder;
 pub use implementation::*;
+use crate::noise_graph::graph_manager::{GraphId, ManagerMessage};
+use crate::noise_graph::node_template::builder::NodeBuilder;
 
 use super::{
     connection_type::ConnectionType, graph_ext::NodeEvaluator, node_attribute::NodeAttribute,
@@ -64,6 +65,7 @@ pub enum NodeTemplate {
     ScalePoint,
     Select,
     Simplex,
+    SubGraph,
     SuperSimplex,
     Terrace,
     TranslatePoint,
@@ -106,14 +108,20 @@ impl NodeTemplateTrait for NodeTemplate {
         self.node_finder_label(user_state).into()
     }
 
-    fn user_data(&self, _user_state: &mut NoiseGraphState) -> Self::NodeData {
-        NodeData { template: *self }
+    fn user_data(&self, user_state: &mut NoiseGraphState) -> Self::NodeData {
+        let graph_id = if let NodeTemplate::SubGraph = self {
+            Some(user_state.next_graph_id)
+        } else {
+            None
+        };
+
+        NodeData { template: *self, graph_id }
     }
 
     fn build_node(
         &self,
         graph: &mut Graph<Self::NodeData, Self::DataType, Self::ValueType>,
-        _user_state: &mut Self::UserState,
+        user_state: &mut Self::UserState,
         node_id: NodeId,
     ) {
         // The nodes are created empty by default. This function needs to take
@@ -163,6 +171,9 @@ impl NodeTemplateTrait for NodeTemplate {
             NodeTemplate::Turbulence => Turbulence::build(builder),
             NodeTemplate::Value => Value::build(builder),
             NodeTemplate::Worley => SyncWorley::build(builder),
+            NodeTemplate::SubGraph => {
+                user_state.message_to_manager = Some(ManagerMessage::CreateSubGraph);
+            }
         }
     }
 }

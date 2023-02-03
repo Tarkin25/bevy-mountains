@@ -75,6 +75,7 @@ fn evaluate_node(
         NodeTemplate::Turbulence => Turbulence::evaluate(evaluator),
         NodeTemplate::Value => Value::evaluate(evaluator),
         NodeTemplate::Worley => SyncWorley::evaluate(evaluator),
+        NodeTemplate::SubGraph => todo!(),
     }
 }
 

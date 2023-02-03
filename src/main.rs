@@ -1,6 +1,6 @@
 use assets::AssetsPlugin;
 use bevy::{prelude::*, window::close_on_esc};
-use bevy_egui::EguiPlugin;
+use bevy_inspector_egui::bevy_egui::EguiPlugin;
 use camera_controller::CameraControllerPlugin;
 use chunk::ChunkPlugin;
 use learn_shaders::LearnShadersPlugin;

@@ -1,6 +1,6 @@
 use std::borrow::Cow;
 
-use bevy_egui::egui::Color32;
+use bevy_inspector_egui::bevy_egui::egui::Color32;
 use egui_node_graph::DataTypeTrait;
 use serde::{Deserialize, Serialize};
 
