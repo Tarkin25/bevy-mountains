@@ -1,8 +1,11 @@
+use crate::noise_graph::node_template::AllNodeTemplates;
+use crate::noise_graph::{NodeResponse, NoiseGraph, UserResponse};
 use bevy::prelude::*;
 use bevy_inspector_egui::egui::{Response, Sense, Ui, Widget};
 use serde::{Deserialize, Serialize};
-use crate::noise_graph::node_template::{AllNodeTemplates, NodeTemplate};
-use crate::noise_graph::{NoiseGraph, NodeResponse, UserResponse};
+
+use super::graph_ext::GraphExt;
+use super::node_attribute::NodeAttribute;
 
 #[derive(Resource, Serialize, Deserialize)]
 pub struct NoiseGraphManager {
@@ -17,8 +20,6 @@ pub struct GraphId(usize);
 pub enum ManagerMessage {
     CreateSubGraph,
 }
-
-struct AvailableNodeTemplates(Vec<NodeTemplate>);
 
 impl Default for NoiseGraphManager {
     fn default() -> Self {
@@ -44,12 +45,18 @@ impl Widget for &mut NoiseGraphManager {
             close_active_graph = true;
         }
 
-        let graph_response = active_graph.state.draw_graph_editor(ui, AllNodeTemplates, &mut active_graph.user_state);
+        let graph_response = active_graph.state.draw_graph_editor(
+            ui,
+            AllNodeTemplates,
+            &mut active_graph.user_state,
+        );
 
         for node_response in graph_response.node_responses {
             if let NodeResponse::User(user_response) = node_response {
                 match user_response {
-                    UserResponse::SetActiveNode(node) => active_graph.user_state.active_node = Some(node),
+                    UserResponse::SetActiveNode(node) => {
+                        active_graph.user_state.active_node = Some(node)
+                    }
                     UserResponse::ClearActiveNode => active_graph.user_state.active_node = None,
                     UserResponse::SaveImage => info!("TODO - save image??"),
                     UserResponse::ShowSubGraph(id) => show_sub_graph = Some(id),
@@ -60,7 +67,7 @@ impl Widget for &mut NoiseGraphManager {
 
         if let Some(message) = active_graph.user_state.message_to_manager.take() {
             match message {
-                ManagerMessage::CreateSubGraph => self.create_sub_graph()
+                ManagerMessage::CreateSubGraph => self.create_sub_graph(),
             }
         }
 
@@ -71,14 +78,23 @@ impl Widget for &mut NoiseGraphManager {
             self.close_active_graph();
         }
 
-        ui.allocate_rect(
-            ui.min_rect(),
-            Sense::click().union(Sense::drag()),
-        )
+        ui.allocate_rect(ui.min_rect(), Sense::click().union(Sense::drag()))
     }
 }
 
 impl NoiseGraphManager {
+    pub fn evaluate(&mut self) -> anyhow::Result<NodeAttribute> {
+        let active_graph = self.active_graph();
+        let active_node = active_graph
+            .user_state
+            .active_node
+            .ok_or(anyhow::anyhow!("No active node"))?;
+        active_graph
+            .state
+            .graph
+            .evaluate2(active_node, &self.noise_graphs)
+    }
+
     fn create_sub_graph(&mut self) {
         self.noise_graphs.push(NoiseGraph::default());
     }
@@ -94,6 +110,16 @@ impl NoiseGraphManager {
     }
 
     fn active_graph_mut(&mut self) -> &mut NoiseGraph {
-        &mut self.noise_graphs[self.active_graph.expect("No active graph in graph manager").0]
+        &mut self.noise_graphs[self
+            .active_graph
+            .expect("No active graph in graph manager")
+            .0]
+    }
+
+    fn active_graph(&self) -> &NoiseGraph {
+        &self.noise_graphs[self
+            .active_graph
+            .expect("No active graph in graph manager")
+            .0]
     }
 }

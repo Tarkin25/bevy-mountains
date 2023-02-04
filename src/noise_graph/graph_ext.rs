@@ -12,11 +12,15 @@ use super::{
     connection_type::ConnectionType,
     node_attribute::{NodeAttribute, NoiseType, Operator, WorleyReturnType},
     node_template::{Arithmetic, Float, NodeImpl, NodeTemplate, Scale, SyncCache, SyncWorley},
-    DynNoiseFn, NodeData,
+    DynNoiseFn, NodeData, NoiseGraph,
 };
 
 pub trait GraphExt {
     fn evaluate(&self, node_id: NodeId) -> anyhow::Result<NodeAttribute>;
+
+    fn evaluate2(&self, node_id: NodeId, graphs: &[NoiseGraph]) -> anyhow::Result<NodeAttribute> {
+        todo!()
+    }
 }
 
 type OutputsCache = HashMap<OutputId, NodeAttribute>;
