@@ -15,6 +15,7 @@ pub mod chunk;
 pub mod learn_shaders;
 pub mod light;
 pub mod noise_graph;
+pub mod noise_graph_2;
 pub mod pause;
 pub mod widgets;
 pub mod wireframe_controller;

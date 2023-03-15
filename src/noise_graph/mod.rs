@@ -5,6 +5,7 @@ use std::{
     sync::Arc,
 };
 
+use crate::noise_graph::graph_manager::{GraphId, ManagerMessage, NoiseGraphManager};
 use anyhow::Context;
 use bevy::{prelude::*, reflect::TypeUuid};
 use bevy_inspector_egui::bevy_egui::egui;
@@ -16,7 +17,6 @@ use noise::{
     Checkerboard, NoiseFn,
 };
 use serde::{Deserialize, Serialize};
-use crate::noise_graph::graph_manager::{GraphId, ManagerMessage, NoiseGraphManager};
 
 use crate::pause::GameState;
 
@@ -29,17 +29,16 @@ use self::{
 
 mod connection_type;
 mod graph_ext;
+pub mod graph_manager;
 mod node_attribute;
 mod node_template;
-pub mod graph_manager;
+mod test;
 
 pub struct NoiseGraphPlugin; // TODO - use asset handles all over + save extension for AssetServer
 
 impl Plugin for NoiseGraphPlugin {
     fn build(&self, app: &mut App) {
-        app
-            .init_resource::<NoiseGraphManager>()
-            .add_system_set(
+        app.init_resource::<NoiseGraphManager>().add_system_set(
             SystemSet::on_enter(GameState::Running)
                 .with_system(evaluate_graph)
                 .with_system(save_graph),
@@ -163,7 +162,12 @@ impl NodeDataTrait for NodeData {
 
         if matches!(graph[node_id].user_data.template, NodeTemplate::SubGraph) {
             if ui.button("Show").clicked() {
-                responses.push(NodeResponse::User(UserResponse::ShowSubGraph(graph[node_id].user_data.graph_id.expect("SubGraph node without graph id"))));
+                responses.push(NodeResponse::User(UserResponse::ShowSubGraph(
+                    graph[node_id]
+                        .user_data
+                        .graph_id
+                        .expect("SubGraph node without graph id"),
+                )));
             }
         }
 
@@ -266,13 +270,9 @@ impl egui::Widget for &mut NoiseGraph {
                             error!("{e}");
                             NoiseGraph::debug_text(ui.ctx(), e)
                         }
-                    },
-                    UserResponse::ShowSubGraph(id) => {
-
-                    },
-                    UserResponse::CloseSubGraph => {
-
-                    },
+                    }
+                    UserResponse::ShowSubGraph(id) => {}
+                    UserResponse::CloseSubGraph => {}
                 }
             }
         }
