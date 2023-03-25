@@ -46,6 +46,17 @@ fn fragment(in: FragmentInput) -> @location(0) vec4<f32> {
         }
     }
 
+    let up = vec3<f32>(0.0, 1.0, 0.0);
+    let angle = acos(dot(up, in.world_normal) / length(up) * length(in.world_normal));
+
+    if angle >= radians(45.0) {
+        output_color = vec4<f32>(0.5, 0.5, 0.5, 1.0);
+    } else {
+        output_color = vec4<f32>(0.0, 1.0, 0.0, 1.0);
+    }
+
+    //output_color = vec4<f32>(0.5, angle, 0.5, 1.0);
+
     var pbr_input: PbrInput;
 
     pbr_input.material.base_color = output_color;

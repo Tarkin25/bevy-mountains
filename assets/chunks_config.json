@@ -1,6 +1,6 @@
 {
     "size": 128.0,
-    "render_distance": 20,
+    "render_distance": 16,
     "mesh_updates_per_frame": 2,
     "task_polls_per_frame": 100,
     "lod_breakpoints": [
