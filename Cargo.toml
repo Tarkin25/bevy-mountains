@@ -25,3 +25,4 @@ serde = { version = "1.0.152", features = ["derive"] }
 serde_json = "1.0.91"
 bevy_asset_loader = { version = "0.14.1", features = ["bevy_common_assets", "serde"] }
 bevy_common_assets = { version = "0.4.0", features = ["json"] }
+bevy_atmosphere = "0.5"
