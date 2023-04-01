@@ -5,28 +5,12 @@ use bevy::{
 
 use crate::pause::GameState;
 
-#[derive(Clone, Resource)]
-pub struct CameraControllerPlugin {
-    pub transform: Transform,
-}
+pub struct CameraControllerPlugin;
 
 impl Plugin for CameraControllerPlugin {
     fn build(&self, app: &mut App) {
-        app.insert_resource(self.clone())
-            .add_startup_system(setup_camera)
-            .add_system_set(
-                SystemSet::on_update(GameState::Running).with_system(camera_controller),
-            );
+        app.add_system_set(SystemSet::on_update(GameState::Running).with_system(camera_controller));
     }
-}
-
-fn setup_camera(mut commands: Commands, plugin: Res<CameraControllerPlugin>) {
-    commands
-        .spawn(Camera3dBundle {
-            transform: plugin.transform,
-            ..Default::default()
-        })
-        .insert(CameraController::default());
 }
 
 #[derive(Component)]
@@ -130,6 +114,7 @@ pub fn camera_controller(
         }
         let mut forward = transform.forward();
         forward.y = 0.0;
+        forward = forward.normalize();
         let right = transform.right();
         transform.translation += options.velocity.x * dt * right
             + options.velocity.y * dt * Vec3::Y
