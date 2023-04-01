@@ -7,6 +7,7 @@ use learn_shaders::LearnShadersPlugin;
 use light::LightPlugin;
 use noise_graph::NoiseGraphPlugin;
 use pause::PausePlugin;
+use velocity::VelocityPlugin;
 use wireframe_controller::WireframeControllerPlugin;
 
 pub mod assets;
@@ -16,6 +17,7 @@ pub mod learn_shaders;
 pub mod light;
 pub mod noise_graph;
 pub mod pause;
+pub mod velocity;
 pub mod widgets;
 pub mod wireframe_controller;
 
@@ -47,6 +49,7 @@ fn main() {
         .add_plugin(ChunkPlugin)
         .add_plugin(NoiseGraphPlugin)
         .add_plugin(EguiPlugin)
+        .add_plugin(VelocityPlugin)
         .add_system(close_on_esc)
         .run();
 }
