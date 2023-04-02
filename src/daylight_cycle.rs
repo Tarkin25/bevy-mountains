@@ -10,12 +10,14 @@ pub struct DaylightCyclePlugin;
 impl Plugin for DaylightCyclePlugin {
     fn build(&self, app: &mut App) {
         app.add_plugin(AtmospherePlugin)
-            .insert_resource(AtmosphereModel::default())
+            .insert_resource(AtmosphereModel::new(Nishita {
+                ..Default::default()
+            }))
             .insert_resource(CycleTimer(Timer::new(
                 Duration::from_millis(100),
                 TimerMode::Repeating,
             )))
-            .insert_resource(DaylightCycleSettings { speed: 1.0 })
+            .insert_resource(DaylightCycleSettings { speed: 5.0 })
             .add_system(Sun::cycle)
             .add_startup_system(Sun::spawn);
     }
@@ -30,6 +32,10 @@ impl Sun {
             DirectionalLightBundle {
                 directional_light: DirectionalLight {
                     shadows_enabled: true,
+                    shadow_projection: OrthographicProjection {
+                        far: 6372.0e3,
+                        ..Default::default()
+                    },
                     ..Default::default()
                 },
                 ..Default::default()

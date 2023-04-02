@@ -46,14 +46,12 @@ fn fragment(in: FragmentInput) -> @location(0) vec4<f32> {
         }
     }
 
-    // let up = vec3<f32>(0.0, 1.0, 0.0);
-    // let angle = acos(dot(up, in.world_normal) / length(up) * length(in.world_normal));
+    let up = vec3<f32>(0.0, 1.0, 0.0);
+    let angle = acos(dot(up, in.world_normal) / length(up) * length(in.world_normal));
 
-    // if angle >= radians(45.0) {
-    //     output_color = vec4<f32>(0.5, 0.5, 0.5, 1.0);
-    // } else {
-    //     output_color = vec4<f32>(0.0, 1.0, 0.0, 1.0);
-    // }
+    if angle >= radians(45.0) {
+        output_color = vec4<f32>(0.5, 0.5, 0.5, 1.0);
+    }
 
     //output_color = vec4<f32>(0.5, angle, 0.5, 1.0);
 
@@ -65,9 +63,12 @@ fn fragment(in: FragmentInput) -> @location(0) vec4<f32> {
     pbr_input.world_position = in.world_position;
     pbr_input.world_normal = prepare_world_normal(
         in.world_normal,
-        false,
+        true,
         in.is_front,
     );
+    pbr_input.material.emissive = vec4<f32>(0.0, 0.0, 0.0, 0.0);
+    pbr_input.material.perceptual_roughness = 0.8;
+    pbr_input.material.metallic = 0.01;
 
     pbr_input.is_orthographic = view.projection[3].w == 1.0;
 
